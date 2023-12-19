@@ -1,0 +1,10 @@
+Dec 19, 2023 4:57:41 PM io.cucumber.junit.Cucumber <init>
+WARNING: By default Cucumber is running in --non-strict mode.
+This default will change to --strict and --non-strict will be removed.
+You can use --strict or @CucumberOptions(strict = true) to suppress this warning
+Dec 19, 2023 4:57:41 PM io.cucumber.core.runtime.FeaturePathFeatureSupplier get
+WARNING: No features found at classpath:/runner
+
+0 Scenarios
+0 Steps
+0m0.000s
