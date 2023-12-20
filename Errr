@@ -17,6 +17,8 @@ public class CucumberRunner {
 	public class TestRunner {
 		
 		public static WebDriver driver;
+
+The field driver cannot be declared static in a non-static inner type, unless initialized with a constant expression
 		
 
 	}
