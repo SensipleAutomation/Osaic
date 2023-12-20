@@ -1,12 +1,71 @@
+  [32mGiven [0m[32mI am on the login page[0m                                                           [90m# osaic.Stepdefinition.Launch.i_am_on_the_login_page()[0m
+  [31mWhen [0m[31mI enter valid credentials [0m[31m[1m"mounika.golla@advoup.com.crm2.qafull"[0m[31m and [0m[31m[1m"$aLesforc3"[0m [90m# osaic.Stepdefinition.Launch.i_enter_valid_credentials_and(java.lang.String,java.lang.String)[0m
+      [31mjava.lang.NullPointerException: Cannot invoke "org.openqa.selenium.SearchContext.findElement(org.openqa.selenium.By)" because "this.searchContext" is null
+	at org.openqa.selenium.support.pagefactory.DefaultElementLocator.findElement(DefaultElementLocator.java:70)
+	at org.openqa.selenium.support.pagefactory.internal.LocatingElementHandler.invoke(LocatingElementHandler.java:39)
+	at jdk.proxy2/jdk.proxy2.$Proxy20.isDisplayed(Unknown Source)
+	at org.openqa.selenium.support.ui.ExpectedConditions.elementIfVisible(ExpectedConditions.java:307)
+	at org.openqa.selenium.support.ui.ExpectedConditions.access$000(ExpectedConditions.java:40)
+	at org.openqa.selenium.support.ui.ExpectedConditions$10.apply(ExpectedConditions.java:293)
+	at org.openqa.selenium.support.ui.ExpectedConditions$10.apply(ExpectedConditions.java:290)
+	at org.openqa.selenium.support.ui.ExpectedConditions$23.apply(ExpectedConditions.java:660)
+	at org.openqa.selenium.support.ui.ExpectedConditions$23.apply(ExpectedConditions.java:656)
+	at org.openqa.selenium.support.ui.FluentWait.until(FluentWait.java:208)
+	at osaic.Stepdefinition.Launch.i_enter_valid_credentials_and(Launch.java:28)
+	at ✽.I enter valid credentials "mounika.golla@advoup.com.crm2.qafull" and "$aLesforc3"(file:///C:/Users/rpuliendran/eclipse-workspace/Sales_Force/src/test/java/osaic/feature/Launch.feature:5)
+[0m
+  [36mAnd [0m[36mI click the login[0m                                                                  [90m# osaic.Stepdefinition.Launch.i_click_the_login()[0m
+  [36mThen [0m[36mI should see an error message[0m      
+
+
+package osaic.POM;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+
+public class FIrst {
+
+	public static WebDriver driver;
+
+	@FindBy(xpath = "//input[@name='username']")
+	private WebElement Mail;
+
+	@FindBy(xpath = "//input[@id='password']")
+	private WebElement Password;
+
+	public WebElement getMail() {
+		return Mail;
+	}
+
+	public WebElement getPassword() {
+		return Password;
+	}
+
+	public WebElement getLogButton() {
+		return LogButton;
+	}
+
+	@FindBy(xpath = "//input[@id='Login']")
+	private WebElement LogButton;
+
+	public FIrst(WebDriver driver2) {
+		this.driver = driver2;
+		PageFactory.initElements(driver2, this);
+	}
+}
+
+
+
 public class Launch extends BaseClass {
 
 	FIrst F = new FIrst(driver);
 
 	@Given("I am on the login page")
 	public void i_am_on_the_login_page() {
-//		browser("chrome");
+		browser("chrome");
 		getUrl();
-		
 	}
 
 	@When("I enter valid credentials {string} and {string}")
@@ -23,11 +82,8 @@ public class Launch extends BaseClass {
 		clickOnElement(F.getLogButton());
 	}
 
+	@Then("I should see an error message")
+	public void i_should_see_an_error_message() {
+		System.out.println("!@#$%^&*(");
+	}
 
-Scenario Outline: Launcher check                                                         [90m# src/test/java/osaic/feature/Launch.feature:10[0m
-  [31mGiven [0m[31mI am on the login page[0m                                                           [90m# osaic.Stepdefinition.Launch.i_am_on_the_login_page()[0m
-      [31mjava.lang.NullPointerException: Cannot invoke "org.openqa.selenium.WebDriver.get(String)" because "org.TestUtils.BaseClass.driver" is null
-	at org.TestUtils.BaseClass.getUrl(BaseClass.java:52)
-	at osaic.Stepdefinition.Launch.i_am_on_the_login_page(Launch.java:22)
-	at ✽.I am on the login page(file:///C:/Users/rpuliendran/eclipse-workspace/Sales_Force/src/test/java/osaic/feature/Launch.feature:4)
-[0m
