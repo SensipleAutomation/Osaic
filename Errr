@@ -1,0 +1,24 @@
+package runner;
+
+import org.junit.runner.RunWith;
+import org.openqa.selenium.WebDriver;
+
+import cucumber.api.CucumberOptions;
+import cucumber.api.junit.Cucumber;
+
+public class CucumberRunner {
+
+	@RunWith(Cucumber.class)
+	@CucumberOptions(features = "src/test/resources/UI_Features", glue = { "seleniumgluecode", }, tags = "@testBC",
+
+			plugin = { "pretty", "html:target/cucumber.html", "json:target/cucumber.json",
+					"com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:" })
+
+	public class TestRunner {
+		
+		public static WebDriver driver;
+		
+
+	}
+
+}
