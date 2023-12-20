@@ -24,3 +24,22 @@ The field driver cannot be declared static in a non-static inner type, unless in
 	}
 
 }
+SLF4J: No SLF4J providers were found.
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See https://www.slf4j.org/codes.html#noProviders for further details.
+ERROR StatusLogger Log4j2 could not find a logging implementation. Please add log4j-core to the classpath. Using SimpleLogger to log to the console...
+Starting ChromeDriver 119.0.6045.105 (38c72552c5e15ba9b3117c0967a0fd105072d7c6-refs/branch-heads/6045@{#1103}) on port 5562
+Only local connections are allowed.
+Please see https://chromedriver.chromium.org/security-considerations for suggestions on keeping ChromeDriver safe.
+ChromeDriver was started successfully.
+Dec 20, 2023 4:43:32 PM org.openqa.selenium.devtools.CdpVersionFinder findNearestMatch
+WARNING: Unable to find CDP implementation matching 119
+Dec 20, 2023 4:43:32 PM org.openqa.selenium.chromium.ChromiumDriver lambda$new$3
+WARNING: Unable to find version of CDP to use for . You may need to include a dependency on a specific version of the CDP using something similar to `org.seleniumhq.selenium:selenium-devtools-v86:4.8.1` where the version ("v86") matches the version of the chromium-based browser you're using and the version number of the artifact is the same as Selenium's.
+
+@Launch
+Scenario Outline: Launcher check                                                         [90m# src/test/java/osaic/feature/Launch.feature:11[0m
+  [33mGiven [0m[33mI am on the login page[0m
+  [36mWhen [0m[36mI enter valid credentials "mounika.golla@advoup.com.crm2.qafull" and "$aLesforc3"[0m
+  [36mAnd [0m[36mI click the login[0m
+  [36mThen [0m[36mI should see an error message
