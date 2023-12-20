@@ -43,3 +43,49 @@ Scenario Outline: Launcher check                                                
   [36mWhen [0m[36mI enter valid credentials "mounika.golla@advoup.com.crm2.qafull" and "$aLesforc3"[0m
   [36mAnd [0m[36mI click the login[0m
   [36mThen [0m[36mI should see an error message
+
+
+Scenario Outline: Launcher check                                                         [90m# src/test/java/osaic/feature/Launch.feature:10[0m
+  [31mGiven [0m[31mI am on the login page[0m                                                           [90m# osaic.Stepdefinition.Launch.i_am_on_the_login_page()[0m
+      [31mjava.lang.NullPointerException: Cannot invoke "org.openqa.selenium.WebDriver.get(String)" because "org.TestUtils.BaseClass.driver" is null
+	at org.TestUtils.BaseClass.getUrl(BaseClass.java:52)
+	at osaic.Stepdefinition.Launch.i_am_on_the_login_page(Launch.java:22)
+	at ✽.I am on the login page(file:///C:/Users/rpuliendran/eclipse-workspace/Sales_Force/src/test/java/osaic/feature/Launch.feature:4)
+[0m
+
+
+public class BaseClass {
+
+	public static WebDriver driver;
+
+	public static WebDriver browser(String browserName) {
+		try {
+			if (browserName.equalsIgnoreCase("chrome")) {
+
+				WebDriverManager.chromedriver().setup();
+				
+				ChromeOptions options = new ChromeOptions();
+				options.addArguments("--remote-allow-origins=*");
+				options.setExperimentalOption("excludeSwitches", new String[] { "enable-automation" });
+				options.addArguments("--disable-notifications");
+				Map<String, Object> prefs = new HashMap<String, Object>();
+				prefs.put("credentials_enable_service", false);
+				prefs.put("profile.password_manager_enabled", false);
+				options.setExperimentalOption("prefs", prefs);
+				 driver = new ChromeDriver(options);
+			} else if (browserName.equalsIgnoreCase("ie")) {
+
+				WebDriverManager.iedriver().setup();
+				driver = new InternetExplorerDriver();
+
+			} else if (browserName.equalsIgnoreCase("firefox")) {
+
+				WebDriverManager.firefoxdriver().setup();
+				driver = new FirefoxDriver();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		driver.manage().window().maximize();
+		return driver;
+	}
