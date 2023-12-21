@@ -1,5 +1,10 @@
-java.lang.NullPointerException: Cannot invoke "org.openqa.selenium.WebDriver.get(String)" because "org.TestUtils.BaseClass.driver" is null
-	at org.TestUtils.BaseClass.getUrl(BaseClass.java:52)
-	at osaic.Stepdefinition.Launch.i_am_on_the_login_page(Launch.java:22)
-	at ✽.I am on the login page(file:///C:/Users/rpuliendran/eclipse-workspace/Sales_Force/src/test/java/osaic/feature/Launch.feature:4)
+Feature: Login Check
 
+Scenario Outline: Launcher check
+	Given I am on the login page 
+	When I enter valid credentials "<username>" and "<password>" 
+	And I click the login 
+	Then I should see an error message 
+	Examples: 
+		| username             | password       |
+		| mounika.golla@advoup.com.crm2.qafull       | $aLesforcE123   |
