@@ -7,3 +7,4 @@ if (elementText.equals(expectedText)) {
 			drop.click();
 			WebElement search = wait.until(ExpectedConditions.visibilityOfElementLocated(Hopage.getSerachbar()));
 			search.sendKeys("Business");
+The method visibilityOfElementLocated(By) in the type ExpectedConditions is not applicable for the arguments (WebElement)
