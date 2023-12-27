@@ -1,10 +1,57 @@
-if (elementText.equals(expectedText)) {
+WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+		WebElement BusiDev = Hopage.getBusinessChoose();
+
+		WebElement element = BusiDev;
+
+		String elementText = element.getText();
+
+		String expectedText = "Business Development";
+
+		if (elementText.equals(expectedText)) {
 
 			System.out.println("Element text is as expected: " + elementText);
 		} else {
 			Thread.sleep(1000);
-			WebElement drop = wait.until(ExpectedConditions.visibilityOfElementLocated(Hopage.getBusinessChoose()));
+			WebElement drop = wait.until(ExpectedConditions.visibilityOf(Hopage.getBusinessChoose()));
 			drop.click();
-			WebElement search = wait.until(ExpectedConditions.visibilityOfElementLocated(Hopage.getSerachbar()));
+			WebElement search = wait.until(ExpectedConditions.visibilityOf(Hopage.getSerachbar()));
 			search.sendKeys("Business");
-The method visibilityOfElementLocated(By) in the type ExpectedConditions is not applicable for the arguments (WebElement)
+//			WebElement inputField = driver.findElement(By.id("yourElementId"));
+
+			Actions actions = new Actions(driver);
+			actions.sendKeys(Keys.ENTER).perform();
+			System.out.println("Element text Selected : Business Development");
+
+		}
+
+
+
+
+By elementLocator = By
+				.xpath("//*[contains(@class, 'appName slds-context-bar__label-action slds-context-bar__app-name')]");
+
+		WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(elementLocator));
+
+		String elementText = element.getText();
+
+		String expectedText = "Business Development";
+
+		if (elementText.equals(expectedText)) {
+
+			System.out.println("Element text is as expected: " + elementText);
+		} else {
+			Thread.sleep(1000);
+			WebElement drop = wait.until(ExpectedConditions
+					.visibilityOfElementLocated(By.xpath("//button[@class='slds-button slds-show']")));
+			drop.click();
+			WebElement search = wait.until(ExpectedConditions.visibilityOfElementLocated(
+					By.xpath("//one-app-launcher-search-bar[@class='al-menu-search-bar']")));
+			search.sendKeys("Business");
+//			WebElement inputField = driver.findElement(By.id("yourElementId"));
+
+			Actions actions = new Actions(driver);
+			actions.sendKeys(Keys.ENTER).perform();
+			System.out.println("Element text Selected : Business Development");
+
+		}
