@@ -1,25 +1,9 @@
-Exception in thread "main" cucumber.runtime.CucumberException: java.util.regex.PatternSyntaxException: Illegal repetition near index 13
-user enters {string} value in personal email field and {string} value in personal phone field
-             ^
-	at cucumber.runtime.java.JavaBackend.addStepDefinition(JavaBackend.java:156)
-	at cucumber.runtime.java.MethodScanner.scan(MethodScanner.java:68)
-	at cucumber.runtime.java.MethodScanner.scan(MethodScanner.java:41)
-	at cucumber.runtime.java.JavaBackend.loadGlue(JavaBackend.java:86)
-	at cucumber.runtime.Runtime.<init>(Runtime.java:92)
-	at cucumber.runtime.Runtime.<init>(Runtime.java:70)
-	at cucumber.runtime.Runtime.<init>(Runtime.java:66)
-	at cucumber.api.cli.Main.run(Main.java:35)
-	at cucumber.api.cli.Main.main(Main.java:18)
-Caused by: java.util.regex.PatternSyntaxException: Illegal repetition near index 13
-user enters {string} value in personal email field and {string} value in personal phone field
-             ^
-	at java.base/java.util.regex.Pattern.error(Pattern.java:2028)
-	at java.base/java.util.regex.Pattern.closure(Pattern.java:3309)
-	at java.base/java.util.regex.Pattern.sequence(Pattern.java:2214)
-	at java.base/java.util.regex.Pattern.expr(Pattern.java:2069)
-	at java.base/java.util.regex.Pattern.compile(Pattern.java:1783)
-	at java.base/java.util.regex.Pattern.<init>(Pattern.java:1430)
-	at java.base/java.util.regex.Pattern.compile(Pattern.java:1069)
-	at cucumber.runtime.java.JavaBackend.pattern(JavaBackend.java:203)
-	at cucumber.runtime.java.JavaBackend.addStepDefinition(JavaBackend.java:151)
-	... 8 more
+if (elementText.equals(expectedText)) {
+
+			System.out.println("Element text is as expected: " + elementText);
+		} else {
+			Thread.sleep(1000);
+			WebElement drop = wait.until(ExpectedConditions.visibilityOfElementLocated(Hopage.getBusinessChoose()));
+			drop.click();
+			WebElement search = wait.until(ExpectedConditions.visibilityOfElementLocated(Hopage.getSerachbar()));
+			search.sendKeys("Business");
