@@ -39,3 +39,24 @@ user enters {string} value in personal email field and {string} value in persona
 	at cucumber.runtime.java.JavaBackend.pattern(JavaBackend.java:203)
 	at cucumber.runtime.java.JavaBackend.addStepDefinition(JavaBackend.java:151)
 	... 8 more
+
+
+
+Exception in thread "main" java.lang.NoClassDefFoundError: org/jvnet/fastinfoset/VocabularyApplicationData
+	at java.base/java.lang.Class.getDeclaredMethods0(Native Method)
+	at java.base/java.lang.Class.privateGetDeclaredMethods(Class.java:3402)
+	at java.base/java.lang.Class.privateGetPublicMethods(Class.java:3427)
+	at java.base/java.lang.Class.getMethods(Class.java:2019)
+	at cucumber.runtime.java.MethodScanner.scan(MethodScanner.java:40)
+	at cucumber.runtime.java.JavaBackend.loadGlue(JavaBackend.java:86)
+	at cucumber.runtime.Runtime.<init>(Runtime.java:92)
+	at cucumber.runtime.Runtime.<init>(Runtime.java:70)
+	at cucumber.runtime.Runtime.<init>(Runtime.java:66)
+	at cucumber.api.cli.Main.run(Main.java:35)
+	at cucumber.api.cli.Main.main(Main.java:18)
+Caused by: java.lang.ClassNotFoundException: org.jvnet.fastinfoset.VocabularyApplicationData
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:641)
+	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:188)
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:525)
+	... 11 more
+
