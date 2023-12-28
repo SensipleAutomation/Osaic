@@ -1,4 +1,4 @@
-public class CRM_NewProspectCreation extends TestUtils {
+The constructor WebDriverWait(WebDriver, Duration) is undefined
 
 
-Implicit super constructor TestUtils() is undefined for default constructor. Must define an explicit constructor
+WebDriverWait credentials = new WebDriverWait(driver, Duration.ofSeconds(20));
