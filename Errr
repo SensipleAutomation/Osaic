@@ -169,3 +169,6 @@ public class CRM_NewProspectCreation {
 	public void user_clicks_the_login_button_and_User_should_be_redirected_to_the_dashboard() throws Throwable {
 
 	}
+
+
+Implicit super constructor TestUtils() is undefined for default constructor. Must define an explicit constructor
