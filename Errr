@@ -1,1 +1,4 @@
-The static method getUrl() from the type TestUtils should be accessed in a static way
+public class CRM_NewProspectCreation extends TestUtils {
+
+
+Implicit super constructor TestUtils() is undefined for default constructor. Must define an explicit constructor
