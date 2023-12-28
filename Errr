@@ -172,3 +172,53 @@ public class CRM_NewProspectCreation {
 
 
 Implicit super constructor TestUtils() is undefined for default constructor. Must define an explicit constructor
+
+
+public class TestUtils {
+
+	public TestUtils(WebDriver driver) {
+		this.driver = driver;
+		PageFactory.initElements(driver, this);
+	}
+
+	static WebDriver driver;
+
+	public static Boolean bl_flag = false;
+	static double total_var = 0;
+
+	public static WebDriver browser(String browserName) {
+		try {
+			if (browserName.equalsIgnoreCase("chrome")) {
+
+				WebDriverManager.chromedriver().setup();
+
+				ChromeOptions options = new ChromeOptions();
+				options.addArguments("--remote-allow-origins=*");
+				options.setExperimentalOption("excludeSwitches", new String[] { "enable-automation" });
+				options.addArguments("--disable-notifications");
+				Map<String, Object> prefs = new HashMap<String, Object>();
+				prefs.put("credentials_enable_service", false);
+				prefs.put("profile.password_manager_enabled", false);
+				options.setExperimentalOption("prefs", prefs);
+				driver = new ChromeDriver(options);
+			} else if (browserName.equalsIgnoreCase("ie")) {
+
+				WebDriverManager.iedriver().setup();
+				driver = new InternetExplorerDriver();
+
+			} else if (browserName.equalsIgnoreCase("firefox")) {
+
+				WebDriverManager.firefoxdriver().setup();
+				driver = new FirefoxDriver();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		driver.manage().window().maximize();
+		return driver;
+	}
+
+	public static void getUrl(String url) {
+		driver.get(url);
+
+	}
