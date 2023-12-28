@@ -1,4 +1,171 @@
-The constructor WebDriverWait(WebDriver, Duration) is undefined
+package seleniumgluecode;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+import org.openqa.selenium.WebDriver;
+import org.testng.annotations.BeforeTest;
+
+import utility.TestUtils;
+
+public class HooksClass extends TestUtils {
+
+	public HooksClass(WebDriver driver) {
+		super(driver);
+
+	}
+
+	@BeforeTest
+	private void beforeBrowser() throws FileNotFoundException, IOException {
+		browser(getPropertyFileValue("browser"));
+		getUrl(getPropertyFileValue("url"));
+
+	}
+}
 
 
-WebDriverWait credentials = new WebDriverWait(driver, Duration.ofSeconds(20));
+runner
+
+@RunWith(Cucumber.class)
+@CucumberOptions(features = { "src/test/resources/UI_Features" },
+
+		plugin = { "pretty", "cucumberutils.Initialization",
+				// "html:target/Cucumber-Reports",
+				// "json:target/Cucumber-Reports/cucumber.json",
+				"json:target/cucumber-reports/CucumberTestReport.json", "junit:target/cucumberjunit.xml",
+				"json:reports/cucumber.json",
+				"com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:" }, tags = "@newCreation",
+
+		monochrome = true, dryRun = false, strict = true, glue = { "seleniumgluecode", "cucumberutils" })
+
+public class UIRunner {
+
+	private TestNGCucumberRunner testNGCucumberRunner;
+	public String tctagname;
+
+	@BeforeClass(alwaysRun = true)
+	public void setUpClass() {
+		System.out.println("--------------------------BC--------------------------------------------");
+
+		testNGCucumberRunner = new TestNGCucumberRunner(this.getClass());
+		System.out.println(System.getProperty("user.dir"));
+		try {
+			File downloadedfilesdelete = new File(System.getProperty("user.dir") + "//downloadedfiles//");
+			if (downloadedfilesdelete.exists()) {
+				FileUtils.cleanDirectory(downloadedfilesdelete);
+			}
+			Path FROM = Paths.get(System.getProperty("user.dir") + "///resources//resultsheet.xlsx");
+			Path TO = Paths.get(System.getProperty("user.dir") + "//Result//resultsheet.xlsx");
+			String Oldfile = System.getProperty("user.dir") + "//src//test//resources//Result//resultsheet.xlsx";
+			Date now1 = new Date();
+			SimpleDateFormat dateFormat = new SimpleDateFormat("dd_MM_YY_hh_mm_ss");
+			String time1 = dateFormat.format(now1);
+			// System.out.println("timestamp : "+time1);
+
+			String newname = System.getProperty("user.dir") + "//src//test//resources//Result//resultsheet_" + time1
+					+ ".xlsx";
+			File file = new File(Oldfile);
+			// File (or directory) with new name
+			File file2 = new File(newname);
+			file.renameTo(file2);
+			// overwrite existing file, if exists
+			CopyOption[] options = new CopyOption[] { StandardCopyOption.REPLACE_EXISTING,
+					StandardCopyOption.COPY_ATTRIBUTES };
+
+			Files.copy(FROM, TO, options);
+		} catch (Exception e) {
+			System.out.println("Something went wrong.");
+			e.printStackTrace();
+		}
+		// setup static method(-s) here
+
+	}
+
+	@BeforeSuite
+	public void beforeSuite() {
+		System.out.println("before Suite");
+		System.out.println("--------------------------BS--------------------------------------------");
+		System.out.println("================Print environment variable==================");
+		Map<String, String> env = System.getenv();
+		for (Map.Entry<String, String> entry : env.entrySet()) {
+			System.out.println(entry.getKey() + " : " + entry.getValue());
+		}
+		System.out.println("=======================Print System variable==================");
+		Map<Object, Object> sis = System.getProperties();
+		for (Map.Entry<Object, Object> entry : sis.entrySet()) {
+			System.out.println(entry.getKey() + " : " + entry.getValue());
+		}
+	}
+
+	@BeforeTest
+	public void beforeTest() throws FilloException, IOException {
+		System.out.println("--------------------------BT--------------------------------------------");
+		TestUtils.browser("chrome");
+	}
+
+	@BeforeMethod
+	public void beforeMethod() throws FilloException {
+		System.out.println("--------------------------BM--------------------------------------------");
+	}
+
+	@Test(groups = "cucumber", description = "Runs Cucumber Scenarios", dataProvider = "scenarios")
+	public void scenario(PickleWrapper pickleEvent, FeatureWrapper cucumberFeature) throws Throwable {
+		System.out.println(cucumberFeature);
+
+		System.out.println("--------------------------T--------------------------------------------");
+		System.out.println(pickleEvent.getPickle().getScenarioLine());
+		testNGCucumberRunner.runScenario(pickleEvent.getPickle());
+		System.out.println("--------------------------T2--------------------------------------------");
+	}
+
+	@AfterMethod
+	public void afterMethod() throws FilloException {
+
+		System.out.println("--------------------------AM--------------------------------------------");
+	}
+
+	@DataProvider
+	public Object[][] scenarios() {
+		return testNGCucumberRunner.provideScenarios();
+	}
+
+	@AfterClass(alwaysRun = true)
+	public void tearDownClass() {
+		System.out.println("--------------------------AC--------------------------------------------");
+		testNGCucumberRunner.finish();
+	}
+
+	@AfterTest
+	public void setUptear() throws IOException {
+		System.out.println("after test");
+		int closebrowser = Integer.parseInt(System.getProperty("closebrowser"));
+		if (closebrowser == 1) {
+			Driverselector.service.stop();
+		}
+	}
+
+step
+
+public class CRM_NewProspectCreation {
+
+	WebDriver driver = Driverselector.drivers.get();
+	CRM_Login crm = new CRM_Login();
+
+	@Given("^User should hit url$")
+	public void user_should_hit_url() throws Throwable {
+
+	}
+
+	@When("^the user enters valid username \"([^\"]*)\" and valid password \"([^\"]*)\"$")
+	public void the_user_enters_valid_username_and_valid_password(String arg1, String arg2) throws Throwable {
+		WebDriverWait credentials = new WebDriverWait(driver, 20);
+		WebElement MailInput = credentials.until(ExpectedConditions.elementToBeClickable(crm.getMail()));
+		MailInput.sendKeys(arg1);
+		WebElement PasswordInput = credentials.until(ExpectedConditions.elementToBeClickable(crm.getPassword()));
+		PasswordInput.sendKeys(arg2);
+	}
+
+	@When("^user clicks the login button and User should be redirected to the dashboard$")
+	public void user_clicks_the_login_button_and_User_should_be_redirected_to_the_dashboard() throws Throwable {
+
+	}
