@@ -1,57 +1,8 @@
-WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-
-		WebElement BusiDev = Hopage.getBusinessChoose();
-
-		WebElement element = BusiDev;
-
-		String elementText = element.getText();
-
-		String expectedText = "Business Development";
-
-		if (elementText.equals(expectedText)) {
-
-			System.out.println("Element text is as expected: " + elementText);
-		} else {
-			Thread.sleep(1000);
-			WebElement drop = wait.until(ExpectedConditions.visibilityOf(Hopage.getBusinessChoose()));
-			drop.click();
-			WebElement search = wait.until(ExpectedConditions.visibilityOf(Hopage.getSerachbar()));
-			search.sendKeys("Business");
-//			WebElement inputField = driver.findElement(By.id("yourElementId"));
-
-			Actions actions = new Actions(driver);
-			actions.sendKeys(Keys.ENTER).perform();
-			System.out.println("Element text Selected : Business Development");
-
-		}
-
-
-
-
-By elementLocator = By
-				.xpath("//*[contains(@class, 'appName slds-context-bar__label-action slds-context-bar__app-name')]");
-
-		WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(elementLocator));
-
-		String elementText = element.getText();
-
-		String expectedText = "Business Development";
-
-		if (elementText.equals(expectedText)) {
-
-			System.out.println("Element text is as expected: " + elementText);
-		} else {
-			Thread.sleep(1000);
-			WebElement drop = wait.until(ExpectedConditions
-					.visibilityOfElementLocated(By.xpath("//button[@class='slds-button slds-show']")));
-			drop.click();
-			WebElement search = wait.until(ExpectedConditions.visibilityOfElementLocated(
-					By.xpath("//one-app-launcher-search-bar[@class='al-menu-search-bar']")));
-			search.sendKeys("Business");
-//			WebElement inputField = driver.findElement(By.id("yourElementId"));
-
-			Actions actions = new Actions(driver);
-			actions.sendKeys(Keys.ENTER).perform();
-			System.out.println("Element text Selected : Business Development");
-
-		}
+C:\Users\rpuliendran\git\web\apps\eo-bdd\downloadedfiles\2\
+      org.openqa.selenium.SessionNotCreatedException: session not created: This version of ChromeDriver only supports Chrome version 120
+Current browser version is 119.0.6045.200 with binary path C:\Program Files\Google\Chrome\Application\chrome.exe
+Build info: version: '3.10.0', revision: '176b4a9', time: '2018-03-02T19:03:16.397Z'
+System info: host: 'PW1ETSQUAS027AV', ip: '10.128.16.172', os.name: 'Windows 10', os.arch: 'amd64', os.version: '10.0', java.version: '17.0.9'
+Driver info: driver.version: RemoteWebDriver
+remote stacktrace: 	GetHandleVerifier [0x00007FF68BF52142+3514994]
+	(No symbol) [0x00007FF68BB70CE2]
