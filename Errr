@@ -1,381 +1,286 @@
-package seleniumgluecode;
+package cucumberutils;
 
-import java.io.FileNotFoundException;
+import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.nio.file.CopyOption;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Stream;
 
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
-import org.testng.annotations.BeforeTest;
+import org.testng.annotations.AfterTest;
 
-import utility.TestUtils;
+import io.cucumber.core.gherkin.Feature;
+import io.cucumber.java.After;
+import io.cucumber.java.AfterStep;
+import io.cucumber.java.Before;
+import io.cucumber.java.Scenario;
+import utility.Azureutils;
+import webpages.GenericPageObjects;
 
-public class HooksClass extends TestUtils {
+import com.codoid.products.exception.FilloException;
 
-	public HooksClass(WebDriver driver) {
-		super(driver);
+import BaseClass.ScreenShot;
+import datadriven.data;
+import datadriven.datatrial;
+import datadriven.hashdatafromexcel;
 
+
+
+//public class Hooks extends map_scenario_to_excel_row {	
+public class Hooks extends tcid {
+	public Scenario scenario;
+	public String tctagname;
+	public String path="";
+	@Before
+	public void before(Scenario scenario) throws IOException, FilloException {
+		
+		
+		System.out.println("hooks");
+		System.out.println("--------------------------B--------------------------------------------");
+		String currentexampletcid;
+		String ATcid = null;
+		String firstsheetName;
+		String secondsheetName=null;
+		
+		this.scenario = scenario;
+		
+		Collection<String>taglist=scenario.getSourceTagNames();
+		for (String tag: taglist) {
+			if (tag.contains("tc")) {
+			String[] tags=tag.split(":");	
+			tctagname=tags[1];
+			}		
+		}
+		
+		//System.out.println(scenario.);
+		//System.out.println();
+		System.out.println("TcTagname:"+tctagname);
+		
+		URI featurefilepathraw= scenario.getUri();
+		System.out.println("featurefilepathraw:"+featurefilepathraw.toString());
+		String featurefilepathasstring = featurefilepathraw.toString();
+		String[] featurefilepatharray= featurefilepathasstring.split(":///");
+		String featurefilepath= featurefilepatharray[1];
+		System.out.print("\nfeaturefilepath: " + featurefilepath); 
+		path= Paths.get(featurefilepath).toAbsolutePath().toString();
+		try (Stream<String> lines = Files.lines(Paths.get(path))){			    
+			 Integer currentscenario = scenario.getLine();			 
+			 int examplelinenumber =currentscenario;
+			 System.out.print("\ncurrentline: " + examplelinenumber);
+			 //System.out.println("print next line number : "+lines.skip(examplelinenumber).findFirst().get());
+			 String currentexamplelinenumber = lines.skip(examplelinenumber-1).findFirst().get();
+			 System.out.print("\ncurrentexamplelinenumber: " + currentexamplelinenumber);
+			 currentexamplelinenumber.replaceAll("\\s","");
+			 String[] testdata= currentexamplelinenumber.split("\\|");
+			currentexampletcid= testdata[1];
+			System.out.print("\ncurrentexampletcid: " + currentexampletcid);
+			firstsheetName= testdata[2];
+			System.out.print("\ncurrentexampletcid: " + firstsheetName);
+			
+			if(testdata.length > 3)
+			{
+			ATcid= testdata[3];
+			System.out.print("\ncurrentexampletcid: " + ATcid);
+			secondsheetName= testdata[4];
+			System.out.print("\ncurrentexampletcid: " + secondsheetName);
+			}
+			
+			
+		}	
+		Testcaseid.set(currentexampletcid);
+		
+	
+		
+		if(featurefilepath.contains("API_Features")) {
+		//hashdatafromexcel hashdatafromexcelcreate = new hashdatafromexcel();
+		//hashdatafromexcelcreate.createhashmapfromexcel(currentexampletcid,"TestData_QA","CRM2_API");
+		}
+		
+		hashdatafromexcel hashdatafromexcelcreate = new hashdatafromexcel();
+		  if(System.getProperty("env").equals("QA")){
+			  //hashdatafromexcelcreate.createhashmapfromexcel(currentexampletcid,ATcid,"TestData_QA",firstsheetName,secondsheetName);
+		  }
+		    else if(System.getProperty("env").equals("PROD"))
+		    {
+		    	hashdatafromexcelcreate.createhashmapfromexcel(currentexampletcid,ATcid,"TestData_PROD",firstsheetName,secondsheetName);
+		    	}
+		    else if(System.getProperty("env").equals("DEV")) {
+		    	hashdatafromexcelcreate.createhashmapfromexcel(currentexampletcid,ATcid,"TestData_DEV",firstsheetName,secondsheetName);
+		    }
+		
+				//hashdatafromexcelcreate.createhashmapfromexcel(currentexampletcid,"TestData_BOQA",sheetName);
+				 
+		
+		/*datatrial datcreate = new datatrial();
+		  datcreate.createhashmap(currentexampletcid);*/
+		  
+		  
+		 /* String numberofaccounts = data.getTestValue("no_of_accounts", currentexampletcid);
+			 String numberofgoals = data.getTestValue("no_of_goals", currentexampletcid);
+			 String totnumofacc=numberofaccounts;
+			 System.out.println("totnumofacc:"+totnumofacc);
+			 List<String> accounts_to_add = Arrays.asList(totnumofacc.split(","));
+			 if(!numberofaccounts.equals("")){
+		  
+		  for(String accountnumloop:accounts_to_add){
+				//String tcidmul=data.getTestValue("TCID", accountnumloop) ;
+			  if(!accountnumloop.equals(currentexampletcid)){
+				 datatrial datcreatemultiple = new datatrial();
+				  datcreatemultiple.createhashmap(accountnumloop);
+			  }
+		  }
+			  
+			}*/
+			 //String Execution_Server=data.getTestValue("Execution_Server", currentexampletcid);
+		String Execution_Server="";	 
+		if(!featurefilepath.contains("API_Features")) {
+		Driverselector driverselector = new Driverselector();
+			 	if (Execution_Server.equalsIgnoreCase("Sauce")) {
+			 		driverselector.selectBrowser("SAUCE", "CHROME");
+			 	}else {
+			 		driverselector.selectBrowser("LOCAL", "CHROME");
+			 	}
+		}
+		
 	}
+	
 
-	@BeforeTest
-	private void beforeBrowser() throws FileNotFoundException, IOException {
-		browser(getPropertyFileValue("browser"));
-		getUrl(getPropertyFileValue("url"));
-
-	}
+	@AfterStep
+	public void aftertestScenario(Scenario scenario) throws FilloException, IOException, InterruptedException {
+		 scenario.attach(screenshot.getByteScreenshot(), "image/png",scenario.getName());
 }
 
-
-runner
-
-@RunWith(Cucumber.class)
-@CucumberOptions(features = { "src/test/resources/UI_Features" },
-
-		plugin = { "pretty", "cucumberutils.Initialization",
-				// "html:target/Cucumber-Reports",
-				// "json:target/Cucumber-Reports/cucumber.json",
-				"json:target/cucumber-reports/CucumberTestReport.json", "junit:target/cucumberjunit.xml",
-				"json:reports/cucumber.json",
-				"com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:" }, tags = "@newCreation",
-
-		monochrome = true, dryRun = false, strict = true, glue = { "seleniumgluecode", "cucumberutils" })
-
-public class UIRunner {
-
-	private TestNGCucumberRunner testNGCucumberRunner;
-	public String tctagname;
-
-	@BeforeClass(alwaysRun = true)
-	public void setUpClass() {
-		System.out.println("--------------------------BC--------------------------------------------");
-
-		testNGCucumberRunner = new TestNGCucumberRunner(this.getClass());
-		System.out.println(System.getProperty("user.dir"));
-		try {
-			File downloadedfilesdelete = new File(System.getProperty("user.dir") + "//downloadedfiles//");
-			if (downloadedfilesdelete.exists()) {
-				FileUtils.cleanDirectory(downloadedfilesdelete);
+	@After
+	public void afterScenario(Scenario scenario) throws FilloException, IOException, InterruptedException {
+	    System.out.println("-----------------JUA-------------");
+	    System.out.println(scenario.getName() + " Status - " + scenario.getStatus());
+	    String status=scenario.getStatus().toString();
+	    String planid="";
+	    String userstory="";
+	    String azuretestcaseid="";
+	    
+	 
+	    Collection<String>taglist=scenario.getSourceTagNames();
+		for (String tag: taglist) {
+			if (tag.contains("tp")) {
+			String[] tags=tag.split(":");	
+			planid=tags[1];
+			}else if(tag.contains("tc")) {
+				String[] tags=tag.split(":");	
+				azuretestcaseid=tags[1];
+			}else if(tag.contains("us")) {
+				String[] tags=tag.split(":");	
+				userstory=tags[1];
 			}
-			Path FROM = Paths.get(System.getProperty("user.dir") + "///resources//resultsheet.xlsx");
-			Path TO = Paths.get(System.getProperty("user.dir") + "//Result//resultsheet.xlsx");
-			String Oldfile = System.getProperty("user.dir") + "//src//test//resources//Result//resultsheet.xlsx";
-			Date now1 = new Date();
-			SimpleDateFormat dateFormat = new SimpleDateFormat("dd_MM_YY_hh_mm_ss");
-			String time1 = dateFormat.format(now1);
-			// System.out.println("timestamp : "+time1);
-
-			String newname = System.getProperty("user.dir") + "//src//test//resources//Result//resultsheet_" + time1
-					+ ".xlsx";
-			File file = new File(Oldfile);
-			// File (or directory) with new name
-			File file2 = new File(newname);
-			file.renameTo(file2);
-			// overwrite existing file, if exists
-			CopyOption[] options = new CopyOption[] { StandardCopyOption.REPLACE_EXISTING,
-					StandardCopyOption.COPY_ATTRIBUTES };
-
-			Files.copy(FROM, TO, options);
-		} catch (Exception e) {
-			System.out.println("Something went wrong.");
-			e.printStackTrace();
+			
 		}
-		// setup static method(-s) here
+		if(scenario.isFailed())
+		    {			
+		        scenario.attach(screenshot.getByteScreenshot(), "image/png", scenario.getName());
+		   }
+		    
+		/*
+		 * Stream<String> lines = Files.lines(Paths.get(path)); Integer currentscenario
+		 * = scenario.getLine(); int examplelinenumber =currentscenario; String
+		 * isendofscenariooutline=lines.skip(examplelinenumber).findFirst().get();
+		 * if(!isendofscenariooutline.contains("|")) {
+		 * 
+		 * 
+		 * System.out.println(planid); System.out.println(userstory);
+		 * System.out.println(azuretestcaseid); System.out.println(status);
+		 * 
+		 * //Azureutils.update_results_in_azure_devops(planid,userstory,azuretestcaseid,
+		 * status); }
+		 */
+				
+		    	
+		    
+			 
+		
+	    
+			
+	   
+	   
+	    
+	    //String tcid =Testcaseid1;
+	   /* String Tcid = tcid.getqry();
+	    
+	    WebDriver driver= Driverselector.drivers.get();
+	   resultupdate excelresult = new resultupdate();
+	   String sstatus = scenario.getStatus().toString();
+	   System.out.println("------------------------------"+Tcid+sstatus);
+	  if (sstatus.equals("PASSED")){
+		  excelresult.updateexcel("Result", "Passed", Tcid);
+		  
+	  }
+	 Date now1 = new Date();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd_MM_YY_hh_mm_ss");
+		String time1 = dateFormat.format(now1);
+	   String sfailname = data.getTestValue("TCID", Tcid)+"_"+data.getTestValue("recir_acctyp", Tcid)+"_"+
+			     data.getTestValue("accsetsrt_regtype", Tcid)+"_"+
+			     data.getTestValue("recir_program", Tcid)+time1+"_Fail";
+	    if(scenario.isFailed()) {
+	    	
+	    	
+	    	if(!data.getTestValue("accsetsrt_regtype", Tcid).equals("UGMA/UTMA")) {
+				  scs.fsfail(driver, sfailname);
+				  }else{
+					  String sfailnames = Tcid+"_"+data.getTestValue("recir_acctyp",Tcid)+"_UGMA_UTMA_"+
+							  data.getTestValue("Recir_program",Tcid);
+					  scs.fsfail(driver, sfailnames);
+				  }
+	    	
+			   excelresult.updateexcel("Result", "Failed", Tcid);
+			   Path path = Paths.get("screenshot/Fail/"+sfailname+".png");
+			    byte[] data = Files.readAllBytes(path);
+			    File file = new File("screenshot/Fail/"+sfailname+".png");
+			  scenario.getId();
+			    		 //  scenario.embed(Files.readAllBytes(file.toPath()), "Failure_Screenshot");
+			    		   scenario.embed(data, "image/png", "Failure_Screenshot");
+			    		   //scenario.attach(data, "application/vnd.ms-excel", "Failure_Screenshot");
+	    	
+			  }
+			  
+	     
+	    int closebrowser =Integer.parseInt(System.getProperty("closebrowser"));
+		if(closebrowser==1) {	  
+	    driver.quit(); 	
+		}*/
+	         
+			  
+	    	
+	    }
+	
+	  // String qry="Select * from Sheet1 where TCID='"+Testcaseid+"'";
+	   /* String scstatus = scenario.getStatus().toString();
+		 Path path = Paths.get("Result/resultsheet.xlsx");
+	    byte[] data = Files.readAllBytes(path);
+	    File file = new File("Result/resultsheet.xlsx");
+	  scenario.getId();
+	    		   //scenario.embed(Files.readAllBytes(file.toPath()));
+	    		   scenario.attach(data, "application/vnd.ms-excel", "name.xlsx");*/
+	   
+	    		   //feature.
+	    		  
+	    	
+	   // excelresult.updateexcel("Result",scstatus , qry);
+	
+		
+	
+	
+	
+	
+}
 
-	}
-
-	@BeforeSuite
-	public void beforeSuite() {
-		System.out.println("before Suite");
-		System.out.println("--------------------------BS--------------------------------------------");
-		System.out.println("================Print environment variable==================");
-		Map<String, String> env = System.getenv();
-		for (Map.Entry<String, String> entry : env.entrySet()) {
-			System.out.println(entry.getKey() + " : " + entry.getValue());
-		}
-		System.out.println("=======================Print System variable==================");
-		Map<Object, Object> sis = System.getProperties();
-		for (Map.Entry<Object, Object> entry : sis.entrySet()) {
-			System.out.println(entry.getKey() + " : " + entry.getValue());
-		}
-	}
-
-	@BeforeTest
-	public void beforeTest() throws FilloException, IOException {
-		System.out.println("--------------------------BT--------------------------------------------");
-		TestUtils.browser("chrome");
-	}
-
-	@BeforeMethod
-	public void beforeMethod() throws FilloException {
-		System.out.println("--------------------------BM--------------------------------------------");
-	}
-
-	@Test(groups = "cucumber", description = "Runs Cucumber Scenarios", dataProvider = "scenarios")
-	public void scenario(PickleWrapper pickleEvent, FeatureWrapper cucumberFeature) throws Throwable {
-		System.out.println(cucumberFeature);
-
-		System.out.println("--------------------------T--------------------------------------------");
-		System.out.println(pickleEvent.getPickle().getScenarioLine());
-		testNGCucumberRunner.runScenario(pickleEvent.getPickle());
-		System.out.println("--------------------------T2--------------------------------------------");
-	}
-
-	@AfterMethod
-	public void afterMethod() throws FilloException {
-
-		System.out.println("--------------------------AM--------------------------------------------");
-	}
-
-	@DataProvider
-	public Object[][] scenarios() {
-		return testNGCucumberRunner.provideScenarios();
-	}
-
-	@AfterClass(alwaysRun = true)
-	public void tearDownClass() {
-		System.out.println("--------------------------AC--------------------------------------------");
-		testNGCucumberRunner.finish();
-	}
-
-	@AfterTest
-	public void setUptear() throws IOException {
-		System.out.println("after test");
-		int closebrowser = Integer.parseInt(System.getProperty("closebrowser"));
-		if (closebrowser == 1) {
-			Driverselector.service.stop();
-		}
-	}
-
-step
-
-public class CRM_NewProspectCreation {
-
-	WebDriver driver = Driverselector.drivers.get();
-	CRM_Login crm = new CRM_Login();
-
-	@Given("^User should hit url$")
-	public void user_should_hit_url() throws Throwable {
-
-	}
-
-	@When("^the user enters valid username \"([^\"]*)\" and valid password \"([^\"]*)\"$")
-	public void the_user_enters_valid_username_and_valid_password(String arg1, String arg2) throws Throwable {
-		WebDriverWait credentials = new WebDriverWait(driver, 20);
-		WebElement MailInput = credentials.until(ExpectedConditions.elementToBeClickable(crm.getMail()));
-		MailInput.sendKeys(arg1);
-		WebElement PasswordInput = credentials.until(ExpectedConditions.elementToBeClickable(crm.getPassword()));
-		PasswordInput.sendKeys(arg2);
-	}
-
-	@When("^user clicks the login button and User should be redirected to the dashboard$")
-	public void user_clicks_the_login_button_and_User_should_be_redirected_to_the_dashboard() throws Throwable {
-
-	}
-
-
-Implicit super constructor TestUtils() is undefined for default constructor. Must define an explicit constructor
-
-
-public class TestUtils {
-
-	public TestUtils(WebDriver driver) {
-		this.driver = driver;
-		PageFactory.initElements(driver, this);
-	}
-
-	static WebDriver driver;
-
-	public static Boolean bl_flag = false;
-	static double total_var = 0;
-
-	public static WebDriver browser(String browserName) {
-		try {
-			if (browserName.equalsIgnoreCase("chrome")) {
-
-				WebDriverManager.chromedriver().setup();
-
-				ChromeOptions options = new ChromeOptions();
-				options.addArguments("--remote-allow-origins=*");
-				options.setExperimentalOption("excludeSwitches", new String[] { "enable-automation" });
-				options.addArguments("--disable-notifications");
-				Map<String, Object> prefs = new HashMap<String, Object>();
-				prefs.put("credentials_enable_service", false);
-				prefs.put("profile.password_manager_enabled", false);
-				options.setExperimentalOption("prefs", prefs);
-				driver = new ChromeDriver(options);
-			} else if (browserName.equalsIgnoreCase("ie")) {
-
-				WebDriverManager.iedriver().setup();
-				driver = new InternetExplorerDriver();
-
-			} else if (browserName.equalsIgnoreCase("firefox")) {
-
-				WebDriverManager.firefoxdriver().setup();
-				driver = new FirefoxDriver();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		driver.manage().window().maximize();
-		return driver;
-	}
-
-	public static void getUrl(String url) {
-		driver.get(url);
-
-	}
-
-
-[Utils] [ERROR] [Error] java.lang.NullPointerException: Cannot invoke &quot;io.cucumber.testng.TestNGCucumberRunner.provideScenarios()&quot; because &quot;this.testNGCucumberRunner&quot; is null
-	at runner.UIRunner.scenarios(UIRunner.java:146)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
-	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:134)
-	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:78)
-	at org.testng.internal.MethodInvocationHelper.invokeMethodNoCheckedException(MethodInvocationHelper.java:47)
-	at org.testng.internal.MethodInvocationHelper.invokeDataProvider(MethodInvocationHelper.java:147)
-	at org.testng.internal.Parameters.handleParameters(Parameters.java:801)
-	at org.testng.internal.Parameters.handleParameters(Parameters.java:744)
-	at org.testng.internal.ParameterHandler.handleParameters(ParameterHandler.java:59)
-	at org.testng.internal.ParameterHandler.createParameters(ParameterHandler.java:38)
-	at org.testng.internal.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:783)
-	at org.testng.internal.TestInvoker.invokeTestMethods(TestInvoker.java:146)
-	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:146)
-	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:128)
-	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
-	at org.testng.TestRunner.privateRun(TestRunner.java:766)
-	at org.testng.TestRunner.run(TestRunner.java:587)
-	at org.testng.SuiteRunner.runTest(SuiteRunner.java:384)
-	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:378)
-	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:337)
-	at org.testng.SuiteRunner.run(SuiteRunner.java:286)
-	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:53)
-	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:96)
-	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1187)
-	at org.testng.TestNG.runSuitesLocally(TestNG.java:1109)
-	at org.testng.TestNG.runSuites(TestNG.java:1039)
-	at org.testng.TestNG.run(TestNG.java:1007)
-	at org.testng.remote.AbstractRemoteTestNG.run(AbstractRemoteTestNG.java:115)
-	at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:251)
-	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:77)
-
---------------------------AC--------------------------------------------
-FAILED CONFIGURATION: @BeforeClass setUpClass
-java.lang.NoClassDefFoundError: io/cucumber/core/runtime/TypeRegistryConfigurerSupplier
-	at runner.UIRunner.setUpClass(UIRunner.java:61)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
-	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:134)
-	at org.testng.internal.MethodInvocationHelper.invokeMethodConsideringTimeout(MethodInvocationHelper.java:63)
-	at org.testng.internal.ConfigInvoker.invokeConfigurationMethod(ConfigInvoker.java:348)
-	at org.testng.internal.ConfigInvoker.invokeConfigurations(ConfigInvoker.java:302)
-	at org.testng.internal.TestMethodWorker.invokeBeforeClassMethods(TestMethodWorker.java:176)
-	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:122)
-	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
-	at org.testng.TestRunner.privateRun(TestRunner.java:766)
-	at org.testng.TestRunner.run(TestRunner.java:587)
-	at org.testng.SuiteRunner.runTest(SuiteRunner.java:384)
-	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:378)
-	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:337)
-	at org.testng.SuiteRunner.run(SuiteRunner.java:286)
-	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:53)
-	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:96)
-	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1187)
-	at org.testng.TestNG.runSuitesLocally(TestNG.java:1109)
-	at org.testng.TestNG.runSuites(TestNG.java:1039)
-	at org.testng.TestNG.run(TestNG.java:1007)
-	at org.testng.remote.AbstractRemoteTestNG.run(AbstractRemoteTestNG.java:115)
-	at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:251)
-	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:77)
-Caused by: java.lang.ClassNotFoundException: io.cucumber.core.runtime.TypeRegistryConfigurerSupplier
-	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:641)
-	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:188)
-	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:525)
-	... 27 more
-
-FAILED CONFIGURATION: @AfterClass tearDownClass
-java.lang.NullPointerException: Cannot invoke "io.cucumber.testng.TestNGCucumberRunner.finish()" because "this.testNGCucumberRunner" is null
-	at runner.UIRunner.tearDownClass(UIRunner.java:152)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
-	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:134)
-	at org.testng.internal.MethodInvocationHelper.invokeMethodConsideringTimeout(MethodInvocationHelper.java:63)
-	at org.testng.internal.ConfigInvoker.invokeConfigurationMethod(ConfigInvoker.java:348)
-	at org.testng.internal.ConfigInvoker.invokeConfigurations(ConfigInvoker.java:302)
-	at org.testng.internal.TestMethodWorker.invokeAfterClassMethods(TestMethodWorker.java:217)
-	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:130)
-	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
-	at org.testng.TestRunner.privateRun(TestRunner.java:766)
-	at org.testng.TestRunner.run(TestRunner.java:587)
-	at org.testng.SuiteRunner.runTest(SuiteRunner.java:384)
-	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:378)
-	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:337)
-	at org.testng.SuiteRunner.run(SuiteRunner.java:286)
-	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:53)
-	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:96)
-	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1187)
-	at org.testng.TestNG.runSuitesLocally(TestNG.java:1109)
-	at org.testng.TestNG.runSuites(TestNG.java:1039)
-	at org.testng.TestNG.run(TestNG.java:1007)
-	at org.testng.remote.AbstractRemoteTestNG.run(AbstractRemoteTestNG.java:115)
-	at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:251)
-	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:77)
-
-SKIPPED CONFIGURATION: @AfterTest setUptear
-SKIPPED: scenario
-         Runs Cucumber Scenarios
-java.lang.RuntimeException: java.lang.NullPointerException: Cannot invoke "io.cucumber.testng.TestNGCucumberRunner.provideScenarios()" because "this.testNGCucumberRunner" is null
-	at org.testng.internal.MethodInvocationHelper.invokeMethodNoCheckedException(MethodInvocationHelper.java:51)
-	at org.testng.internal.MethodInvocationHelper.invokeDataProvider(MethodInvocationHelper.java:147)
-	at org.testng.internal.Parameters.handleParameters(Parameters.java:801)
-	at org.testng.internal.Parameters.handleParameters(Parameters.java:744)
-	at org.testng.internal.ParameterHandler.handleParameters(ParameterHandler.java:59)
-	at org.testng.internal.ParameterHandler.createParameters(ParameterHandler.java:38)
-	at org.testng.internal.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:783)
-	at org.testng.internal.TestInvoker.invokeTestMethods(TestInvoker.java:146)
-	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:146)
-	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:128)
-	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
-	at org.testng.TestRunner.privateRun(TestRunner.java:766)
-	at org.testng.TestRunner.run(TestRunner.java:587)
-	at org.testng.SuiteRunner.runTest(SuiteRunner.java:384)
-	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:378)
-	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:337)
-	at org.testng.SuiteRunner.run(SuiteRunner.java:286)
-	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:53)
-	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:96)
-	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1187)
-	at org.testng.TestNG.runSuitesLocally(TestNG.java:1109)
-	at org.testng.TestNG.runSuites(TestNG.java:1039)
-	at org.testng.TestNG.run(TestNG.java:1007)
-	at org.testng.remote.AbstractRemoteTestNG.run(AbstractRemoteTestNG.java:115)
-	at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:251)
-	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:77)
-Caused by: java.lang.NullPointerException: Cannot invoke "io.cucumber.testng.TestNGCucumberRunner.provideScenarios()" because "this.testNGCucumberRunner" is null
-	at runner.UIRunner.scenarios(UIRunner.java:146)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
-	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:134)
-	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:78)
-	at org.testng.internal.MethodInvocationHelper.invokeMethodNoCheckedException(MethodInvocationHelper.java:47)
-	... 25 more
-
-
-===============================================
-    Default test
-    Tests run: 1, Failures: 0, Skips: 1
-    Configuration Failures: 2, Skips: 1
-===============================================
-
-
-===============================================
-Default suite
-Total tests run: 1, Passes: 0, Failures: 0, Skips: 1
-Configuration Failures: 2, Skips: 1
-===============================================
