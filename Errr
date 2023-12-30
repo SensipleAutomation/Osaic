@@ -1,2 +1,1 @@
-@When("^User enters the following details:$")
-	public void user_enters_the_following_details(DataTable arg1) throws Throwable {
+Cannot make a static reference to the non-static method asMaps(Type, Type) from the type DataTable
