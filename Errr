@@ -1,20 +1,2 @@
-Scenario Outline: New Prospect Creation 
-	User updates personal information
-	When User select the Business Development and leads 
-	And User Verifies whether the New Button is available and click 
-	And User Validate the NewLead Header "New Lead: Standard" is present 
-	And User enters the following details: 
-		| Field         | Value             |
-		| First Name    | <FirstName>       |
-		| Last Name     | <LastName>        |
-		| Mobile Number | <MobileNumber>    |
-		| DOB           | <DOB>             |
-		| Email Address | <EmailAddress>   |
-		| FIRN Number   | <FIRNNumber>      |
-		
-	And user validate the last name "Complete this field." error message 
-	
-	
-	Examples: 
-		| FirstName | LastName | MobileNumber | DOB        | EmailAddress          | FIRNNumber |
-		| AuJohn      | Doe      | (555) 555-1234   | 03/19/1993 | Automation.doe@yahoo.com | 54389    |
+@When("^User enters the following details:$")
+	public void user_enters_the_following_details(DataTable arg1) throws Throwable {
