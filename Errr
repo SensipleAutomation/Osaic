@@ -1,16 +1,10 @@
-Scenario: New Prospect Creation 
-	User updates personal information
-	When User select the Business Development and leads 
-	And User Verifies whether the New Button is available and click 
-	And User Validate the NewLead Header "New Lead: Standard" is present 
-	And User enters the following details: 
-	When the user enters the following details: 
-		| Field         | Value          |
-		| First Name    | AuJohn           |
-		| Last Name     | Doe            |
-		| Email Address | Automation.doe@yahoo.com|
-		| DOB      | 03/19/1993    |
-		| FIRNNumber      | 54389    |
-		| Mobile Number      | (555) 555-1234    |
-		
-	And user validate the last name "Complete this field." error message
+public void handle_dropdown(WebElement arrowclick,List<WebElement> dropdownselect, String value) throws Throwable {
+			pageTimeOut();
+			explicit_wait_elementvisibility(arrowclick);
+			arrowclick.click();
+			for(int i=0;i<dropdownselect.size();i++) {	
+					if(dropdownselect.get(i).getText().equals(value)){
+				    dropdownselect.get(i).click();
+					}
+				 }
+				}
