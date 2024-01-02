@@ -1,10 +1,1 @@
-public void handle_dropdown(WebElement arrowclick,List<WebElement> dropdownselect, String value) throws Throwable {
-			pageTimeOut();
-			explicit_wait_elementvisibility(arrowclick);
-			arrowclick.click();
-			for(int i=0;i<dropdownselect.size();i++) {	
-					if(dropdownselect.get(i).getText().equals(value)){
-				    dropdownselect.get(i).click();
-					}
-				 }
-				}
+//label[text()='Assigned Internal Recruiter Name']//following::ul//following::span[text()='Mounika Golla BO']
