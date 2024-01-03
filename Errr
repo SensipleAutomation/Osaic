@@ -1,3 +1,1132 @@
+runner
+
+package runner;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.CopyOption;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.text.SimpleDateFormat;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Map;
+
+import org.apache.commons.io.FileUtils;
+import org.junit.runner.RunWith;
+import org.testng.ITestContext;
+import org.testng.ITestResult;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
+import com.codoid.products.exception.FilloException;
+
+import cucumberutils.Driverselector;
+import io.cucumber.junit.Cucumber;
+import io.cucumber.testng.CucumberOptions;
+import io.cucumber.testng.FeatureWrapper;
+import io.cucumber.testng.PickleWrapper;
+import io.cucumber.testng.TestNGCucumberRunner;
+import io.cucumber.java.Scenario;
+
+@RunWith(Cucumber.class)
+@CucumberOptions(
+		
+		features = { "src/test/resources/UI_Features" }, 		
+
+		plugin = { "pretty","cucumberutils.Initialization", 
+				//"html:target/Cucumber-Reports", 
+				//"json:target/Cucumber-Reports/cucumber.json",
+		"json:target/cucumber-reports/CucumberTestReport.json",
+				"junit:target/cucumberjunit.xml",
+				"json:reports/cucumber.json",
+				"com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:"
+				},
+		
+						tags = 	"@addMembers",
+
+		monochrome = true, 
+		dryRun = false, 
+		strict = true,glue =  {"seleniumgluecode","cucumberutils" } )
+
+
+public class UIRunner {
+
+	private TestNGCucumberRunner testNGCucumberRunner;
+	 public String tctagname;
+	    @BeforeClass(alwaysRun = true)
+	    public void setUpClass() {
+	    	System.out.println("--------------------------BC--------------------------------------------");
+	    
+	    	
+	        testNGCucumberRunner = new TestNGCucumberRunner(this.getClass());
+	        
+	        System.out.println(System.getProperty("user.dir"));
+	        
+	        try {
+	        	File downloadedfilesdelete = new File(System.getProperty("user.dir") + "//downloadedfiles//");
+				  if (downloadedfilesdelete.exists()) {
+				    FileUtils.cleanDirectory(downloadedfilesdelete);
+				  }
+	    		  
+	    		  Path FROM = Paths.get(System.getProperty("user.dir") + "///resources//resultsheet.xlsx");
+	    		    Path TO = Paths.get(System.getProperty("user.dir") + "//Result//resultsheet.xlsx");
+	    		    
+	    		    String Oldfile = System.getProperty("user.dir") + "//src//test//resources//Result//resultsheet.xlsx";
+	    			 
+	    			  Date now1 = new Date();
+	    				SimpleDateFormat dateFormat = new SimpleDateFormat("dd_MM_YY_hh_mm_ss");
+	    				String time1 = dateFormat.format(now1);
+	    				//System.out.println("timestamp : "+time1);
+	    		        
+	    		       
+	    				String newname = System.getProperty("user.dir") + "//src//test//resources//Result//resultsheet_"+time1+".xlsx";
+	    				File file = new File(Oldfile);
+	    			  
+	    			// File (or directory) with new name
+	    				File file2 = new File(newname);
+	    				file.renameTo(file2);
+	    			
+	    		    //overwrite existing file, if exists
+	    		    CopyOption[] options = new CopyOption[]{
+	    		      StandardCopyOption.REPLACE_EXISTING,
+	    		      StandardCopyOption.COPY_ATTRIBUTES
+	    		    }; 
+	    		  
+	    		  
+	    		  Files.copy(FROM, TO, options);
+	        } catch (Exception e) {
+	            System.out.println("Something went wrong.");
+	            e.printStackTrace();
+	          }
+	          // setup static method(-s) here  
+	        
+	        
+	    }
+	    @BeforeSuite
+		public void beforeSuite() {
+			System.out.println("before Suite");
+			System.out.println("--------------------------BS--------------------------------------------");
+			System.out.println("================Print environment variable==================");
+			Map<String, String> env = System.getenv();
+	        for (Map.Entry<String, String> entry : env.entrySet()) {
+	            System.out.println(entry.getKey() + " : " + entry.getValue());
+	        }
+	        System.out.println("=======================Print System variable==================");
+	        Map<Object, Object> sis = System.getProperties();
+	        for (Map.Entry<Object, Object> entry : sis.entrySet()) {
+	            System.out.println(entry.getKey() + " : " + entry.getValue());
+	        }
+			
+	    }
+	    
+	    @BeforeTest
+		  public void beforeTest() throws FilloException, IOException {
+	    	System.out.println("--------------------------BT--------------------------------------------");
+	   	 Driverselector.initializeservericebrowser();
+	    }
+	    @BeforeMethod
+		  public void beforeMethod() throws FilloException {
+	    	System.out.println("--------------------------BM--------------------------------------------");
+	    }
+
+	   @Test(groups = "cucumber", description = "Runs Cucumber Scenarios", dataProvider = "scenarios")
+	    public void scenario(PickleWrapper pickleEvent, FeatureWrapper cucumberFeature) throws Throwable {
+	    	
+	    	System.out.println(cucumberFeature);
+	    	
+	    	
+			
+	    	System.out.println("--------------------------T--------------------------------------------");
+	    	System.out.println(pickleEvent.getPickle().getScenarioLine());
+	    	
+	        testNGCucumberRunner.runScenario(pickleEvent.getPickle());
+	        System.out.println("--------------------------T2--------------------------------------------");
+	    }
+	    
+	   
+	    @AfterMethod
+		  public void afterMethod() throws FilloException {
+	    	
+
+	    	System.out.println("--------------------------AM--------------------------------------------");
+	    }
+
+	    @DataProvider
+	    public Object[][] scenarios() {
+	        return testNGCucumberRunner.provideScenarios();
+	    }
+
+	    @AfterClass(alwaysRun = true)
+	    public void tearDownClass() {
+	    	System.out.println("--------------------------AC--------------------------------------------");
+	        testNGCucumberRunner.finish();
+	    }
+	    @AfterTest
+		  
+		  public void setUptear() throws IOException {
+			System.out.println("after test");
+			int closebrowser =Integer.parseInt(System.getProperty("closebrowser"));
+			if(closebrowser==1) {
+			 Driverselector.service.stop();
+			}
+			 
+		}
+
+}
+
+
+hooks
+
+package cucumberutils;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.nio.file.CopyOption;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Stream;
+
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.testng.annotations.AfterTest;
+
+import io.cucumber.core.gherkin.Feature;
+import io.cucumber.java.After;
+import io.cucumber.java.AfterStep;
+import io.cucumber.java.Before;
+import io.cucumber.java.Scenario;
+import utility.Azureutils;
+import webpages.GenericPageObjects;
+
+import com.codoid.products.exception.FilloException;
+
+import BaseClass.ScreenShot;
+import datadriven.data;
+import datadriven.datatrial;
+import datadriven.hashdatafromexcel;
+
+
+
+//public class Hooks extends map_scenario_to_excel_row {	
+public class Hooks extends tcid {
+	public Scenario scenario;
+	public String tctagname;
+	public String path="";
+	@Before
+	public void before(Scenario scenario) throws IOException, FilloException {
+		
+		
+		System.out.println("hooks");
+		System.out.println("--------------------------B--------------------------------------------");
+		String currentexampletcid;
+		String ATcid = null;
+		String firstsheetName;
+		String secondsheetName=null;
+		
+		this.scenario = scenario;
+		
+		Collection<String>taglist=scenario.getSourceTagNames();
+		for (String tag: taglist) {
+			if (tag.contains("tc")) {
+			String[] tags=tag.split(":");	
+			tctagname=tags[1];
+			}		
+		}
+		
+		//System.out.println(scenario.);
+		//System.out.println();
+		System.out.println("TcTagname:"+tctagname);
+		
+		URI featurefilepathraw= scenario.getUri();
+		System.out.println("featurefilepathraw:"+featurefilepathraw.toString());
+		String featurefilepathasstring = featurefilepathraw.toString();
+		String[] featurefilepatharray= featurefilepathasstring.split(":///");
+		String featurefilepath= featurefilepatharray[1];
+		System.out.print("\nfeaturefilepath: " + featurefilepath); 
+		path= Paths.get(featurefilepath).toAbsolutePath().toString();
+		try (Stream<String> lines = Files.lines(Paths.get(path))){			    
+			 Integer currentscenario = scenario.getLine();			 
+			 int examplelinenumber =currentscenario;
+			 System.out.print("\ncurrentline: " + examplelinenumber);
+			 //System.out.println("print next line number : "+lines.skip(examplelinenumber).findFirst().get());
+			 String currentexamplelinenumber = lines.skip(examplelinenumber-1).findFirst().get();
+			 System.out.print("\ncurrentexamplelinenumber: " + currentexamplelinenumber);
+			 currentexamplelinenumber.replaceAll("\\s","");
+			 String[] testdata= currentexamplelinenumber.split("\\|");
+			currentexampletcid= testdata[1];
+			System.out.print("\ncurrentexampletcid: " + currentexampletcid);
+			firstsheetName= testdata[2];
+			System.out.print("\ncurrentexampletcid: " + firstsheetName);
+			
+			if(testdata.length > 3)
+			{
+			ATcid= testdata[3];
+			System.out.print("\ncurrentexampletcid: " + ATcid);
+			secondsheetName= testdata[4];
+			System.out.print("\ncurrentexampletcid: " + secondsheetName);
+			}
+			
+			
+		}	
+		Testcaseid.set(currentexampletcid);
+		
+	
+		
+		if(featurefilepath.contains("API_Features")) {
+		//hashdatafromexcel hashdatafromexcelcreate = new hashdatafromexcel();
+		//hashdatafromexcelcreate.createhashmapfromexcel(currentexampletcid,"TestData_QA","CRM2_API");
+		}
+		
+		hashdatafromexcel hashdatafromexcelcreate = new hashdatafromexcel();
+		  if(System.getProperty("env").equals("QA")){
+			  //hashdatafromexcelcreate.createhashmapfromexcel(currentexampletcid,ATcid,"TestData_QA",firstsheetName,secondsheetName);
+		  }
+		    else if(System.getProperty("env").equals("PROD"))
+		    {
+		    	hashdatafromexcelcreate.createhashmapfromexcel(currentexampletcid,ATcid,"TestData_PROD",firstsheetName,secondsheetName);
+		    	}
+		    else if(System.getProperty("env").equals("DEV")) {
+		    	hashdatafromexcelcreate.createhashmapfromexcel(currentexampletcid,ATcid,"TestData_DEV",firstsheetName,secondsheetName);
+		    }
+		
+				//hashdatafromexcelcreate.createhashmapfromexcel(currentexampletcid,"TestData_BOQA",sheetName);
+				 
+		
+		/*datatrial datcreate = new datatrial();
+		  datcreate.createhashmap(currentexampletcid);*/
+		  
+		  
+		 /* String numberofaccounts = data.getTestValue("no_of_accounts", currentexampletcid);
+			 String numberofgoals = data.getTestValue("no_of_goals", currentexampletcid);
+			 String totnumofacc=numberofaccounts;
+			 System.out.println("totnumofacc:"+totnumofacc);
+			 List<String> accounts_to_add = Arrays.asList(totnumofacc.split(","));
+			 if(!numberofaccounts.equals("")){
+		  
+		  for(String accountnumloop:accounts_to_add){
+				//String tcidmul=data.getTestValue("TCID", accountnumloop) ;
+			  if(!accountnumloop.equals(currentexampletcid)){
+				 datatrial datcreatemultiple = new datatrial();
+				  datcreatemultiple.createhashmap(accountnumloop);
+			  }
+		  }
+			  
+			}*/
+			 //String Execution_Server=data.getTestValue("Execution_Server", currentexampletcid);
+		String Execution_Server="";	 
+		if(!featurefilepath.contains("API_Features")) {
+		Driverselector driverselector = new Driverselector();
+			 	if (Execution_Server.equalsIgnoreCase("Sauce")) {
+			 		driverselector.selectBrowser("SAUCE", "CHROME");
+			 	}else {
+			 		driverselector.selectBrowser("LOCAL", "CHROME");
+			 	}
+		}
+		
+	}
+	
+
+	@AfterStep
+	public void aftertestScenario(Scenario scenario) throws FilloException, IOException, InterruptedException {
+		 scenario.attach(screenshot.getByteScreenshot(), "image/png",scenario.getName());
+}
+
+	@After
+	public void afterScenario(Scenario scenario) throws FilloException, IOException, InterruptedException {
+	    System.out.println("-----------------JUA-------------");
+	    System.out.println(scenario.getName() + " Status - " + scenario.getStatus());
+	    String status=scenario.getStatus().toString();
+	    String planid="";
+	    String userstory="";
+	    String azuretestcaseid="";
+	    
+	 
+	    Collection<String>taglist=scenario.getSourceTagNames();
+		for (String tag: taglist) {
+			if (tag.contains("tp")) {
+			String[] tags=tag.split(":");	
+			planid=tags[1];
+			}else if(tag.contains("tc")) {
+				String[] tags=tag.split(":");	
+				azuretestcaseid=tags[1];
+			}else if(tag.contains("us")) {
+				String[] tags=tag.split(":");	
+				userstory=tags[1];
+			}
+			
+		}
+		if(scenario.isFailed())
+		    {			
+		        scenario.attach(screenshot.getByteScreenshot(), "image/png", scenario.getName());
+		   }
+		    
+		/*
+		 * Stream<String> lines = Files.lines(Paths.get(path)); Integer currentscenario
+		 * = scenario.getLine(); int examplelinenumber =currentscenario; String
+		 * isendofscenariooutline=lines.skip(examplelinenumber).findFirst().get();
+		 * if(!isendofscenariooutline.contains("|")) {
+		 * 
+		 * 
+		 * System.out.println(planid); System.out.println(userstory);
+		 * System.out.println(azuretestcaseid); System.out.println(status);
+		 * 
+		 * //Azureutils.update_results_in_azure_devops(planid,userstory,azuretestcaseid,
+		 * status); }
+		 */
+				
+		    	
+		    
+			 
+		
+	    
+			
+	   
+	   
+	    
+	    //String tcid =Testcaseid1;
+	   /* String Tcid = tcid.getqry();
+	    
+	    WebDriver driver= Driverselector.drivers.get();
+	   resultupdate excelresult = new resultupdate();
+	   String sstatus = scenario.getStatus().toString();
+	   System.out.println("------------------------------"+Tcid+sstatus);
+	  if (sstatus.equals("PASSED")){
+		  excelresult.updateexcel("Result", "Passed", Tcid);
+		  
+	  }
+	 Date now1 = new Date();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd_MM_YY_hh_mm_ss");
+		String time1 = dateFormat.format(now1);
+	   String sfailname = data.getTestValue("TCID", Tcid)+"_"+data.getTestValue("recir_acctyp", Tcid)+"_"+
+			     data.getTestValue("accsetsrt_regtype", Tcid)+"_"+
+			     data.getTestValue("recir_program", Tcid)+time1+"_Fail";
+	    if(scenario.isFailed()) {
+	    	
+	    	
+	    	if(!data.getTestValue("accsetsrt_regtype", Tcid).equals("UGMA/UTMA")) {
+				  scs.fsfail(driver, sfailname);
+				  }else{
+					  String sfailnames = Tcid+"_"+data.getTestValue("recir_acctyp",Tcid)+"_UGMA_UTMA_"+
+							  data.getTestValue("Recir_program",Tcid);
+					  scs.fsfail(driver, sfailnames);
+				  }
+	    	
+			   excelresult.updateexcel("Result", "Failed", Tcid);
+			   Path path = Paths.get("screenshot/Fail/"+sfailname+".png");
+			    byte[] data = Files.readAllBytes(path);
+			    File file = new File("screenshot/Fail/"+sfailname+".png");
+			  scenario.getId();
+			    		 //  scenario.embed(Files.readAllBytes(file.toPath()), "Failure_Screenshot");
+			    		   scenario.embed(data, "image/png", "Failure_Screenshot");
+			    		   //scenario.attach(data, "application/vnd.ms-excel", "Failure_Screenshot");
+	    	
+			  }
+			  
+	     
+	    int closebrowser =Integer.parseInt(System.getProperty("closebrowser"));
+		if(closebrowser==1) {	  
+	    driver.quit(); 	
+		}*/
+	         
+			  
+	    	
+	    }
+	
+	  // String qry="Select * from Sheet1 where TCID='"+Testcaseid+"'";
+	   /* String scstatus = scenario.getStatus().toString();
+		 Path path = Paths.get("Result/resultsheet.xlsx");
+	    byte[] data = Files.readAllBytes(path);
+	    File file = new File("Result/resultsheet.xlsx");
+	  scenario.getId();
+	    		   //scenario.embed(Files.readAllBytes(file.toPath()));
+	    		   scenario.attach(data, "application/vnd.ms-excel", "name.xlsx");*/
+	   
+	    		   //feature.
+	    		  
+	    	
+	   // excelresult.updateexcel("Result",scstatus , qry);
+	
+		
+	
+	
+	
+	
+}
+
+driverselctor
+
+package cucumberutils;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.MutableCapabilities;
+import org.openqa.selenium.UnexpectedAlertBehaviour;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeDriverService;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.remote.CapabilityType;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.safari.SafariOptions;
+
+import com.codoid.products.exception.FilloException;
+
+import cucumberutils.Browsers;
+import cucumberutils.Server;
+import datadriven.data;
+
+public class Driverselector {
+	public static ChromeDriverService service = null;
+	public static ThreadLocal<WebDriver> drivers = new ThreadLocal<WebDriver>();
+	private ThreadLocal<String> sessionId = new ThreadLocal<String>();
+	int headless = Integer.parseInt(System.getProperty("headlessmode"));
+	//int closebrowser =1;
+	String Tcid=tcid.getqry();
+	//public static WebDriver driver= null;
+	
+	public WebDriver selectBrowser(String server,String browser) throws MalformedURLException, FilloException {
+		String Execution_Server=data.getTestValue("Execution_Server", Tcid);
+		String Execution_Platform=data.getTestValue("Execution_Platform", Tcid);
+		String Execution_Device=data.getTestValue("Execution_Device", Tcid);
+		String Execution_Browser=data.getTestValue("Execution_Browser", Tcid);
+		String Downloadedfilepath = System.getProperty("user.dir") + "\\downloadedfiles\\"+Tcid+"\\";
+		File theDir = new File(Downloadedfilepath);
+		theDir.mkdirs();
+		System.out.println(Downloadedfilepath);
+		if (server.equalsIgnoreCase(Server.LOCAL.name())||server.equals("")) {
+			if (browser.equalsIgnoreCase(Browsers.CHROME.name())) {
+				System.setProperty("webdriver.chrome.driver", "chromedriver91.exe");
+				Map<String, Object> prefs = new HashMap<String, Object>();
+				prefs.put("profile.default_content_setting_values.notifications", 2);
+				prefs.put("credentials_enable_service", false);
+				prefs.put("profile.password_manager_enabled", false);
+				prefs.put("download.default_directory", Downloadedfilepath);
+				//options.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
+				ChromeOptions options = new ChromeOptions();
+				//options.setExperimentalOption("excludeSwitches",Arrays.asList("test-type"));
+				options.setExperimentalOption("prefs", prefs);
+				options.addArguments("--test-type");
+				options.addArguments("start-maximized");
+				options.addArguments("--incognito");
+				options.addArguments("disable-infobars");
+				options.addArguments("--disable-extensions");
+				options.addArguments("--disable-backgrounding-occluded-windows");
+				if(headless==1){
+				options.addArguments("--headless");     
+			    options.addArguments("--disable-gpu");
+			    options.addArguments("--window-size=1400,800");
+				}
+			    options.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.IGNORE);
+			    options.setUnhandledPromptBehaviour(UnexpectedAlertBehaviour.IGNORE);
+			  // String hosturl=chromeservice.getUrl().toString();
+			    //driver = new ChromeDriver(options);
+			    String hosturl=service.getUrl().toString();
+				 drivers.set(new RemoteWebDriver(
+		                 new URL(hosturl),
+		                 options));
+				 String id = ((RemoteWebDriver) getWebDriver()).getSessionId().toString();
+		         sessionId.set(id);
+			    
+			} /*else if (browser.equalsIgnoreCase(Browsers.FIREFOX.name())) {
+				System.setProperty("webdriver.gecko.driver", System.getProperty("user.dir") + "/src/test/resources/drivers/geckodriver.exe");
+				driver = new FirefoxDriver();
+			}
+			driver.manage().window().maximize();		
+		}
+		else if (server.equalsIgnoreCase(Server.SAUCE.name())) {
+			//ms:edgeOptions
+			//moz:firefoxOptions
+			//Safari:SafariOptions
+			MutableCapabilities sauceOptions = new MutableCapabilities();
+	        sauceOptions.setCapability("seleniumVersion", "3.141.59");
+	        sauceOptions.setCapability("maxDuration", 3600);
+	        sauceOptions.setCapability("commandTimeout", 600);
+	        sauceOptions.setCapability("idleTimeout", 1000);
+	       	sauceOptions.setCapability("name", Tcid+"_equiptNAOtest_");
+	        sauceOptions.setCapability("build", "decrelease2rerun");
+	        sauceOptions.setCapability("videoUploadOnPass", "false");
+	        sauceOptions.setCapability("public", "private");
+	        //sauceOptions.setCapability("platformName", "Windows 10");
+			if(Execution_Platform.equalsIgnoreCase("Android")) {
+				if(Execution_Device.equalsIgnoreCase("Samsung")) {
+					DesiredCapabilities caps = DesiredCapabilities.android();
+					caps.setCapability("appiumVersion", "1.20.2");
+					caps.setCapability("deviceName","Samsung Galaxy S9 Plus WQHD GoogleAPI Emulator");
+					caps.setCapability("deviceOrientation", "portrait");
+					caps.setCapability("browserName", "Chrome");
+					caps.setCapability("platformVersion", "8.1");
+					caps.setCapability("platformName","Android");
+					caps.setCapability("unicodeKeyboard", true);
+		        	caps.setCapability("resetKeyboard", true);
+		        	caps.setCapability("autoGrantPermissions", true);
+		        	caps.setCapability("MobileCapabilityType.AUTOMATION_NAME", "AutomationName.ANDROID_UIAUTOMATOR2");
+		        	this.driver = new RemoteWebDriver(new URL("http://avincent:715c984a-0993-497e-b308-64ac750a0180@ondemand.saucelabs.com:80/wd/hub"),caps);
+				}
+			}else if(Execution_Platform.equalsIgnoreCase("ios")) {
+				if(Execution_Device.equalsIgnoreCase("iphone")) {
+					System.out.println("iphone");
+					DesiredCapabilities caps = DesiredCapabilities.iphone();
+					caps.setCapability("appiumVersion", "1.20.1");
+					caps.setCapability("deviceName","iPhone 12 Pro Max Simulator");
+					
+					caps.setCapability("deviceOrientation", "landscape");
+					caps.setCapability("platformVersion","14.3");
+					caps.setCapability("platformName", "iOS");
+					//caps.setCapability("sauce:options", sauceOptions);
+					caps.setCapability("browserName", "Safari");
+					caps.setCapability("unicodeKeyboard", true);
+		        	caps.setCapability("resetKeyboard", true);
+		        	caps.setCapability("ignoreZoomSetting", true);
+		        	//caps.setCapability("autoAcceptAlerts", true);
+		        	//caps.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.IGNORE);
+		        	caps.setCapability(CapabilityType.SUPPORTS_FINDING_BY_CSS, true);
+		        	caps.setCapability(CapabilityType.SUPPORTS_JAVASCRIPT, true);
+		        	//caps.setUseTechnologyPreview(true);
+		        	//caps.setCapability("safariOptions", true);
+		        	this.driver = new RemoteWebDriver(new URL("http://avincent:715c984a-0993-497e-b308-64ac750a0180@ondemand.saucelabs.com:80/wd/hub"),caps);
+				}else if(Execution_Device.equalsIgnoreCase("ipad")) {
+					DesiredCapabilities caps = DesiredCapabilities.iphone();
+					caps.setCapability("appiumVersion", "1.20.1");
+					caps.setCapability("deviceName","iPad Pro (12.9 inch) (4th generation) Simulator");
+					caps.setCapability("deviceOrientation", "landscape");
+					caps.setCapability("platformVersion","14.3");
+					caps.setCapability("platformName", "iOS");
+					//caps.setCapability("sauce:options", sauceOptions);
+					caps.setCapability("browserName", "Safari");
+					caps.setCapability("unicodeKeyboard", true);
+		        	caps.setCapability("resetKeyboard", true);
+		        	caps.setCapability("autoAcceptPermissions", true);
+		        	this.driver = new RemoteWebDriver(new URL("http://avincent:715c984a-0993-497e-b308-64ac750a0180@ondemand.saucelabs.com:80/wd/hub"),caps);
+		      		
+				}				
+			}else if(Execution_Platform.equalsIgnoreCase("PC")) {
+				
+				driver.manage().window().maximize();	
+			}else if(Execution_Platform.equalsIgnoreCase("Mac")) {
+					
+				
+				SafariOptions browserOptions = new SafariOptions();
+				browserOptions.setUseCleanSession(true);
+			    browserOptions.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.IGNORE);
+			    browserOptions.setCapability(CapabilityType.SUPPORTS_FINDING_BY_CSS, true);
+			    browserOptions.setCapability(CapabilityType.SUPPORTS_JAVASCRIPT, true);
+			    browserOptions.setUseTechnologyPreview(true);
+			    browserOptions.setCapability("safariOptions", true);
+				browserOptions.setCapability("platformName", "macOS 10.15");
+				//browserOptions.setCapability("browserVersion", "13.1");
+				browserOptions.setCapability("sauce:options", sauceOptions);
+				browserOptions.setCapability("automaticInspection", true);
+				browserOptions.setCapability("automaticProfiling", true);
+				browserOptions.setCapability("cssSelectorsEnabled", true);
+			        browserOptions.setCapability("handlesAlerts", true);
+			        browserOptions.setCapability("javascriptEnabled", true);
+				MutableCapabilities capabilities = new MutableCapabilities();
+		        capabilities.setCapability("sauce:options", sauceOptions);
+		        capabilities.setCapability("safari:safariOptions", browserOptions);
+		        capabilities.setCapability("browserName", "Safari");
+		        this.driver = new RemoteWebDriver(new URL("http://avincent:715c984a-0993-497e-b308-64ac750a0180@ondemand.saucelabs.com:80/wd/hub"),browserOptions);
+		        driver.manage().window().maximize();
+			}*/
+			
+	         //this.driver = new RemoteWebDriver(new URL("http://avincent:715c984a-0993-497e-b308-64ac750a0180@ondemand.saucelabs.com:80/wd/hub"),capabilities);
+	        		
+		}
+		drivers.get().manage().timeouts().implicitlyWait(40, TimeUnit.SECONDS);
+		
+	return drivers.get();
+}
+	public static ChromeDriverService initializeservericebrowser() throws IOException {
+		 service = new ChromeDriverService.Builder()
+				    .usingDriverExecutable(new File("chromedriver114.exe")).usingPort(9515)
+				    //.usingAnyFreePort()
+				    .build();
+				service.start();
+				return service;
+	}
+	
+	 public WebDriver getWebDriver() {
+	        return drivers.get();
+	    }
+	 public String getSessionId() {
+	        return sessionId.get();
+	    }
+}
+err
+[RemoteTestNG] detected TestNG version 7.0.1
+before Suite
+--------------------------BS--------------------------------------------
+================Print environment variable==================
+ViewClient_Mouse.Identifier : 256
+ViewClient_Client_Version : 8.11.0-22660907
+NVM_SYMLINK : C:\Program Files\nodejs
+ViewClient_Displays.TopologyV2 : {1366,768,0,0,32,1,96}
+SESSIONNAME : Console
+ALLUSERSPROFILE : C:\ProgramData
+ViewClient_Displays.TopologyV3 : {
+	"displays": [
+		{
+			"width": 1366,
+			"height": 768,
+			"left": 0,
+			"top": 0,
+			"bitsPerPixel": 32,
+			"isPrimary": true,
+			"dpi": 96,
+			"isHDR": false,
+			"refreshRate": 60
+		}
+	]
+}
+
+SystemDrive : C:
+UEMScripts : \\ibddomain.net\dem\DEMConfig\General\FlexRepository\Scripts
+ViewClient_Keyboard.Type : 7
+UEMProfileArchiveBackups : \\ibddomain.net\dem\DEMProfiles\rpuliendran\Backups
+USERNAME : rpuliendran
+INCLUDE : C:\Sybase\OCS-15_0\include;
+ProgramFiles(x86) : C:\Program Files (x86)
+FPS_BROWSER_USER_PROFILE_STRING : Default
+ViewClient_LoggedOn_Username : rajasekar.p
+PATHEXT : .COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW
+DriverData : C:\Windows\System32\Drivers\DriverData
+ViewClient_LoggedOn_FQDN : sensiple.com
+ViewClient_Keyboard.SubType : 0
+HOMEPATH : \Users\rpuliendran
+SYBROOT : C:\Sybase
+PROCESSOR_IDENTIFIER : Intel64 Family 6 Model 63 Stepping 0, GenuineIntel
+ViewClient_Client_ID : AgAAAERFTExLABBYgFO5wE80QjM=
+ProgramFiles : C:\Program Files
+PUBLIC : C:\Users\Public
+SAP_JRE8_64 : C:\Sybase\Shared\SAPJRE-8_1_008_64BIT
+windir : C:\Windows
+=:: : ::\
+SYBASE_OCS : OCS-15_0
+ViewClient_Broker_DNS_Name : P0W1VDICONN01.ibddomain.net
+OneDriveCommercial : C:\Users\rpuliendran\OneDrive - Advisor Group Inc
+FPS_BROWSER_APP_PROFILE_STRING : Internet Explorer
+JAVA_HOME : C:\Program Files\Java\jre-1.8;C:\Program Files (x86)\Java\jre-1.8
+SVAgent : C:\Program Files (x86)\CloudVolumes\Agent\
+ViewClient_Keyboard.NumKeys : 101
+ViewClient_Agent_ConnectTicks : 1704300142
+ViewClient_Broker_GatewayType : SG-cohosted
+OneDrive : C:\Users\rpuliendran\OneDrive - Advisor Group Inc
+APPDATA : C:\Users\rpuliendran\AppData\Roaming
+ViewClient_Broker_UserName : rpuliendran
+ChocolateyInstall : C:\ProgramData\chocolatey
+Path : C:/Users/rpuliendran/.p2/pool/plugins/org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_17.0.9.v20231028-0858/jre/bin/server;C:/Users/rpuliendran/.p2/pool/plugins/org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_17.0.9.v20231028-0858/jre/bin;C:\Program Files\Microsoft\jdk-21.0.1.12-hotspot\bin;C:\Program Files\Microsoft\jdk-17.0.9.8-hotspot\bin;C:\Program Files\Python312\Scripts\;C:\Program Files\Python312\;C:\Program Files\Eclipse Adoptium\jdk-8.0.392.8-hotspot\bin;C:\Program Files\Microsoft\jdk-11.0.21.9-hotspot\bin;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Sybase\DBISQL\bin;C:\Sybase\DataAccess64\ADONET\dll;C:\Sybase\DataAccess\ADONET\dll;C:\Sybase\DataAccess64\ODBC\dll;C:\Sybase\DataAccess\ODBC\dll;C:\Sybase\DataAccess64\OLEDB\dll;C:\Sybase\DataAccess\OLEDB\dll;C:\Sybase\OCS-15_0\lib3p64;C:\Sybase\OCS-15_0\lib3p;C:\Sybase\OCS-15_0\dll;C:\Sybase\OCS-15_0\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files (x86)\Microsoft SQL Server\150\DTS\Binn\;C:\Program Files\Azure Data Studio\bin;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Program Files\dotnet\;C:\Program Files\Microsoft VS Code\bin;C:\Program Files\Microsoft OLE DB Provider for DB2\System\;C:\Program Files\Microsoft SQL Server\150\Tools\Binn\;C:\Program Files\Microsoft SQL Server\150\DTS\Binn\;C:\Program Files (x86)\Microsoft SQL Server\110\Tools\Binn\;C:\Program Files\Microsoft SQL Server\110\Tools\Binn\;C:\Program Files (x86)\Microsoft SQL Server\110\DTS\Binn\;C:\Program Files\Microsoft SQL Server\110\DTS\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\130\Tools\Binn\;C:\Program Files (x86)\Microsoft SQL Server\120\DTS\Binn\;C:\Program Files (x86)\Microsoft SQL Server\130\DTS\Binn\;C:\Program Files (x86)\Microsoft SQL Server\140\DTS\Binn\;C:\Python32;C:\Python32\Tools\Scripts;C:\Program Files\Java\jdk1.8.0_202\bin;C:\Users\admin-development\Documents\Mvn\bin;C:\Program Files\WinMerge;C:\Program Files (x86)\Microsoft SQL Server\160\DTS\Binn\;C:\ProgramData\chocolatey\bin;C:\Program Files\nvm;C:\Program Files\WindowsPowerShell\Scripts;C:\Program Files\Java\jre-1.8\bin;C:\Program Files (x86)\Java\jre-1.8\bin;C:\Program Files\nvm;C:\Program Files\nodejs;C:\Program Files\Microsoft SQL Server\140\DTS\Binn\;C:\Program Files\Microsoft SQL Server\160\DTS\Binn\;C:\Program Files\PuTTY\;C:\Program Files\Git\cmd;C:\Program Files\nodejs\;C:\Users\rpuliendran\AppData\Local\Microsoft\WindowsApps;C:\Users\rpuliendran\Downloads\chromedriver-win64\chromedriver-win64\chromedriver.exe;C:\Users\rpuliendran\Downloads\apache-maven-3.9.6-bin\apache-maven-3.9.6\bin;;C:\Users\rpuliendran\eclipse\java-2023-12\eclipse;
+SAP_JRE7 : C:\Sybase\Shared\SAPJRE-7_1_027_64BIT
+LIB : C:\Sybase\DataAccess64\ADONET\dll;C:\Sybase\DataAccess\ADONET\dll;C:\Sybase\OCS-15_0\lib
+COMPUTERNAME : PW1ETSQUAS016AV
+UEMProfileArchives : \\ibddomain.net\dem\DEMProfiles\rpuliendran\Archives
+ViewClient_Broker_Gateway_IP_Address : 10.128.10.50
+ComSpec : C:\Windows\system32\cmd.exe
+ViewClient_Keyboard.ScanCodeMode : 1
+SAP_JRE8 : C:\Sybase\Shared\SAPJRE-8_1_008_64BIT
+ViewClient_Keyboard.Language : 16393
+ViewClient_Broker_Tunneled : false
+ViewClient_Keyboard.KeyRepeatRate : 31
+HOMEDRIVE : C:
+UEMSessionId : 1
+SAP_JRE7_32 : C:\Sybase\Shared\SAPJRE-7_1_027_32BIT
+ViewClient_Broker_Farm_ID : qualityassurance_a
+NUMBER_OF_PROCESSORS : 4
+ViewClient_Broker_GatewayLocation : Internal
+USERDOMAIN_ROAMINGPROFILE : IBDDOMAIN
+PROCESSOR_LEVEL : 6
+ViewClient_Displays.Topology : {1366,768,0,0,32,1}
+ViewClient_Broker_GatewayName : mydesktop.advisorgroup.com
+PROCESSOR_ARCHITECTURE : AMD64
+PSModulePath : C:\Program Files\WindowsPowerShell\Modules;C:\Windows\system32\WindowsPowerShell\v1.0\Modules;C:\Program Files (x86)\Microsoft SQL Server\110\Tools\PowerShell\Modules\;C:\Program Files\MVPSI\Modules\
+SYBASE : C:\Sybase
+MAVEN_HOME : C:\Users\rpuliendran\Documents\Mvn
+ViewClient_Machine_Name : LE001442
+USERDNSDOMAIN : IBDDOMAIN.NET
+ViewClient_Broker_Remote_IP_Address : 182.72.70.196
+ViewClient_Machine_DistinguishedName : CN=LE001442,OU=Testing,OU=Laptop,OU=Sensiple Computers,OU=Sensiple_Offshore,DC=sensiple,DC=com
+ViewClient_Protocol : BLAST
+ProgramData : C:\ProgramData
+ViewClient_Displays.SystemDpi : 96
+ProgramW6432 : C:\Program Files
+ViewClient_Displays.Number : 1
+ViewClient_Language : en-IN
+ViewClient_MAC_Address : 7C-70-DB-4C-18-AA
+M2_HOME : C:\Users\rpuliendran\Downloads\apache-maven-3.9.6-bin\apache-maven-3.9.6
+ViewClient_Keyboard.NumIndicators : 3
+ViewClient_Mouse.NumButtons : 8
+ViewClient_Type : Windows
+ViewClient_MDMDeviceID : 1CAE3E01F4DD154F804BDEE6B9C5BA92
+ViewClient_Machine_FQDN : sensiple.com
+ViewClient_Broker_URL : https://mydesktop.advisorgroup.com:443
+ViewClient_Windows_Timezone : India Standard Time
+ViewClient_Device_Manufacturer : Dell Inc.
+LOCALAPPDATA : C:\Users\rpuliendran\AppData\Local
+USERDOMAIN : IBDDOMAIN
+LOGONSERVER : \\PW1INFADDC01
+ViewClient_Keyboard.KeyDelayToRepeat : 1
+ViewClient_IP_Address : 192.168.3.211
+AppIntRoot : C:\Program Files\Microsoft OLE DB Provider for DB2\System\
+ViewClient_Device_Serial_Number_SHA256 : f6e1cb1bf31deabda2d3a44c733ef911bfffa43d19e7f5cc732b86a3fe626256
+SAP_JRE7_64 : C:\Sybase\Shared\SAPJRE-7_1_027_64BIT
+SAP_JRE8_32 : C:\Sybase\Shared\SAPJRE-8_1_008_32BIT
+ViewClient_Broker_Request_Path : 182.72.70.196, 10.128.155.10, 10.128.10.50
+ViewClient_LoggedOn_Domainname : SENSIPLE
+ViewClient_Machine_Domain : SENSIPLE
+CommonProgramFiles : C:\Program Files\Common Files
+ViewClient_TZID : Asia/Calcutta
+OS : Windows_NT
+ViewClient_Broker_GatewayHost : mydesktop.advisorgroup.com
+ViewClient_Keyboard.Layout : 00004009
+UEMConfigShare : \\ibddomain.net\dem\DEMConfig\General
+IQDIR16 : C:\Sybase\IQ-16_1
+NVM_HOME : C:\Program Files\nvm
+PROCESSOR_REVISION : 3f00
+CommonProgramW6432 : C:\Program Files\Common Files
+ViewClient_Keyboard.NumFuncKeys : 12
+ViewClient_Launch_ID : qualityassurance_a
+ViewClient_Launch_SessionType : DESKTOP
+SystemRoot : C:\Windows
+TEMP : C:\Users\RP4284~1\AppData\Local\Temp
+USERPROFILE : C:\Users\rpuliendran
+TMP : C:\Users\RP4284~1\AppData\Local\Temp
+CommonProgramFiles(x86) : C:\Program Files (x86)\Common Files
+ViewClient_Broker_DomainName : IBDDOMAIN
+ViewClient_Device_UUID : 7C-70-DB-4C-18-AA
+SYBASE_ASE : ASE-15_0
+=======================Print System variable==================
+java.specification.version : 17
+sun.cpu.isalist : amd64
+sun.jnu.encoding : Cp1252
+java.class.path : C:\Users\rpuliendran\eclipse\java-2023-12\eclipse\configuration\org.eclipse.osgi\549\0\.cp\lib\testng-remote.jar;C:\Users\rpuliendran\git\Checks\web\apps\eo-bdd\target\test-classes;C:\Users\rpuliendran\git\Checks\web\apps\eo-bdd\target\classes;C:\Users\rpuliendran\.m2\repository\io\cucumber\cucumber-java\5.7.0\cucumber-java-5.7.0.jar;C:\Users\rpuliendran\.m2\repository\org\apiguardian\apiguardian-api\1.1.0\apiguardian-api-1.1.0.jar;C:\Users\rpuliendran\.m2\repository\io\github\bonigarcia\webdrivermanager\5.5.0\webdrivermanager-5.5.0.jar;C:\Users\rpuliendran\.m2\repository\com\google\code\gson\gson\2.10.1\gson-2.10.1.jar;C:\Users\rpuliendran\.m2\repository\com\github\docker-java\docker-java\3.3.3\docker-java-3.3.3.jar;C:\Users\rpuliendran\.m2\repository\com\github\docker-java\docker-java-core\3.3.3\docker-java-core-3.3.3.jar;C:\Users\rpuliendran\.m2\repository\com\github\docker-java\docker-java-api\3.3.3\docker-java-api-3.3.3.jar;C:\Users\rpuliendran\.m2\repository\org\apache\commons\commons-compress\1.21\commons-compress-1.21.jar;C:\Users\rpuliendran\.m2\repository\org\bouncycastle\bcpkix-jdk18on\1.75\bcpkix-jdk18on-1.75.jar;C:\Users\rpuliendran\.m2\repository\org\bouncycastle\bcprov-jdk18on\1.75\bcprov-jdk18on-1.75.jar;C:\Users\rpuliendran\.m2\repository\org\bouncycastle\bcutil-jdk18on\1.75\bcutil-jdk18on-1.75.jar;C:\Users\rpuliendran\.m2\repository\org\slf4j\jcl-over-slf4j\1.7.30\jcl-over-slf4j-1.7.30.jar;C:\Users\rpuliendran\.m2\repository\com\github\docker-java\docker-java-transport-httpclient5\3.3.3\docker-java-transport-httpclient5-3.3.3.jar;C:\Users\rpuliendran\.m2\repository\com\github\docker-java\docker-java-transport\3.3.3\docker-java-transport-3.3.3.jar;C:\Users\rpuliendran\.m2\repository\net\java\dev\jna\jna\5.12.1\jna-5.12.1.jar;C:\Users\rpuliendran\.m2\repository\org\brotli\dec\0.1.2\dec-0.1.2.jar;C:\Users\rpuliendran\.m2\repository\org\apache\commons\commons-lang3\3.13.0\commons-lang3-3.13.0.jar;C:\Users\rpuliendran\.m2\repository\org\apache\httpcomponents\client5\httpclient5\5.2.1\httpclient5-5.2.1.jar;C:\Users\rpuliendran\.m2\repository\org\apache\httpcomponents\core5\httpcore5\5.2\httpcore5-5.2.jar;C:\Users\rpuliendran\.m2\repository\org\apache\httpcomponents\core5\httpcore5-h2\5.2\httpcore5-h2-5.2.jar;C:\Users\rpuliendran\.m2\repository\ru\yandex\qatools\allure\allure-cucumber-jvm-adaptor\1.6.2\allure-cucumber-jvm-adaptor-1.6.2.jar;C:\Users\rpuliendran\.m2\repository\ru\yandex\qatools\allure\allure-java-aspects\1.5.2\allure-java-aspects-1.5.2.jar;C:\Users\rpuliendran\.m2\repository\ru\yandex\qatools\allure\allure-java-adaptor-api\1.5.2\allure-java-adaptor-api-1.5.2.jar;C:\Users\rpuliendran\.m2\repository\ru\yandex\qatools\allure\allure-java-annotations\1.5.2\allure-java-annotations-1.5.2.jar;C:\Users\rpuliendran\.m2\repository\org\apache\tika\tika-core\1.7\tika-core-1.7.jar;C:\Users\rpuliendran\.m2\repository\org\aspectj\aspectjrt\1.8.3\aspectjrt-1.8.3.jar;C:\Users\rpuliendran\.m2\repository\ru\yandex\qatools\allure\allure-commons\1.5.2\allure-commons-1.5.2.jar;C:\Users\rpuliendran\.m2\repository\ru\yandex\qatools\allure\allure-model\1.5.2\allure-model-1.5.2.jar;C:\Users\rpuliendran\.m2\repository\org\jvnet\jaxb2_commons\jaxb2-basics-runtime\0.9.3\jaxb2-basics-runtime-0.9.3.jar;C:\Users\rpuliendran\.m2\repository\ru\qatools\commons\properties\2.0.RC5\properties-2.0.RC5.jar;C:\Users\rpuliendran\.m2\repository\info\cukes\cucumber-junit\1.2.5\cucumber-junit-1.2.5.jar;C:\Users\rpuliendran\.m2\repository\info\cukes\cucumber-core\1.2.5\cucumber-core-1.2.5.jar;C:\Users\rpuliendran\.m2\repository\info\cukes\cucumber-html\0.2.3\cucumber-html-0.2.3.jar;C:\Users\rpuliendran\.m2\repository\info\cukes\cucumber-jvm-deps\1.0.5\cucumber-jvm-deps-1.0.5.jar;C:\Users\rpuliendran\.m2\repository\info\cukes\cucumber-java\1.2.5\cucumber-java-1.2.5.jar;C:\Users\rpuliendran\.m2\repository\info\cukes\gherkin\2.12.2\gherkin-2.12.2.jar;C:\Users\rpuliendran\.m2\repository\commons-logging\commons-logging-api\1.1\commons-logging-api-1.1.jar;C:\Users\rpuliendran\.m2\repository\io\cucumber\cucumber-junit\5.7.0\cucumber-junit-5.7.0.jar;C:\Users\rpuliendran\.m2\repository\junit\junit\4.13\junit-4.13.jar;C:\Users\rpuliendran\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar;C:\Users\rpuliendran\.m2\repository\io\cucumber\cucumber-core\5.7.0\cucumber-core-5.7.0.jar;C:\Users\rpuliendran\.m2\repository\io\cucumber\cucumber-gherkin\5.7.0\cucumber-gherkin-5.7.0.jar;C:\Users\rpuliendran\.m2\repository\io\cucumber\cucumber-gherkin-vintage\5.7.0\cucumber-gherkin-vintage-5.7.0.jar;C:\Users\rpuliendran\.m2\repository\io\cucumber\tag-expressions\2.0.4\tag-expressions-2.0.4.jar;C:\Users\rpuliendran\.m2\repository\io\cucumber\cucumber-expressions\8.3.1\cucumber-expressions-8.3.1.jar;C:\Users\rpuliendran\.m2\repository\io\cucumber\datatable\3.3.1\datatable-3.3.1.jar;C:\Users\rpuliendran\.m2\repository\io\cucumber\cucumber-plugin\5.7.0\cucumber-plugin-5.7.0.jar;C:\Users\rpuliendran\.m2\repository\io\cucumber\docstring\5.7.0\docstring-5.7.0.jar;C:\Users\rpuliendran\.m2\repository\io\cucumber\cucumber-testng\5.7.0\cucumber-testng-5.7.0.jar;C:\Users\rpuliendran\.m2\repository\org\testng\testng\7.1.0\testng-7.1.0.jar;C:\Users\rpuliendran\.m2\repository\com\beust\jcommander\1.72\jcommander-1.72.jar;C:\Users\rpuliendran\.m2\repository\com\google\inject\guice\4.1.0\guice-4.1.0-no_aop.jar;C:\Users\rpuliendran\.m2\repository\javax\inject\javax.inject\1\javax.inject-1.jar;C:\Users\rpuliendran\.m2\repository\aopalliance\aopalliance\1.0\aopalliance-1.0.jar;C:\Users\rpuliendran\.m2\repository\org\yaml\snakeyaml\1.21\snakeyaml-1.21.jar;C:\Users\rpuliendran\.m2\repository\tech\grasshopper\extentreports-cucumber5-adapter\2.13.0\extentreports-cucumber5-adapter-2.13.0.jar;C:\Users\rpuliendran\.m2\repository\com\aventstack\extentreports\5.0.9\extentreports-5.0.9.jar;C:\Users\rpuliendran\.m2\repository\io\reactivex\rxjava3\rxjava\3.0.4\rxjava-3.0.4.jar;C:\Users\rpuliendran\.m2\repository\org\reactivestreams\reactive-streams\1.0.3\reactive-streams-1.0.3.jar;C:\Users\rpuliendran\.m2\repository\org\freemarker\freemarker\2.3.30\freemarker-2.3.30.jar;C:\Users\rpuliendran\.m2\repository\org\projectlombok\lombok\1.18.12\lombok-1.18.12.jar;C:\Users\rpuliendran\.m2\repository\com\aventstack\klov-reporter\5.0.9\klov-reporter-5.0.9.jar;C:\Users\rpuliendran\.m2\repository\org\mongodb\bson\3.6.4\bson-3.6.4.jar;C:\Users\rpuliendran\.m2\repository\tech\grasshopper\extent-pdf-report\2.7.0\extent-pdf-report-2.7.0.jar;C:\Users\rpuliendran\.m2\repository\tech\grasshopper\cucumber-pdf-report\2.10.0\cucumber-pdf-report-2.10.0.jar;C:\Users\rpuliendran\.m2\repository\org\knowm\xchart\xchart\3.8.0\xchart-3.8.0.jar;C:\Users\rpuliendran\.m2\repository\de\erichseifert\vectorgraphics2d\VectorGraphics2D\0.13\VectorGraphics2D-0.13.jar;C:\Users\rpuliendran\.m2\repository\de\rototor\pdfbox\graphics2d\0.30\graphics2d-0.30.jar;C:\Users\rpuliendran\.m2\repository\com\madgag\animated-gif-lib\1.4\animated-gif-lib-1.4.jar;C:\Users\rpuliendran\.m2\repository\tech\grasshopper\table-layout\1.5.1\table-layout-1.5.1.jar;C:\Users\rpuliendran\.m2\repository\tech\grasshopper\rest-assured-cucumber-pdf-report\1.4.1\rest-assured-cucumber-pdf-report-1.4.1.jar;C:\Users\rpuliendran\.m2\repository\tech\grasshopper\htmlextentreporter\1.0.1\htmlextentreporter-1.0.1.jar;C:\Users\rpuliendran\.m2\repository\org\mongodb\mongodb-driver\3.3.0\mongodb-driver-3.3.0.jar;C:\Users\rpuliendran\.m2\repository\org\mongodb\mongodb-driver-core\3.3.0\mongodb-driver-core-3.3.0.jar;C:\Users\rpuliendran\.m2\repository\io\cucumber\cucumber-jvm-deps\1.0.6\cucumber-jvm-deps-1.0.6.jar;C:\Users\rpuliendran\.m2\repository\io\cucumber\cucumber-picocontainer\5.7.0\cucumber-picocontainer-5.7.0.jar;C:\Users\rpuliendran\.m2\repository\org\picocontainer\picocontainer\2.15\picocontainer-2.15.jar;C:\Users\rpuliendran\.m2\repository\net\masterthought\cucumber-reporting\5.0.0\cucumber-reporting-5.0.0.jar;C:\Users\rpuliendran\.m2\repository\com\fasterxml\jackson\core\jackson-databind\2.9.10.1\jackson-databind-2.9.10.1.jar;C:\Users\rpuliendran\.m2\repository\com\fasterxml\jackson\core\jackson-annotations\2.9.10\jackson-annotations-2.9.10.jar;C:\Users\rpuliendran\.m2\repository\com\fasterxml\jackson\core\jackson-core\2.9.10\jackson-core-2.9.10.jar;C:\Users\rpuliendran\.m2\repository\com\fasterxml\jackson\datatype\jackson-datatype-jsr310\2.10.1\jackson-datatype-jsr310-2.10.1.jar;C:\Users\rpuliendran\.m2\repository\org\apache\velocity\velocity-engine-core\2.1\velocity-engine-core-2.1.jar;C:\Users\rpuliendran\.m2\repository\commons-collections\commons-collections\3.2.2\commons-collections-3.2.2.jar;C:\Users\rpuliendran\.m2\repository\joda-time\joda-time\2.10.2\joda-time-2.10.2.jar;C:\Users\rpuliendran\.m2\repository\org\codehaus\plexus\plexus-utils\3.2.0\plexus-utils-3.2.0.jar;C:\Users\rpuliendran\.m2\repository\org\jsoup\jsoup\1.12.1\jsoup-1.12.1.jar;C:\Users\rpuliendran\.m2\repository\com\googlecode\owasp-java-html-sanitizer\owasp-java-html-sanitizer\20190610.1\owasp-java-html-sanitizer-20190610.1.jar;C:\Users\rpuliendran\.m2\repository\commons-configuration\commons-configuration\1.10\commons-configuration-1.10.jar;C:\Users\rpuliendran\.m2\repository\commons-lang\commons-lang\2.6\commons-lang-2.6.jar;C:\Users\rpuliendran\.m2\repository\org\mybatis\mybatis\3.5.7\mybatis-3.5.7.jar;C:\Users\rpuliendran\.m2\repository\org\seleniumhq\selenium\selenium-java\3.10.0\selenium-java-3.10.0.jar;C:\Users\rpuliendran\.m2\repository\org\seleniumhq\selenium\selenium-api\3.10.0\selenium-api-3.10.0.jar;C:\Users\rpuliendran\.m2\repository\org\seleniumhq\selenium\selenium-chrome-driver\3.10.0\selenium-chrome-driver-3.10.0.jar;C:\Users\rpuliendran\.m2\repository\org\seleniumhq\selenium\selenium-edge-driver\3.10.0\selenium-edge-driver-3.10.0.jar;C:\Users\rpuliendran\.m2\repository\org\seleniumhq\selenium\selenium-firefox-driver\3.10.0\selenium-firefox-driver-3.10.0.jar;C:\Users\rpuliendran\.m2\repository\org\seleniumhq\selenium\selenium-ie-driver\3.10.0\selenium-ie-driver-3.10.0.jar;C:\Users\rpuliendran\.m2\repository\org\seleniumhq\selenium\selenium-opera-driver\3.10.0\selenium-opera-driver-3.10.0.jar;C:\Users\rpuliendran\.m2\repository\org\seleniumhq\selenium\selenium-remote-driver\3.10.0\selenium-remote-driver-3.10.0.jar;C:\Users\rpuliendran\.m2\repository\org\seleniumhq\selenium\selenium-safari-driver\3.10.0\selenium-safari-driver-3.10.0.jar;C:\Users\rpuliendran\.m2\repository\org\seleniumhq\selenium\selenium-support\3.10.0\selenium-support-3.10.0.jar;C:\Users\rpuliendran\.m2\repository\net\bytebuddy\byte-buddy\1.7.9\byte-buddy-1.7.9.jar;C:\Users\rpuliendran\.m2\repository\org\apache\commons\commons-exec\1.3\commons-exec-1.3.jar;C:\Users\rpuliendran\.m2\repository\commons-codec\commons-codec\1.10\commons-codec-1.10.jar;C:\Users\rpuliendran\.m2\repository\commons-logging\commons-logging\1.2\commons-logging-1.2.jar;C:\Users\rpuliendran\.m2\repository\com\google\guava\guava\23.6-jre\guava-23.6-jre.jar;C:\Users\rpuliendran\.m2\repository\com\google\code\findbugs\jsr305\1.3.9\jsr305-1.3.9.jar;C:\Users\rpuliendran\.m2\repository\org\checkerframework\checker-compat-qual\2.0.0\checker-compat-qual-2.0.0.jar;C:\Users\rpuliendran\.m2\repository\com\google\errorprone\error_prone_annotations\2.1.3\error_prone_annotations-2.1.3.jar;C:\Users\rpuliendran\.m2\repository\com\google\j2objc\j2objc-annotations\1.1\j2objc-annotations-1.1.jar;C:\Users\rpuliendran\.m2\repository\org\codehaus\mojo\animal-sniffer-annotations\1.14\animal-sniffer-annotations-1.14.jar;C:\Users\rpuliendran\.m2\repository\org\apache\httpcomponents\httpclient\4.5.3\httpclient-4.5.3.jar;C:\Users\rpuliendran\.m2\repository\org\apache\httpcomponents\httpcore\4.4.6\httpcore-4.4.6.jar;C:\Users\rpuliendran\.m2\repository\javax\mail\javax.mail-api\1.6.2\javax.mail-api-1.6.2.jar;C:\Users\rpuliendran\.m2\repository\com\sun\mail\javax.mail\1.6.2\javax.mail-1.6.2.jar;C:\Users\rpuliendran\.m2\repository\javax\activation\activation\1.1\activation-1.1.jar;C:\Users\rpuliendran\.m2\repository\com\codoid\products\fillo\1.18\fillo-1.18.jar;C:\Users\rpuliendran\.m2\repository\org\apache\pdfbox\pdfbox\2.0.20\pdfbox-2.0.20.jar;C:\Users\rpuliendran\.m2\repository\org\apache\pdfbox\fontbox\2.0.20\fontbox-2.0.20.jar;C:\Users\rpuliendran\.m2\repository\ru\yandex\qatools\ashot\ashot\1.5.2\ashot-1.5.2.jar;C:\Users\rpuliendran\.m2\repository\org\hamcrest\hamcrest-all\1.3\hamcrest-all-1.3.jar;C:\Users\rpuliendran\.m2\repository\com\googlecode\lambdaj\lambdaj\2.3.3\lambdaj-2.3.3.jar;C:\Users\rpuliendran\.m2\repository\org\objenesis\objenesis\1.2\objenesis-1.2.jar;C:\Users\rpuliendran\.m2\repository\cglib\cglib-nodep\2.2\cglib-nodep-2.2.jar;C:\Users\rpuliendran\.m2\repository\commons-io\commons-io\2.6\commons-io-2.6.jar;C:\Users\rpuliendran\.m2\repository\org\sikuli\sikuli-api\1.2.0\sikuli-api-1.2.0.jar;C:\Users\rpuliendran\.m2\repository\org\sikuli\sikuli-core\1.2.2\sikuli-core-1.2.2.jar;C:\Users\rpuliendran\.m2\repository\org\bytedeco\javacpp\0.9\javacpp-0.9.jar;C:\Users\rpuliendran\.m2\repository\org\bytedeco\javacpp-presets\opencv\2.4.9-0.9\opencv-2.4.9-0.9.jar;C:\Users\rpuliendran\.m2\repository\org\piccolo2d\piccolo2d-extras\1.3.1\piccolo2d-extras-1.3.1.jar;C:\Users\rpuliendran\.m2\repository\org\piccolo2d\piccolo2d-core\1.3.1\piccolo2d-core-1.3.1.jar;C:\Users\rpuliendran\.m2\repository\com\microsoft\ews-java-api\ews-java-api\2.0\ews-java-api-2.0.jar;C:\Users\rpuliendran\.m2\repository\org\apache\maven\shared\maven-invoker\3.0.1\maven-invoker-3.0.1.jar;C:\Users\rpuliendran\.m2\repository\org\apache\maven\shared\maven-shared-utils\3.2.1\maven-shared-utils-3.2.1.jar;C:\Users\rpuliendran\.m2\repository\org\codehaus\plexus\plexus-component-annotations\1.7.1\plexus-component-annotations-1.7.1.jar;C:\Users\rpuliendran\.m2\repository\log4j\log4j\1.2.17\log4j-1.2.17.jar;C:\Users\rpuliendran\.m2\repository\org\slf4j\slf4j-api\1.7.30\slf4j-api-1.7.30.jar;C:\Users\rpuliendran\.m2\repository\org\slf4j\slf4j-simple\1.7.30\slf4j-simple-1.7.30.jar;C:\Users\rpuliendran\.m2\repository\io\rest-assured\rest-assured\4.4.0\rest-assured-4.4.0.jar;C:\Users\rpuliendran\.m2\repository\org\codehaus\groovy\groovy\3.0.8\groovy-3.0.8.jar;C:\Users\rpuliendran\.m2\repository\org\codehaus\groovy\groovy-xml\3.0.8\groovy-xml-3.0.8.jar;C:\Users\rpuliendran\.m2\repository\org\apache\httpcomponents\httpmime\4.5.13\httpmime-4.5.13.jar;C:\Users\rpuliendran\.m2\repository\org\hamcrest\hamcrest\2.1\hamcrest-2.1.jar;C:\Users\rpuliendran\.m2\repository\org\ccil\cowan\tagsoup\tagsoup\1.2.1\tagsoup-1.2.1.jar;C:\Users\rpuliendran\.m2\repository\io\rest-assured\xml-path\4.4.0\xml-path-4.4.0.jar;C:\Users\rpuliendran\.m2\repository\jakarta\xml\bind\jakarta.xml.bind-api\2.3.3\jakarta.xml.bind-api-2.3.3.jar;C:\Users\rpuliendran\.m2\repository\jakarta\activation\jakarta.activation-api\1.2.2\jakarta.activation-api-1.2.2.jar;C:\Users\rpuliendran\.m2\repository\com\sun\xml\bind\jaxb-impl\2.3.3\jaxb-impl-2.3.3.jar;C:\Users\rpuliendran\.m2\repository\io\rest-assured\json-schema-validator\4.4.0\json-schema-validator-4.4.0.jar;C:\Users\rpuliendran\.m2\repository\com\github\java-json-tools\json-schema-validator\2.2.14\json-schema-validator-2.2.14.jar;C:\Users\rpuliendran\.m2\repository\com\github\java-json-tools\jackson-coreutils-equivalence\1.0\jackson-coreutils-equivalence-1.0.jar;C:\Users\rpuliendran\.m2\repository\com\github\java-json-tools\jackson-coreutils\2.0\jackson-coreutils-2.0.jar;C:\Users\rpuliendran\.m2\repository\com\github\java-json-tools\msg-simple\1.2\msg-simple-1.2.jar;C:\Users\rpuliendran\.m2\repository\com\github\java-json-tools\btf\1.3\btf-1.3.jar;C:\Users\rpuliendran\.m2\repository\com\github\java-json-tools\json-schema-core\1.2.14\json-schema-core-1.2.14.jar;C:\Users\rpuliendran\.m2\repository\com\github\java-json-tools\uri-template\0.10\uri-template-0.10.jar;C:\Users\rpuliendran\.m2\repository\org\mozilla\rhino\1.7.7.2\rhino-1.7.7.2.jar;C:\Users\rpuliendran\.m2\repository\com\sun\mail\mailapi\1.6.2\mailapi-1.6.2.jar;C:\Users\rpuliendran\.m2\repository\com\googlecode\libphonenumber\libphonenumber\8.11.1\libphonenumber-8.11.1.jar;C:\Users\rpuliendran\.m2\repository\net\sf\jopt-simple\jopt-simple\5.0.4\jopt-simple-5.0.4.jar;C:\Users\rpuliendran\.m2\repository\io\rest-assured\json-path\4.4.0\json-path-4.4.0.jar;C:\Users\rpuliendran\.m2\repository\org\codehaus\groovy\groovy-json\3.0.8\groovy-json-3.0.8.jar;C:\Users\rpuliendran\.m2\repository\io\rest-assured\rest-assured-common\4.4.0\rest-assured-common-4.4.0.jar;C:\Users\rpuliendran\.m2\repository\com\microsoft\sqlserver\mssql-jdbc\7.4.1.jre8\mssql-jdbc-7.4.1.jre8.jar;C:\Users\rpuliendran\.m2\repository\com\googlecode\json-simple\json-simple\1.1.1\json-simple-1.1.1.jar;C:\Users\rpuliendran\.m2\repository\com\vimalselvam\test-graphql-java\1.0.0\test-graphql-java-1.0.0.jar;C:\Users\rpuliendran\.m2\repository\com\squareup\okhttp3\okhttp\4.9.1\okhttp-4.9.1.jar;C:\Users\rpuliendran\.m2\repository\com\squareup\okio\okio\2.8.0\okio-2.8.0.jar;C:\Users\rpuliendran\.m2\repository\org\jetbrains\kotlin\kotlin-stdlib-common\1.4.0\kotlin-stdlib-common-1.4.0.jar;C:\Users\rpuliendran\.m2\repository\org\jetbrains\kotlin\kotlin-stdlib\1.4.10\kotlin-stdlib-1.4.10.jar;C:\Users\rpuliendran\.m2\repository\org\jetbrains\annotations\13.0\annotations-13.0.jar;C:\Users\rpuliendran\.m2\repository\com\jayway\jsonpath\json-path\2.6.0\json-path-2.6.0.jar;C:\Users\rpuliendran\.m2\repository\net\minidev\json-smart\2.4.7\json-smart-2.4.7.jar;C:\Users\rpuliendran\.m2\repository\net\minidev\accessors-smart\2.4.7\accessors-smart-2.4.7.jar;C:\Users\rpuliendran\.m2\repository\org\ow2\asm\asm\9.1\asm-9.1.jar;C:\Users\rpuliendran\.m2\repository\org\skyscreamer\jsonassert\1.5.0\jsonassert-1.5.0.jar;C:\Users\rpuliendran\.m2\repository\com\vaadin\external\google\android-json\0.0.20131108.vaadin1\android-json-0.0.20131108.vaadin1.jar;C:\Users\rpuliendran\.m2\repository\com\github\javafaker\javafaker\1.0.2\javafaker-1.0.2.jar;C:\Users\rpuliendran\.m2\repository\org\yaml\snakeyaml\1.23\snakeyaml-1.23-android.jar;C:\Users\rpuliendran\.m2\repository\com\github\mifmif\generex\1.0.2\generex-1.0.2.jar;C:\Users\rpuliendran\.m2\repository\dk\brics\automaton\automaton\1.11-8\automaton-1.11-8.jar
+java.vm.vendor : Eclipse Adoptium
+sun.arch.data.model : 64
+user.variant : 
+headlessmode : 0
+java.vendor.url : https://adoptium.net/
+java.vm.specification.version : 17
+os.name : Windows 10
+sun.java.launcher : SUN_STANDARD
+user.country : US
+sun.boot.library.path : C:\Users\rpuliendran\.p2\pool\plugins\org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_17.0.9.v20231028-0858\jre\bin
+sun.java.command : org.testng.remote.RemoteTestNG -serport 51584 -protocol json -d C:\Users\rpuliendran\git\Checks\web\apps\eo-bdd\test-output C:\Users\RP4284~1\AppData\Local\Temp\testng-eclipse--1825583144\testng-customsuite.xml
+jdk.debug : release
+sun.cpu.endian : little
+user.home : C:\Users\rpuliendran
+user.language : en
+java.specification.vendor : Oracle Corporation
+closebrowser : 0
+java.version.date : 2023-10-17
+java.home : C:\Users\rpuliendran\.p2\pool\plugins\org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_17.0.9.v20231028-0858\jre
+file.separator : \
+java.vm.compressedOopsMode : Zero based
+line.separator : 
+
+java.vm.specification.vendor : Oracle Corporation
+java.specification.name : Java Platform API Specification
+user.script : 
+sun.management.compiler : HotSpot 64-Bit Tiered Compilers
+java.runtime.version : 17.0.9+9
+user.name : rpuliendran
+stdout.encoding : UTF-8
+path.separator : ;
+os.version : 10.0
+java.runtime.name : OpenJDK Runtime Environment
+file.encoding : UTF-8
+browser : chrome
+java.vm.name : OpenJDK 64-Bit Server VM
+java.vendor.version : Temurin-17.0.9+9
+java.vendor.url.bug : https://github.com/adoptium/adoptium-support/issues
+java.io.tmpdir : C:\Users\RP4284~1\AppData\Local\Temp\
+java.version : 17.0.9
+user.dir : C:\Users\rpuliendran\git\Checks\web\apps\eo-bdd
+os.arch : amd64
+java.vm.specification.name : Java Virtual Machine Specification
+env : QA
+sun.os.patch.level : 
+native.encoding : Cp1252
+java.library.path : C:\Users\rpuliendran\.p2\pool\plugins\org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_17.0.9.v20231028-0858\jre\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:/Users/rpuliendran/.p2/pool/plugins/org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_17.0.9.v20231028-0858/jre/bin/server;C:/Users/rpuliendran/.p2/pool/plugins/org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_17.0.9.v20231028-0858/jre/bin;C:\Program Files\Microsoft\jdk-21.0.1.12-hotspot\bin;C:\Program Files\Microsoft\jdk-17.0.9.8-hotspot\bin;C:\Program Files\Python312\Scripts\;C:\Program Files\Python312\;C:\Program Files\Eclipse Adoptium\jdk-8.0.392.8-hotspot\bin;C:\Program Files\Microsoft\jdk-11.0.21.9-hotspot\bin;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Sybase\DBISQL\bin;C:\Sybase\DataAccess64\ADONET\dll;C:\Sybase\DataAccess\ADONET\dll;C:\Sybase\DataAccess64\ODBC\dll;C:\Sybase\DataAccess\ODBC\dll;C:\Sybase\DataAccess64\OLEDB\dll;C:\Sybase\DataAccess\OLEDB\dll;C:\Sybase\OCS-15_0\lib3p64;C:\Sybase\OCS-15_0\lib3p;C:\Sybase\OCS-15_0\dll;C:\Sybase\OCS-15_0\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files (x86)\Microsoft SQL Server\150\DTS\Binn\;C:\Program Files\Azure Data Studio\bin;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Program Files\dotnet\;C:\Program Files\Microsoft VS Code\bin;C:\Program Files\Microsoft OLE DB Provider for DB2\System\;C:\Program Files\Microsoft SQL Server\150\Tools\Binn\;C:\Program Files\Microsoft SQL Server\150\DTS\Binn\;C:\Program Files (x86)\Microsoft SQL Server\110\Tools\Binn\;C:\Program Files\Microsoft SQL Server\110\Tools\Binn\;C:\Program Files (x86)\Microsoft SQL Server\110\DTS\Binn\;C:\Program Files\Microsoft SQL Server\110\DTS\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\130\Tools\Binn\;C:\Program Files (x86)\Microsoft SQL Server\120\DTS\Binn\;C:\Program Files (x86)\Microsoft SQL Server\130\DTS\Binn\;C:\Program Files (x86)\Microsoft SQL Server\140\DTS\Binn\;C:\Python32;C:\Python32\Tools\Scripts;C:\Program Files\Java\jdk1.8.0_202\bin;C:\Users\admin-development\Documents\Mvn\bin;C:\Program Files\WinMerge;C:\Program Files (x86)\Microsoft SQL Server\160\DTS\Binn\;C:\ProgramData\chocolatey\bin;C:\Program Files\nvm;C:\Program Files\WindowsPowerShell\Scripts;C:\Program Files\Java\jre-1.8\bin;C:\Program Files (x86)\Java\jre-1.8\bin;C:\Program Files\nvm;C:\Program Files\nodejs;C:\Program Files\Microsoft SQL Server\140\DTS\Binn\;C:\Program Files\Microsoft SQL Server\160\DTS\Binn\;C:\Program Files\PuTTY\;C:\Program Files\Git\cmd;C:\Program Files\nodejs\;C:\Users\rpuliendran\AppData\Local\Microsoft\WindowsApps;C:\Users\rpuliendran\Downloads\chromedriver-win64\chromedriver-win64\chromedriver.exe;C:\Users\rpuliendran\Downloads\apache-maven-3.9.6-bin\apache-maven-3.9.6\bin;;C:\Users\rpuliendran\eclipse\java-2023-12\eclipse;;.
+java.vm.info : mixed mode
+stderr.encoding : UTF-8
+java.vendor : Eclipse Adoptium
+java.vm.version : 17.0.9+9
+sun.io.unicode.encoding : UnicodeLittle
+java.class.version : 61.0
+--------------------------BT--------------------------------------------
+--------------------------BC--------------------------------------------
+Starting ChromeDriver 114.0.5735.90 (386bc09e8f4f2e025eddae123f36f6263096ae49-refs/branch-heads/5735@{#1052}) on port 9515
+Only local connections are allowed.
+Please see https://chromedriver.chromium.org/security-considerations for suggestions on keeping ChromeDriver safe.
+[1704302207.246][SEVERE]: bind() returned an error: Only one usage of each socket address (protocol/network address/port) is normally permitted. (0x2740)
+IPv6 port not available. Exiting...
+C:\Users\rpuliendran\git\Checks\web\apps\eo-bdd
+--------------------------BM--------------------------------------------
+"Prospect complete Add Members page"
+--------------------------T--------------------------------------------
+10
+
+@tag @addMembers
+Scenario Outline: Prospect add team members by clicking +Add Members button                                     # src/test/resources/UI_Features/Join_AddMembers.feature:24
+hooks
+--------------------------B--------------------------------------------
+TcTagname:null
+featurefilepathraw:file:///C:/Users/rpuliendran/git/Checks/web/apps/eo-bdd/src/test/resources/UI_Features/Join_AddMembers.feature
+
+featurefilepath: C:/Users/rpuliendran/git/Checks/web/apps/eo-bdd/src/test/resources/UI_Features/Join_AddMembers.feature
+currentline: 24
+currentexamplelinenumber:       | Registered Producer | first member | test member | first@test.com |    8758735868 |
+currentexampletcid:  Registered Producer 
+currentexampletcid:  first member 
+currentexampletcid:  test member 
+currentexampletcid:  first@test.com testfield :Execution_Server_ Registered Producer 
+testfield :Execution_Platform_ Registered Producer 
+testfield :Execution_Device_ Registered Producer 
+testfield :Execution_Browser_ Registered Producer 
+C:\Users\rpuliendran\git\Checks\web\apps\eo-bdd\downloadedfiles\ Registered Producer \
+      org.openqa.selenium.SessionNotCreatedException: session not created: This version of ChromeDriver only supports Chrome version 114
+Current browser version is 119.0.6045.200 with binary path C:\Program Files\Google\Chrome\Application\chrome.exe
+Build info: version: '3.10.0', revision: '176b4a9', time: '2018-03-02T19:03:16.397Z'
+System info: host: 'PW1ETSQUAS016AV', ip: '10.128.17.23', os.name: 'Windows 10', os.arch: 'amd64', os.version: '10.0', java.version: '17.0.9'
+Driver info: driver.version: RemoteWebDriver
+remote stacktrace: Backtrace:
+	GetHandleVerifier [0x0111A813+48355]
+	(No symbol) [0x010AC4B1]
+	(No symbol) [0x00FB5358]
+	(No symbol) [0x00FD61AC]
+	(No symbol) [0x00FD1EF3]
+	(No symbol) [0x00FD0579]
+	(No symbol) [0x01000C55]
+	(No symbol) [0x0100093C]
+	(No symbol) [0x00FFA536]
+	(No symbol) [0x00FD82DC]
+	(No symbol) [0x00FD93DD]
+	GetHandleVerifier [0x0137AABD+2539405]
+	GetHandleVerifier [0x013BA78F+2800735]
+	GetHandleVerifier [0x013B456C+2775612]
+	GetHandleVerifier [0x011A51E0+616112]
+	(No symbol) [0x010B5F8C]
+	(No symbol) [0x010B2328]
+	(No symbol) [0x010B240B]
+	(No symbol) [0x010A4FF7]
+	BaseThreadInitThunk [0x764BFCC9+25]
+	RtlGetAppContainerNamedObjectPath [0x77AF7C6E+286]
+	RtlGetAppContainerNamedObjectPath [0x77AF7C3E+238]
+
+	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:499)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:480)
+	at org.openqa.selenium.remote.W3CHandshakeResponse.lambda$new$0(W3CHandshakeResponse.java:57)
+	at org.openqa.selenium.remote.W3CHandshakeResponse.lambda$getResponseFunction$2(W3CHandshakeResponse.java:104)
+	at org.openqa.selenium.remote.ProtocolHandshake.lambda$createSession$0(ProtocolHandshake.java:123)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.Spliterators$ArraySpliterator.tryAdvance(Spliterators.java:1002)
+	at java.base/java.util.stream.ReferencePipeline.forEachWithCancel(ReferencePipeline.java:129)
+	at java.base/java.util.stream.AbstractPipeline.copyIntoWithCancel(AbstractPipeline.java:527)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:513)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.FindOps$FindOp.evaluateSequential(FindOps.java:150)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.findFirst(ReferencePipeline.java:647)
+	at org.openqa.selenium.remote.ProtocolHandshake.createSession(ProtocolHandshake.java:126)
+	at org.openqa.selenium.remote.ProtocolHandshake.createSession(ProtocolHandshake.java:73)
+	at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:138)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:601)
+	at org.openqa.selenium.remote.RemoteWebDriver.startSession(RemoteWebDriver.java:219)
+	at org.openqa.selenium.remote.RemoteWebDriver.<init>(RemoteWebDriver.java:142)
+	at org.openqa.selenium.remote.RemoteWebDriver.<init>(RemoteWebDriver.java:155)
+	at cucumberutils.Driverselector.selectBrowser(Driverselector.java:78)
+	at cucumberutils.Hooks.before(Hooks.java:153)
+
+  Given Login to Expressonbording Application                                                                   # seleniumgluecode.Stepdefs.login_to_Expressonbording_Application()
+  And User enters "testcsk@gmail.com" and "Password"                                                            # seleniumgluecode.Stepdefs.user_enter_username(java.lang.String,java.lang.String)
+  And User Navigates to Add Members page                                                                        # seleniumgluecode.SD_AGTabs.user_Navigates_to_Add_Members_page()
+  Given user is on the Add Members page                                                                         # seleniumgluecode.SD_AGTabs.user_is_on_the_Add_Members_page()
+  When user clicks Add Members buttton                                                                          # seleniumgluecode.SD_addNewEntityAccount.user_clicks_Add_Members_buttton()
+  And user selects 'Registered Producer'                                                                        # seleniumgluecode.SD_addNewEntityAccount.user_selects(java.lang.String)
+  And user enters 'first member' value in firstName field and 'test member' value in lastName field             # seleniumgluecode.SD_addNewEntityAccount.user_enters_value_in_firstName_field_and_value_in_lastName_field(java.lang.String,java.lang.String)
+  And user enters 'first@test.com' value in personal email field and '8758735868' value in personal phone field # seleniumgluecode.SD_addNewEntityAccount.user_enters_value_in_personal_email_field_and_value_in_personal_phone_field(java.lang.String,java.lang.String)
+  Then user clicks add members button in Popup                                                                  # seleniumgluecode.SD_addNewEntityAccount.user_clicks_add_members_button_in_Popup()
+  And verifies the added users display 'first member'  'test member' 'first@test.com' '8758735868'              # seleniumgluecode.SD_addNewEntityAccount.verifies_the_added_users_display(java.lang.String,java.lang.String,java.lang.String,java.lang.String)
+-----------------JUA-------------
+Prospect add team members by clicking +Add Members button Status - FAILED
+      java.lang.NullPointerException: Cannot invoke "org.openqa.selenium.TakesScreenshot.getScreenshotAs(org.openqa.selenium.OutputType)" because the return value of "java.lang.ThreadLocal.get()" is null
+	at cucumberutils.screenshot.getByteScreenshot(screenshot.java:26)
+	at cucumberutils.Hooks.afterScenario(Hooks.java:191)
+
+--------------------------AM--------------------------------------------
+--------------------------AC--------------------------------------------
+start
+C:\Users\rpuliendran\git\Checks\web\apps\eo-bdd
+log4j:WARN No appenders could be found for logger (freemarker.cache).
+log4j:WARN Please initialize the log4j system properly.
+log4j:WARN See http://logging.apache.org/log4j/1.2/faq.html#noconfig for more info.
+
+Failed scenarios:
+file:///C:/Users/rpuliendran/git/Checks/web/apps/eo-bdd/src/test/resources/UI_Features/Join_AddMembers.feature:24# Prospect add team members by clicking +Add Members button
+
+1 Scenarios (1 failed)
+10 Steps (10 skipped)
+0m4.674s
+
+
+org.openqa.selenium.SessionNotCreatedException: session not created: This version of ChromeDriver only supports Chrome version 114
+Current browser version is 119.0.6045.200 with binary path C:\Program Files\Google\Chrome\Application\chrome.exe
+Build info: version: '3.10.0', revision: '176b4a9', time: '2018-03-02T19:03:16.397Z'
+System info: host: 'PW1ETSQUAS016AV', ip: '10.128.17.23', os.name: 'Windows 10', os.arch: 'amd64', os.version: '10.0', java.version: '17.0.9'
+Driver info: driver.version: RemoteWebDriver
+remote stacktrace: Backtrace:
+	GetHandleVerifier [0x0111A813+48355]
+	(No symbol) [0x010AC4B1]
+	(No symbol) [0x00FB5358]
+	(No symbol) [0x00FD61AC]
+	(No symbol) [0x00FD1EF3]
+	(No symbol) [0x00FD0579]
+	(No symbol) [0x01000C55]
+	(No symbol) [0x0100093C]
+	(No symbol) [0x00FFA536]
+	(No symbol) [0x00FD82DC]
+	(No symbol) [0x00FD93DD]
+	GetHandleVerifier [0x0137AABD+2539405]
+	GetHandleVerifier [0x013BA78F+2800735]
+	GetHandleVerifier [0x013B456C+2775612]
+	GetHandleVerifier [0x011A51E0+616112]
+	(No symbol) [0x010B5F8C]
+	(No symbol) [0x010B2328]
+	(No symbol) [0x010B240B]
+	(No symbol) [0x010A4FF7]
+	BaseThreadInitThunk [0x764BFCC9+25]
+	RtlGetAppContainerNamedObjectPath [0x77AF7C6E+286]
+	RtlGetAppContainerNamedObjectPath [0x77AF7C3E+238]
+
+	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:499)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:480)
+	at org.openqa.selenium.remote.W3CHandshakeResponse.lambda$new$0(W3CHandshakeResponse.java:57)
+	at org.openqa.selenium.remote.W3CHandshakeResponse.lambda$getResponseFunction$2(W3CHandshakeResponse.java:104)
+	at org.openqa.selenium.remote.ProtocolHandshake.lambda$createSession$0(ProtocolHandshake.java:123)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.Spliterators$ArraySpliterator.tryAdvance(Spliterators.java:1002)
+	at java.base/java.util.stream.ReferencePipeline.forEachWithCancel(ReferencePipeline.java:129)
+	at java.base/java.util.stream.AbstractPipeline.copyIntoWithCancel(AbstractPipeline.java:527)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:513)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.FindOps$FindOp.evaluateSequential(FindOps.java:150)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.findFirst(ReferencePipeline.java:647)
+	at org.openqa.selenium.remote.ProtocolHandshake.createSession(ProtocolHandshake.java:126)
+	at org.openqa.selenium.remote.ProtocolHandshake.createSession(ProtocolHandshake.java:73)
+	at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:138)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:601)
+	at org.openqa.selenium.remote.RemoteWebDriver.startSession(RemoteWebDriver.java:219)
+	at org.openqa.selenium.remote.RemoteWebDriver.<init>(RemoteWebDriver.java:142)
+	at org.openqa.selenium.remote.RemoteWebDriver.<init>(RemoteWebDriver.java:155)
+	at cucumberutils.Driverselector.selectBrowser(Driverselector.java:78)
+	at cucumberutils.Hooks.before(Hooks.java:153)
+
 java.lang.NullPointerException: Cannot invoke "org.openqa.selenium.TakesScreenshot.getScreenshotAs(org.openqa.selenium.OutputType)" because the return value of "java.lang.ThreadLocal.get()" is null
 	at cucumberutils.screenshot.getByteScreenshot(screenshot.java:26)
 	at cucumberutils.Hooks.afterScenario(Hooks.java:191)
+
+
+after test
+FAILED: scenario("Prospect add team members by clicking +Add Members button", "Prospect complete Add Members page")
+        Runs Cucumber Scenarios
+org.openqa.selenium.SessionNotCreatedException: session not created: This version of ChromeDriver only supports Chrome version 114
+Current browser version is 119.0.6045.200 with binary path C:\Program Files\Google\Chrome\Application\chrome.exe
+Build info: version: '3.10.0', revision: '176b4a9', time: '2018-03-02T19:03:16.397Z'
+System info: host: 'PW1ETSQUAS016AV', ip: '10.128.17.23', os.name: 'Windows 10', os.arch: 'amd64', os.version: '10.0', java.version: '17.0.9'
+Driver info: driver.version: RemoteWebDriver
+remote stacktrace: Backtrace:
+	GetHandleVerifier [0x0111A813+48355]
+	(No symbol) [0x010AC4B1]
+	(No symbol) [0x00FB5358]
+	(No symbol) [0x00FD61AC]
+	(No symbol) [0x00FD1EF3]
+	(No symbol) [0x00FD0579]
+	(No symbol) [0x01000C55]
+	(No symbol) [0x0100093C]
+	(No symbol) [0x00FFA536]
+	(No symbol) [0x00FD82DC]
+	(No symbol) [0x00FD93DD]
+	GetHandleVerifier [0x0137AABD+2539405]
+	GetHandleVerifier [0x013BA78F+2800735]
+	GetHandleVerifier [0x013B456C+2775612]
+	GetHandleVerifier [0x011A51E0+616112]
+	(No symbol) [0x010B5F8C]
+	(No symbol) [0x010B2328]
+	(No symbol) [0x010B240B]
+	(No symbol) [0x010A4FF7]
+	BaseThreadInitThunk [0x764BFCC9+25]
+	RtlGetAppContainerNamedObjectPath [0x77AF7C6E+286]
+	RtlGetAppContainerNamedObjectPath [0x77AF7C3E+238]
+
+	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:499)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:480)
+	at org.openqa.selenium.remote.W3CHandshakeResponse.lambda$new$0(W3CHandshakeResponse.java:57)
+	at org.openqa.selenium.remote.W3CHandshakeResponse.lambda$getResponseFunction$2(W3CHandshakeResponse.java:104)
+	at org.openqa.selenium.remote.ProtocolHandshake.lambda$createSession$0(ProtocolHandshake.java:123)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.Spliterators$ArraySpliterator.tryAdvance(Spliterators.java:1002)
+	at java.base/java.util.stream.ReferencePipeline.forEachWithCancel(ReferencePipeline.java:129)
+	at java.base/java.util.stream.AbstractPipeline.copyIntoWithCancel(AbstractPipeline.java:527)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:513)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.FindOps$FindOp.evaluateSequential(FindOps.java:150)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.findFirst(ReferencePipeline.java:647)
+	at org.openqa.selenium.remote.ProtocolHandshake.createSession(ProtocolHandshake.java:126)
+	at org.openqa.selenium.remote.ProtocolHandshake.createSession(ProtocolHandshake.java:73)
+	at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:138)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:601)
+	at org.openqa.selenium.remote.RemoteWebDriver.startSession(RemoteWebDriver.java:219)
+	at org.openqa.selenium.remote.RemoteWebDriver.<init>(RemoteWebDriver.java:142)
+	at org.openqa.selenium.remote.RemoteWebDriver.<init>(RemoteWebDriver.java:155)
+	at cucumberutils.Driverselector.selectBrowser(Driverselector.java:78)
+	at cucumberutils.Hooks.before(Hooks.java:153)
+
+
+===============================================
+    Default test
+    Tests run: 1, Failures: 1, Skips: 0
+===============================================
+
+
+===============================================
+Default suite
+Total tests run: 1, Passes: 0, Failures: 1, Skips: 0
+===============================================
+
