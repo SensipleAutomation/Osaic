@@ -1,1 +1,5 @@
-Lead "AutoJohn Doetest" was created.
+@Then("^User Validate the Success message Toaster \"([^\"]*)\"AutoJohn Doetest\\\"([^\"]*)\"$")
+public void user_Validate_the_Success_message_Toaster_AutoJohn_Doetest(String arg1, String arg2) throws Throwable {
+    // Write code here that turns the phrase above into concrete actions
+    throw new PendingException();
+}
