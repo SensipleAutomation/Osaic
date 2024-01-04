@@ -1,16 +1,11 @@
-[INFO] [1m--- [0;32mcompiler:3.7.0:compile[m [1m(default-compile)[m @ [36meo-bdd[0;1m ---[m
-[INFO] Changes detected - recompiling the module!
-[INFO] Compiling 109 source files to C:\Users\rpuliendran\git\web\apps\eo-bdd\target\classes
-[INFO] [1m------------------------------------------------------------------------[m
-[INFO] [1;31mBUILD FAILURE[m
-[INFO] [1m------------------------------------------------------------------------[m
-[INFO] Total time:  12.101 s
-[INFO] Finished at: 2024-01-04T20:16:01+05:30
-[INFO] [1m------------------------------------------------------------------------[m
-[ERROR] Failed to execute goal [32morg.apache.maven.plugins:maven-compiler-plugin:3.7.0:compile[m [1m(default-compile)[m on project [36meo-bdd[m: [1;31mFatal error compiling[m: java.lang.IllegalAccessError: class lombok.javac.apt.LombokProcessor (in unnamed module @0x68be0478) cannot access class com.sun.tools.javac.processing.JavacProcessingEnvironment (in module jdk.compiler) because module jdk.compiler does not export com.sun.tools.javac.processing to unnamed module @0x68be0478 -> [1m[Help 1][m
-[ERROR] 
-[ERROR] To see the full stack trace of the errors, re-run Maven with the [1m-e[m switch.
-[ERROR] Re-run Maven using the [1m-X[m switch to enable full debug logging.
-[ERROR] 
-[ERROR] For more information about the errors and possible solutions, please read the following articles:
-[ERROR] [1m[Help 1][m http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException
+Class not found runner.UIRunner
+java.lang.ClassNotFoundException: runner.UIRunner
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:641)
+	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:188)
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:526)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.loadClass(RemoteTestRunner.java:766)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.loadClasses(RemoteTestRunner.java:490)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:513)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:756)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:452)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:210)
