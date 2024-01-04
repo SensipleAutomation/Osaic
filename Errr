@@ -1,208 +1,315 @@
-package cucumberutils;
+package webpages;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
+import java.util.Date;
+import java.util.List;
 
-import org.openqa.selenium.MutableCapabilities;
-import org.openqa.selenium.UnexpectedAlertBehaviour;
+import javax.imageio.ImageIO;
+
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeDriverService;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.remote.CapabilityType;
-import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.safari.SafariOptions;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.FindBys;
+import org.openqa.selenium.support.PageFactory;
+import org.testng.Assert;
 
 import com.codoid.products.exception.FilloException;
 
-import cucumberutils.Browsers;
-import cucumberutils.Server;
 import datadriven.data;
+import operators.scs;
+import reports.ExtentManager;
+import reports.ExtentTestManager;
+import ru.yandex.qatools.ashot.AShot;
+import ru.yandex.qatools.ashot.Screenshot;
+import ru.yandex.qatools.ashot.shooting.ShootingStrategies;
+import ru.yandex.qatools.ashot.shooting.ShootingStrategy;
+import utility.ConfigFileReader;
 
-public class Driverselector {
-	public static ChromeDriverService service = null;
-	public static ThreadLocal<WebDriver> drivers = new ThreadLocal<WebDriver>();
-	private ThreadLocal<String> sessionId = new ThreadLocal<String>();
-	int headless = Integer.parseInt(System.getProperty("headlessmode"));
-	// int closebrowser =1;
-	String Tcid = tcid.getqry();
-	// public static WebDriver driver= null;
+public class loginpage {
 
-	public WebDriver selectBrowser(String server, String browser) throws MalformedURLException, FilloException {
-		String Execution_Server = data.getTestValue("Execution_Server", Tcid);
-		String Execution_Platform = data.getTestValue("Execution_Platform", Tcid);
-		String Execution_Device = data.getTestValue("Execution_Device", Tcid);
-		String Execution_Browser = data.getTestValue("Execution_Browser", Tcid);
-		String Downloadedfilepath = System.getProperty("user.dir") + "\\downloadedfiles\\" + Tcid + "\\";
-		File theDir = new File(Downloadedfilepath);
-		theDir.mkdirs();
-		System.out.println(Downloadedfilepath);
-		if (server.equalsIgnoreCase(Server.LOCAL.name()) || server.equals("")) {
-			if (browser.equalsIgnoreCase(Browsers.CHROME.name())) {
-//				System.setProperty("webdriver.chrome.driver", "chromedriver91.exe");
-				Map<String, Object> prefs = new HashMap<String, Object>();
-				prefs.put("profile.default_content_setting_values.notifications", 2);
-				prefs.put("credentials_enable_service", false);
-				prefs.put("profile.password_manager_enabled", false);
-				prefs.put("download.default_directory", Downloadedfilepath);
-				// options.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR,
-				// UnexpectedAlertBehaviour.ACCEPT);
-				ChromeOptions options = new ChromeOptions();
-				options.setBinary("C:\\Users\\rpuliendran\\Downloads\\chrome-win64 (1)\\chrome-win64");
-				// options.setExperimentalOption("excludeSwitches",Arrays.asList("test-type"));
-				options.setExperimentalOption("prefs", prefs);
-				options.addArguments("--test-type");
-				options.addArguments("start-maximized");
-				options.addArguments("--incognito");
-				options.addArguments("disable-infobars");
-				options.addArguments("--disable-extensions");
-				options.addArguments("--disable-backgrounding-occluded-windows");
-				if (headless == 1) {
-					options.addArguments("--headless");
-					options.addArguments("--disable-gpu");
-					options.addArguments("--window-size=1400,800");
-				}
-				options.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.IGNORE);
-				options.setUnhandledPromptBehaviour(UnexpectedAlertBehaviour.IGNORE);
-				// String hosturl=chromeservice.getUrl().toString();
-				// driver = new ChromeDriver(options);
-				String hosturl = service.getUrl().toString();
-				drivers.set(new RemoteWebDriver(new URL(hosturl), options));
-				String id = ((RemoteWebDriver) getWebDriver()).getSessionId().toString();
-				sessionId.set(id);
+	WebDriver driver;
 
-			} /*
-				 * else if (browser.equalsIgnoreCase(Browsers.FIREFOX.name())) {
-				 * System.setProperty("webdriver.gecko.driver", System.getProperty("user.dir") +
-				 * "/src/test/resources/drivers/geckodriver.exe"); driver = new FirefoxDriver();
-				 * } driver.manage().window().maximize(); } else if
-				 * (server.equalsIgnoreCase(Server.SAUCE.name())) { //ms:edgeOptions
-				 * //moz:firefoxOptions //Safari:SafariOptions MutableCapabilities sauceOptions
-				 * = new MutableCapabilities(); sauceOptions.setCapability("seleniumVersion",
-				 * "3.141.59"); sauceOptions.setCapability("maxDuration", 3600);
-				 * sauceOptions.setCapability("commandTimeout", 600);
-				 * sauceOptions.setCapability("idleTimeout", 1000);
-				 * sauceOptions.setCapability("name", Tcid+"_equiptNAOtest_");
-				 * sauceOptions.setCapability("build", "decrelease2rerun");
-				 * sauceOptions.setCapability("videoUploadOnPass", "false");
-				 * sauceOptions.setCapability("public", "private");
-				 * //sauceOptions.setCapability("platformName", "Windows 10");
-				 * if(Execution_Platform.equalsIgnoreCase("Android")) {
-				 * if(Execution_Device.equalsIgnoreCase("Samsung")) { DesiredCapabilities caps =
-				 * DesiredCapabilities.android(); caps.setCapability("appiumVersion", "1.20.2");
-				 * caps.setCapability(
-				 * "deviceName","Samsung Galaxy S9 Plus WQHD GoogleAPI Emulator");
-				 * caps.setCapability("deviceOrientation", "portrait");
-				 * caps.setCapability("browserName", "Chrome");
-				 * caps.setCapability("platformVersion", "8.1");
-				 * caps.setCapability("platformName","Android");
-				 * caps.setCapability("unicodeKeyboard", true);
-				 * caps.setCapability("resetKeyboard", true);
-				 * caps.setCapability("autoGrantPermissions", true);
-				 * caps.setCapability("MobileCapabilityType.AUTOMATION_NAME",
-				 * "AutomationName.ANDROID_UIAUTOMATOR2"); this.driver = new RemoteWebDriver(new
-				 * URL(
-				 * "http://avincent:715c984a-0993-497e-b308-64ac750a0180@ondemand.saucelabs.com:80/wd/hub"
-				 * ),caps); } }else if(Execution_Platform.equalsIgnoreCase("ios")) {
-				 * if(Execution_Device.equalsIgnoreCase("iphone")) {
-				 * System.out.println("iphone"); DesiredCapabilities caps =
-				 * DesiredCapabilities.iphone(); caps.setCapability("appiumVersion", "1.20.1");
-				 * caps.setCapability("deviceName","iPhone 12 Pro Max Simulator");
-				 * 
-				 * caps.setCapability("deviceOrientation", "landscape");
-				 * caps.setCapability("platformVersion","14.3");
-				 * caps.setCapability("platformName", "iOS");
-				 * //caps.setCapability("sauce:options", sauceOptions);
-				 * caps.setCapability("browserName", "Safari");
-				 * caps.setCapability("unicodeKeyboard", true);
-				 * caps.setCapability("resetKeyboard", true);
-				 * caps.setCapability("ignoreZoomSetting", true);
-				 * //caps.setCapability("autoAcceptAlerts", true);
-				 * //caps.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR,
-				 * UnexpectedAlertBehaviour.IGNORE);
-				 * caps.setCapability(CapabilityType.SUPPORTS_FINDING_BY_CSS, true);
-				 * caps.setCapability(CapabilityType.SUPPORTS_JAVASCRIPT, true);
-				 * //caps.setUseTechnologyPreview(true); //caps.setCapability("safariOptions",
-				 * true); this.driver = new RemoteWebDriver(new URL(
-				 * "http://avincent:715c984a-0993-497e-b308-64ac750a0180@ondemand.saucelabs.com:80/wd/hub"
-				 * ),caps); }else if(Execution_Device.equalsIgnoreCase("ipad")) {
-				 * DesiredCapabilities caps = DesiredCapabilities.iphone();
-				 * caps.setCapability("appiumVersion", "1.20.1"); caps.setCapability(
-				 * "deviceName","iPad Pro (12.9 inch) (4th generation) Simulator");
-				 * caps.setCapability("deviceOrientation", "landscape");
-				 * caps.setCapability("platformVersion","14.3");
-				 * caps.setCapability("platformName", "iOS");
-				 * //caps.setCapability("sauce:options", sauceOptions);
-				 * caps.setCapability("browserName", "Safari");
-				 * caps.setCapability("unicodeKeyboard", true);
-				 * caps.setCapability("resetKeyboard", true);
-				 * caps.setCapability("autoAcceptPermissions", true); this.driver = new
-				 * RemoteWebDriver(new URL(
-				 * "http://avincent:715c984a-0993-497e-b308-64ac750a0180@ondemand.saucelabs.com:80/wd/hub"
-				 * ),caps);
-				 * 
-				 * } }else if(Execution_Platform.equalsIgnoreCase("PC")) {
-				 * 
-				 * driver.manage().window().maximize(); }else
-				 * if(Execution_Platform.equalsIgnoreCase("Mac")) {
-				 * 
-				 * 
-				 * SafariOptions browserOptions = new SafariOptions();
-				 * browserOptions.setUseCleanSession(true);
-				 * browserOptions.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR,
-				 * UnexpectedAlertBehaviour.IGNORE);
-				 * browserOptions.setCapability(CapabilityType.SUPPORTS_FINDING_BY_CSS, true);
-				 * browserOptions.setCapability(CapabilityType.SUPPORTS_JAVASCRIPT, true);
-				 * browserOptions.setUseTechnologyPreview(true);
-				 * browserOptions.setCapability("safariOptions", true);
-				 * browserOptions.setCapability("platformName", "macOS 10.15");
-				 * //browserOptions.setCapability("browserVersion", "13.1");
-				 * browserOptions.setCapability("sauce:options", sauceOptions);
-				 * browserOptions.setCapability("automaticInspection", true);
-				 * browserOptions.setCapability("automaticProfiling", true);
-				 * browserOptions.setCapability("cssSelectorsEnabled", true);
-				 * browserOptions.setCapability("handlesAlerts", true);
-				 * browserOptions.setCapability("javascriptEnabled", true); MutableCapabilities
-				 * capabilities = new MutableCapabilities();
-				 * capabilities.setCapability("sauce:options", sauceOptions);
-				 * capabilities.setCapability("safari:safariOptions", browserOptions);
-				 * capabilities.setCapability("browserName", "Safari"); this.driver = new
-				 * RemoteWebDriver(new URL(
-				 * "http://avincent:715c984a-0993-497e-b308-64ac750a0180@ondemand.saucelabs.com:80/wd/hub"
-				 * ),browserOptions); driver.manage().window().maximize(); }
-				 */
+	private static String PAGE_URL_PROD_BO ="http://spatro:Dec-2022@portaluseradmin/NTLMAuthenticate/NTLMAuthenticateAdvisorPortal.aspx?referrer=/support/bo_reports/index.aspx";
+	//private static String PAGE_URL_PROD_FO = "https://www.v2020.com/login.aspx";
+	private static String PAGE_URL_PROD_FO = "https://www.v2020.com/APLoginredirect.aspx";
+	private static String PAGE_URL_DEV_BO= "http://agdev.v2020.com/login.aspx";
+	private static String PAGE_URL_DEV_FO = "http://avincent:Welcome18@qaportaluseradmin/NTLMAuthenticate/NTLMAuthenticateAdvisorPortal.aspx?referrer=/SelectDelegateUserId.aspx";
+	private static String PAGE_URL_QA_BO = "http://spatro:Dec-2022@qaportaluseradmin/NTLMAuthenticate/NTLMAuthenticateAdvisorPortal.aspx?referrer=/SelectDelegateUserId.aspx";
+	private static String PAGE_URL_QA_FO = "http://agqa.v2020.com/login.aspx";
+	
+	@FindBy(id = "userid")
+	public WebElement o_userid;
 
-			// this.driver = new RemoteWebDriver(new
-			// URL("http://avincent:715c984a-0993-497e-b308-64ac750a0180@ondemand.saucelabs.com:80/wd/hub"),capabilities);
+	@FindBy(id = "ext-gen63")
+	public WebElement o_userclick;
+
+	@FindBy(id = "ext-gen4")
+	public WebElement o_passwordexpireno;
+
+	@FindBy(id = "loginpwd")
+	public WebElement o_pass;
+
+
+	@FindBy(css = "img[alt='Submit']")
+	public WebElement o_login;
+
+
+	@FindBy(id = "ext-gen121")
+	public WebElement o_popuplogin;
+
+	@FindBy(css = "input[name='rdChallangeList'][value='QUESTION']")
+	public WebElement o_RSAoptions;
+
+	@FindBy(css = "button[id='btnContinue'][text='Continue']")
+	public WebElement o_RSAoptionContinue;
+
+	@FindBy(css = "span[id='lblQuestion'][class='labelText']")
+	public WebElement o_RSAquestion;
+
+	@FindBy(css = "input[name='questionsList1_answer'][type='password']")
+	public WebElement o_RSAanswer;
+
+	@FindBy(css = "button[id='btnchQuestion'][text='Continue']")
+	public WebElement o_RSAquestionContinue;
+
+
+	public loginpage(WebDriver driver) {
+		this.driver = driver;
+		PageFactory.initElements(driver, this);
+		 }
+	
+	public synchronized homepage navtohomepageBO() throws FilloException, InterruptedException, IOException{
+    synchronized(loginpage.class){
+
+    if(System.getProperty("env").equals("QA")){
+    	driver.get(PAGE_URL_QA_BO);
+    	}
+    else if(System.getProperty("env").equals("PROD"))
+    {
+    	driver.get(PAGE_URL_PROD_BO);
+    	}
+    else if(System.getProperty("env").equals("DEV")) {
+    	driver.get(PAGE_URL_DEV_BO);
+    }
+    }
+    return new homepage(driver);
+	}
+	
+	
+	public synchronized homepage navtohomepage(String qry) throws FilloException, InterruptedException, IOException{
+        synchronized(loginpage.class){
+        	String excelname = System.getProperty("env");
+        if(!excelname.contains("FO")){
+        Thread.sleep(10);
+        o_userid.clear();
+        Thread.sleep(10);
+        data.inText(o_userid,"Username",qry);
+        o_userclick.click();
+        Thread.sleep(3000);
+        data.inText(o_pass, "Password", qry);
+        o_login.click();
+        Thread.sleep(4000);
+        boolean ispresenta = driver.getPageSource().contains("Continue with this Session");
+        Thread.sleep(30);
+        if(ispresenta == true){
+
+            //String draw =o_popuplogin.getCssValue("class");
+            System.out.println("Welcome");
+            /*Alert alert = driver.switchTo().alert();
+            alert.accept();    */
+            Thread.sleep(30);
+            o_popuplogin.click();
+
+        }
+        Thread.sleep(6000);
+        boolean passwordnoti = driver.getPageSource().contains("Do you want to change it now?");
+        //List<WebElement> ispresentb = driver.findElements(By.id("ext-gen162"));
+        Thread.sleep(30);
+
+
+        if(passwordnoti == true){
+
+            //String draw =o_popuplogin.getCssValue("class");
+            //System.out.println("Welcome");
+            /*Alert alert = driver.switchTo().alert();
+            alert.accept();    */
+            Thread.sleep(30);
+            driver.findElement(By.id("ext-gen164")).click();
+
+        }
+        //Password Notification
+        Thread.sleep(3000);
+        Thread.sleep(4000);   
+
+        boolean CyberGuard = driver.getPageSource().contains("CyberGuard Program Minimum Requirements");
+        if(CyberGuard == true){
+
+            //String draw =o_popuplogin.getCssValue("class");
+            //System.out.println("Welcome");
+            /*Alert alert = driver.switchTo().alert();
+            alert.accept();    */
+            Thread.sleep(30);
+            driver.findElement(By.id("continue_btn_for_ag")).click();
+
+        }
+        Thread.sleep(7000);   
+
+        if(driver.getTitle().equals("RSA_V3_Authentication")){
+            PageFactory.initElements(driver, this);
+            Thread.sleep(500);
+        driver.findElement(By.cssSelector("input[name='rdChallangeList'][value='QUESTION']")).click();
+        driver.findElement(By.cssSelector("button[id='btnContinue'][text='Continue']")).click();
+        Thread.sleep(500);
+
+        String quest=driver.findElement(By.cssSelector("span[id='lblQuestion'][class='labelText']")).getText();
+        String lastchara=quest.substring(quest.length() - 1);
+        //System.out.println(lastchara);
+            if(lastchara.equals("?")){
+            String lastWord = quest.substring(quest.lastIndexOf(" ")+1);
+            String removeQmark =lastWord.substring(0, lastWord.length() - 1);
+            Thread.sleep(500);
+            System.out.println(removeQmark);
+            o_RSAanswer.sendKeys(removeQmark);
+        }else{
+            String[] parts = quest.split("\\?");
+
+            String first = parts[0];
+            String lastWord = first.substring(first.lastIndexOf(" ")+1);
+            Thread.sleep(500);
+            //String second = parts[1];
+            System.out.println(lastWord);
+            o_RSAanswer.sendKeys(lastWord);
+
+        }
+
+        o_RSAquestionContinue.click();
+        Thread.sleep(50);       
+        }
+
+        }
+        } return new homepage(driver);
+
+        }
+	
+	public synchronized homepage navtohomepageasFO()
+			throws FilloException, InterruptedException, IOException {
+		synchronized (loginpage.class) {
+			ConfigFileReader CR= new ConfigFileReader();
+			String env1=System.getProperty("env");
+			System.out.println(env1);
+			   if(System.getProperty("env").equals("QA")){
+			    	driver.get(PAGE_URL_QA_FO);
+			    	loginwithusernamepassword(CR.getQAFOusername(),CR.getQAFOpassword());
+			    	}
+			    else if(System.getProperty("env").equals("PROD"))
+			    {
+			    	driver.get(PAGE_URL_PROD_FO);
+			    	loginwithusernamepassword(CR.getPRODFOusername(),CR.getPRODFOpassword());
+			    	}
+			    else if(System.getProperty("env").equals("DEV")) {
+			    	driver.get(PAGE_URL_DEV_FO);
+			    	loginwithusernamepassword(CR.getDEVFOusername(),CR.getDEVFOpassword());
+			    }
+		  
+			   return new homepage(driver);
+
+	}
+	}
+
+	public void loginwithusernamepassword(String UserName, String Password) throws InterruptedException{
+
+		Thread.sleep(10);
+
+		o_userid.clear();
+		Thread.sleep(10);
+		o_userid.sendKeys(UserName);
+
+		o_userclick.click();
+		Thread.sleep(3000);
+		o_pass.sendKeys(Password);
+		o_login.click();
+		Thread.sleep(4000);
+		boolean ispresenta = driver.getPageSource().contains("Continue with this Session");
+		Thread.sleep(30);
+
+		if (ispresenta == true) {
+			System.out.println("Welcome");
+			Thread.sleep(30);
+			o_popuplogin.click();
 
 		}
-		drivers.get().manage().timeouts().implicitlyWait(40, TimeUnit.SECONDS);
+		Thread.sleep(6000);
+		boolean passwordnoti = driver.getPageSource().contains("Do you want to change it now?");
+		
+		Thread.sleep(30);
 
-		return drivers.get();
+		if (passwordnoti == true) {
+			Thread.sleep(30);
+			driver.findElement(By.id("ext-gen164")).click();
+
+		}
+		
+		Thread.sleep(3000);
+		Thread.sleep(4000);
+
+		boolean CyberGuard = driver.getPageSource().contains("CyberGuard Program Minimum Requirements");
+		if (CyberGuard == true) {
+			Thread.sleep(30);
+			driver.findElement(By.id("continue_btn_for_ag")).click();
+
+		}
+		Thread.sleep(7000);
+
+		if (driver.getTitle().equals("RSA_V3_Authentication")) {
+			PageFactory.initElements(driver, this);
+			Thread.sleep(500);
+			driver.findElement(By.cssSelector("input[name='rdChallangeList'][value='QUESTION']")).click();
+			driver.findElement(By.cssSelector("button[id='btnContinue'][text='Continue']")).click();
+			Thread.sleep(500);
+			String quest = driver.findElement(By.cssSelector("span[id='lblQuestion'][class='labelText']"))
+					.getText();
+			
+			String lastchara = quest.substring(quest.length() - 1);
+
+			if (lastchara.equals("?")) {
+				String lastWord = quest.substring(quest.lastIndexOf(" ") + 1);
+				String removeQmark = lastWord.substring(0, lastWord.length() - 1);
+				Thread.sleep(500);
+				System.out.println(removeQmark);
+				o_RSAanswer.sendKeys(removeQmark);
+			} else {
+				String[] parts = quest.split("\\?");
+
+				String first = parts[0];
+				String lastWord = first.substring(first.lastIndexOf(" ") + 1);
+				Thread.sleep(500);
+
+				System.out.println(lastWord);
+				o_RSAanswer.sendKeys(lastWord);
+
+			}
+			o_RSAquestionContinue.click();
+			Thread.sleep(50);
+		}
 	}
 
-	public static ChromeDriverService initializeservericebrowser() throws IOException {
-		service = new ChromeDriverService.Builder().usingDriverExecutable(new File("chromedriver91.exe"))
-				.usingPort(9515)
-				// .usingAnyFreePort()
-				.build();
-		service.start();
-		return service;
-	}
+	public void f_loginpage(String qry) throws FilloException {
+		data.inText(o_userid, "Username", qry);
+		o_userclick.click();
+		data.inText(o_pass, "Password", qry);
+		o_login.click();
+		if (o_popuplogin.isDisplayed()) {
+			System.out.println("popupisdisplayed");
+			o_popuplogin.click();
+			// ExtentTestManager.getTest().info("all done");
 
-	public WebDriver getWebDriver() {
-		return drivers.get();
-	}
-
-	public String getSessionId() {
-		return sessionId.get();
+		}
 	}
 }
