@@ -1,1 +1,36 @@
-The method explicit_wait_elementvisibility(WebElement) is undefined for the type SD_CRM_NewProspectCreation
+public class TestUtils {
+
+	public TestUtils(WebDriver driver) {
+		this.driver = driver;
+		PageFactory.initElements(driver, this);
+	}
+
+	static WebDriver driver;
+
+	public static Boolean bl_flag = false;
+	static double total_var = 0;
+
+	public static String getRandomSSN() {
+		String ssn = null;
+		SimpleDateFormat f = new SimpleDateFormat("yyMMddss");
+		ssn = f.format(new Date()) + 0;
+
+		return ssn;
+
+	}
+
+	public static void scorllToElementAndClick(WebElement e) {
+		JavascriptExecutor executor = (JavascriptExecutor) driver;
+		executor.executeScript("arguments[0].scrollIntoView(true);", e);
+		e.click();
+	}
+
+	public static void scorllToElement(WebElement e) {
+		JavascriptExecutor executor = (JavascriptExecutor) driver;
+		executor.executeScript("arguments[0].scrollIntoView(true);", e);
+	}
+
+	public static void jsSendKeys(WebElement e, String value) {
+		JavascriptExecutor jse = (JavascriptExecutor) driver;
+		jse.executeScript("arguments[0].setAttribute('value', '" + value + "')", e);
+	}
