@@ -1,11 +1,58 @@
-Dec 19, 2023 4:57:41 PM io.cucumber.junit.Cucumber <init>
-WARNING: By default Cucumber is running in --non-strict mode.
-This default will change to --strict and --non-strict will be removed.
-You can use --strict or @CucumberOptions(strict = true) to suppress this warning
-Dec 19, 2023 4:57:41 PM io.cucumber.core.runtime.FeaturePathFeatureSupplier get
-WARNING: No features found at classpath:/runner
-
-0 Scenarios
-0 Steps
-0m0.000s
-C:\Users\rpuliendran\Downloads\eo-bdd\eo-bdd\src\test\resources\UI_Features\AddNewAccountEntity.feature
+Feature: CRM New Prospect Creation 
+@ProspectCreationCRM
+Scenario Outline: Login to CRM Application 
+	Given User Launch the CRM Full Application login page 
+	When the user enters valid username "<username>" and valid password "<password>" 
+	And clicks the login button 
+	And User should be redirected to the dashboard 
+	
+	
+	Examples: 
+		| username | password |
+		| mounika.golla@advisorgroup.com.crm2.qafull | $aLesforcE123 |
+@ProspectCreationCRM		
+Scenario Outline: New Prospect Creation Personal Profile 
+	User updates personal information
+	When User select the Business Development and leads 
+	And User Verifies whether the New Button is available and click 
+	And User Validate the NewLead Header "New Lead: Standard" is present 
+	When user enters "<FirstName>" value in FirstName field and "<LastName>" value in LastName field 
+	When user enters the "<FINRA>" values in FINRACD 
+	When user enters the "<DOB>" values in DOB Field 
+	
+	Examples: 
+		| FirstName | LastName | DOB  | FINRA |
+		| AutoJohn  | Doetest | 03/19/1993 | 54389 |
+@ProspectCreationCRM		
+Scenario Outline: New Prospect Creation Business Profile 
+	User updates Business information
+	When User Validate the "Business Profile" is present 
+	When user enters "<BusiName>" value in Business Name(DBA) field and "<BranName>" value in Branch Name field 
+	And user scroll to Assigning space 
+	
+	Examples: 
+		| BusiName | BranName |
+		| AutomationTest | TestAutomation |	
+@ProspectCreationCRM		
+Scenario Outline: New Prospect Creation Assign and Reviewing
+	user assign Recruiters and wealth management firm
+	When User validate "Assign To" is present 
+	And user assign External Recruiter Name 
+	And user assign Internal Recruiter Name 
+	And User assign wealth management firm 
+	And User enters "<Mobile>" value in personal mobile Number field and "<email>" in personal email field 
+	And User selcts the recruiting lead source 
+	And user selects 'Solo' from the Current Type of Practice dropdown from Contacting section 
+	And user click on Save Button 
+	Then User Validate the Success message Toaster 
+	
+	Examples: 
+		| Mobile | email |
+		| 555-444-3322 | TestAutomation@yahooTest.in |	
+@ProspectCreationCRM		
+Scenario: New Prospect Creation Convert Lead
+	User Navigated to new page for convert lead
+    When User validate the Header Name
+    And User click on convert lead button
+    And User click on convert button
+    Then user validate the "Your lead has been converted" popup message
