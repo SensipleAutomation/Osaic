@@ -1,317 +1,142 @@
-package webpages;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Date;
-import java.util.List;
-
-import javax.imageio.ImageIO;
-
-import org.apache.commons.io.FileUtils;
-import org.openqa.selenium.Alert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.FindBys;
-import org.openqa.selenium.support.PageFactory;
-import org.testng.Assert;
-
-import com.codoid.products.exception.FilloException;
-
-import datadriven.data;
-import operators.scs;
-import reports.ExtentManager;
-import reports.ExtentTestManager;
-import ru.yandex.qatools.ashot.AShot;
-import ru.yandex.qatools.ashot.Screenshot;
-import ru.yandex.qatools.ashot.shooting.ShootingStrategies;
-import ru.yandex.qatools.ashot.shooting.ShootingStrategy;
-import utility.ConfigFileReader;
-
-public class loginpage {
-
-	WebDriver driver;
-
-	private static String PAGE_URL_PROD_BO = "http://spatro:Dec-2022@portaluseradmin/NTLMAuthenticate/NTLMAuthenticateAdvisorPortal.aspx?referrer=/support/bo_reports/index.aspx";
-	// private static String PAGE_URL_PROD_FO = "https://www.v2020.com/login.aspx";
-	private static String PAGE_URL_PROD_FO = "https://www.v2020.com/APLoginredirect.aspx";
-	private static String PAGE_URL_DEV_BO = "http://agdev.v2020.com/login.aspx";
-	private static String PAGE_URL_DEV_FO = "http://avincent:Welcome18@qaportaluseradmin/NTLMAuthenticate/NTLMAuthenticateAdvisorPortal.aspx?referrer=/SelectDelegateUserId.aspx";
-	private static String PAGE_URL_QA_BO = "http://spatro:Dec-2022@qaportaluseradmin/NTLMAuthenticate/NTLMAuthenticateAdvisorPortal.aspx?referrer=/SelectDelegateUserId.aspx";
-	private static String PAGE_URL_QA_FO = "http://agqa.v2020.com/login.aspx";
-	public static String PAGE_URL_CRM = "https://osaic--qafull.sandbox.my.salesforce.com/";
-
-	@FindBy(id = "userid")
-	public WebElement o_userid;
-
-	@FindBy(id = "ext-gen63")
-	public WebElement o_userclick;
-
-	@FindBy(id = "ext-gen4")
-	public WebElement o_passwordexpireno;
-
-	@FindBy(id = "loginpwd")
-	public WebElement o_pass;
-
-	@FindBy(css = "img[alt='Submit']")
-	public WebElement o_login;
-
-	@FindBy(id = "ext-gen121")
-	public WebElement o_popuplogin;
-
-	@FindBy(css = "input[name='rdChallangeList'][value='QUESTION']")
-	public WebElement o_RSAoptions;
-
-	@FindBy(css = "button[id='btnContinue'][text='Continue']")
-	public WebElement o_RSAoptionContinue;
-
-	@FindBy(css = "span[id='lblQuestion'][class='labelText']")
-	public WebElement o_RSAquestion;
-
-	@FindBy(css = "input[name='questionsList1_answer'][type='password']")
-	public WebElement o_RSAanswer;
-
-	@FindBy(css = "button[id='btnchQuestion'][text='Continue']")
-	public WebElement o_RSAquestionContinue;
-
-	public loginpage(WebDriver driver) {
-		this.driver = driver;
-		PageFactory.initElements(driver, this);
+@When("^User select the Business Development and leads$")
+	public void user_select_the_Business_Development_and_leads() throws Throwable {
+		BusinessDevolpment();
+		LeadBusiness();
 	}
 
-	public synchronized homepage navtohomepageBO() throws FilloException, InterruptedException, IOException {
-		synchronized (loginpage.class) {
-
-			if (System.getProperty("env").equals("QA")) {
-				driver.get(PAGE_URL_QA_BO);
-			} else if (System.getProperty("env").equals("PROD")) {
-				driver.get(PAGE_URL_PROD_BO);
-			} else if (System.getProperty("env").equals("DEV")) {
-				driver.get(PAGE_URL_DEV_BO);
-			}
-		}
-		return new homepage(driver);
+	@When("^User Verifies whether the New Button is available and click$")
+	public void user_Verifies_whether_the_New_Button_is_available_and_click() throws Throwable {
+		explicit_wait_elementvisibility(LogPage.getNewButton());
+		Assert.assertTrue(LogPage.getNewButton().isDisplayed(), "New button is not present");
+		clickOnElement(LogPage.getNewButton());
 	}
 
-	public synchronized homepage navtoLoginPageCRM() throws FilloException, InterruptedException, IOException {
-		synchronized (loginpage.class) {
-
-			driver.get(PAGE_URL_CRM);
-
-		}
-		return new homepage(driver);
+	@When("^User Validate the NewLead Header \"([^\"]*)\" is present$")
+	public void user_Validate_the_NewLead_Header_is_present(String arg1) throws Throwable {
+		explicit_wait_elementvisibility(LogPage.getNewLeadHeader());
+		Assert.assertTrue(LogPage.getNewLeadHeader().isDisplayed(), "New Header is not present");
+		System.out.println("@#$%^&*()");
 	}
 
-	public synchronized homepage navtohomepage(String qry) throws FilloException, InterruptedException, IOException {
-		synchronized (loginpage.class) {
-			String excelname = System.getProperty("env");
-			if (!excelname.contains("FO")) {
-				Thread.sleep(10);
-				o_userid.clear();
-				Thread.sleep(10);
-				data.inText(o_userid, "Username", qry);
-				o_userclick.click();
-				Thread.sleep(3000);
-				data.inText(o_pass, "Password", qry);
-				o_login.click();
-				Thread.sleep(4000);
-				boolean ispresenta = driver.getPageSource().contains("Continue with this Session");
-				Thread.sleep(30);
-				if (ispresenta == true) {
+	@When("^user enters \"([^\"]*)\" value in FirstName field and \"([^\"]*)\" value in LastName field$")
+	public void user_enters_value_in_FirstName_field_and_value_in_LastName_field(String FisNam, String LasNam)
+			throws Throwable {
+		enter_values(LogPage.getFirstname(), FisNam);
+		enter_values(LogPage.getLastname(), LasNam);
+		scorllToElement(LogPage.getScrollDOB());
+	}
 
-					// String draw =o_popuplogin.getCssValue("class");
-					System.out.println("Welcome");
-					/*
-					 * Alert alert = driver.switchTo().alert(); alert.accept();
-					 */
-					Thread.sleep(30);
-					o_popuplogin.click();
+	@When("^user enters the \"([^\"]*)\" values in FINRACD$")
+	public void user_enters_the_values_in_FINRACD(String FIN) throws Throwable {
+		enter_values(LogPage.getFINRACRD(), FIN);
+	}
 
-				}
-				Thread.sleep(6000);
-				boolean passwordnoti = driver.getPageSource().contains("Do you want to change it now?");
-				// List<WebElement> ispresentb = driver.findElements(By.id("ext-gen162"));
-				Thread.sleep(30);
+	@When("^user enters the \"([^\"]*)\" values in DOB Field$")
+	public void user_enters_the_values_in_DOB_Field(String DOB) throws Throwable {
+		enter_values(LogPage.getDOBInput(), DOB);
+	}
 
-				if (passwordnoti == true) {
+	@When("^User Validate the \"([^\"]*)\" is present$")
+	public void user_Validate_the_is_present(String arg1) throws Throwable {
+		scorllToElement(LogPage.getScrollBusiness());
+		Assert.assertTrue(LogPage.getScrollBusiness().isDisplayed(), "Business Profile Header is not present");
+	}
 
-					// String draw =o_popuplogin.getCssValue("class");
-					// System.out.println("Welcome");
-					/*
-					 * Alert alert = driver.switchTo().alert(); alert.accept();
-					 */
-					Thread.sleep(30);
-					driver.findElement(By.id("ext-gen164")).click();
-
-				}
-				// Password Notification
-				Thread.sleep(3000);
-				Thread.sleep(4000);
-
-				boolean CyberGuard = driver.getPageSource().contains("CyberGuard Program Minimum Requirements");
-				if (CyberGuard == true) {
-
-					// String draw =o_popuplogin.getCssValue("class");
-					// System.out.println("Welcome");
-					/*
-					 * Alert alert = driver.switchTo().alert(); alert.accept();
-					 */
-					Thread.sleep(30);
-					driver.findElement(By.id("continue_btn_for_ag")).click();
-
-				}
-				Thread.sleep(7000);
-
-				if (driver.getTitle().equals("RSA_V3_Authentication")) {
-					PageFactory.initElements(driver, this);
-					Thread.sleep(500);
-					driver.findElement(By.cssSelector("input[name='rdChallangeList'][value='QUESTION']")).click();
-					driver.findElement(By.cssSelector("button[id='btnContinue'][text='Continue']")).click();
-					Thread.sleep(500);
-
-					String quest = driver.findElement(By.cssSelector("span[id='lblQuestion'][class='labelText']"))
-							.getText();
-					String lastchara = quest.substring(quest.length() - 1);
-					// System.out.println(lastchara);
-					if (lastchara.equals("?")) {
-						String lastWord = quest.substring(quest.lastIndexOf(" ") + 1);
-						String removeQmark = lastWord.substring(0, lastWord.length() - 1);
-						Thread.sleep(500);
-						System.out.println(removeQmark);
-						o_RSAanswer.sendKeys(removeQmark);
-					} else {
-						String[] parts = quest.split("\\?");
-
-						String first = parts[0];
-						String lastWord = first.substring(first.lastIndexOf(" ") + 1);
-						Thread.sleep(500);
-						// String second = parts[1];
-						System.out.println(lastWord);
-						o_RSAanswer.sendKeys(lastWord);
-
-					}
-
-					o_RSAquestionContinue.click();
-					Thread.sleep(50);
-				}
-
-			}
-		}
-		return new homepage(driver);
+	@When("^user enters \"([^\"]*)\" value in Business Name\\(DBA\\) field and \"([^\"]*)\" value in Branch Name field$")
+	public void user_enters_value_in_Business_Name_DBA_field_and_value_in_Branch_Name_field(String BusiName,
+			String BranName) throws Throwable {
+		enter_values(LogPage.getBusinessName(), BusiName);
+		enter_values(LogPage.getBranchName(), BranName);
 
 	}
 
-	public synchronized homepage navtohomepageasFO() throws FilloException, InterruptedException, IOException {
-		synchronized (loginpage.class) {
-			ConfigFileReader CR = new ConfigFileReader();
-			String env1 = System.getProperty("env");
-			System.out.println(env1);
-			if (System.getProperty("env").equals("QA")) {
-				driver.get(PAGE_URL_QA_FO);
-				loginwithusernamepassword(CR.getQAFOusername(), CR.getQAFOpassword());
-			} else if (System.getProperty("env").equals("PROD")) {
-				driver.get(PAGE_URL_PROD_FO);
-				loginwithusernamepassword(CR.getPRODFOusername(), CR.getPRODFOpassword());
-			} else if (System.getProperty("env").equals("DEV")) {
-				driver.get(PAGE_URL_DEV_FO);
-				loginwithusernamepassword(CR.getDEVFOusername(), CR.getDEVFOpassword());
-			}
+	@When("^user scroll to Assigning space$")
+	public void user_scroll_to_Assigning_space() throws Throwable {
+		scorllToElement(LogPage.getScrollAssign());
 
-			return new homepage(driver);
-
-		}
 	}
 
-	public void loginwithusernamepassword(String UserName, String Password) throws InterruptedException {
+	@When("^User validate \"([^\"]*)\" is present$")
+	public void user_validate_is_present(String arg1) throws Throwable {
+		Assert.assertTrue(LogPage.getScrollAssign().isDisplayed(), "Assign is not present");
+	}
 
-		Thread.sleep(10);
+	@When("^user assign External Recruiter Name$")
+	public void user_assign_External_Recruiter_Name() throws Throwable {
+		jsExecutorClick(LogPage.getExtRecNam());
+		click_element(LogPage.getExtRecNamSel());
+	}
 
-		o_userid.clear();
-		Thread.sleep(10);
-		o_userid.sendKeys(UserName);
+	@When("^user assign Internal Recruiter Name$")
+	public void user_assign_Internal_Recruiter_Name() throws Throwable {
+		click_element(LogPage.getAWMFirmDrop());
+		clickOnElement(LogPage.getDropOsaic());
+	}
 
-		o_userclick.click();
+	@When("^User assign wealth management firm$")
+	public void user_assign_wealth_management_firm() throws Throwable {
+		jsExecutorClick(LogPage.getIntRecNam());
+		click_element(LogPage.getIntRecNamSel());
+
+	}
+
+	@When("^User enters \"([^\"]*)\" value in personal mobile Number field and \"([^\"]*)\" in personal email field$")
+	public void user_enters_value_in_personal_mobile_Number_field_and_in_personal_email_field(String Mob,
+			String Email) {
+		scorllToElement(LogPage.getPerMobNum());
+		enter_values(LogPage.getPerMobNum(), Mob);
+		enter_values(LogPage.getPerEmail(), Email);
+
+	}
+
+	@When("^User selcts the recruiting lead source$")
+	public void user_selcts_the_recruiting_lead_source() throws Throwable {
+		scorllToElementAndClick(LogPage.getRecleSource());
+//		clickOnElement(LogPage.getRecleSource());
+		click_element(LogPage.getLeadMarket());
+	}
+
+	@When("^user selects 'Solo' from the Current Type of Practice dropdown from Contacting section$")
+	public void user_selects_Solo_from_the_Current_Type_of_Practice_dropdown_from_Contacting_section()
+			throws Throwable {
+		scorllToElementAndClick(LogPage.getCurPraDrop());
+		click_element(LogPage.getSoloSel());
+	}
+
+	@When("^user click on Save Button$")
+	public void user_click_on_Save_Button() throws Throwable {
+		click_element(LogPage.getSaveButton());
+	}
+
+	@Then("^User Validate the Success message Toaster$")
+	public void user_Validate_the_Success_message_Toaster() throws Throwable {
+		wait(LogPage.getNewLeadToast());
+		String text = getTextFromElement(LogPage.getNewLeadToast());
+		System.out.println(text);
+	}
+
+	@When("User validate the Header Name")
+	public void user_validate_the_Header_Name() {
+		checkAndPrintText(LogPage.getLeadHeader());
+
+	}
+
+	@When("^User click on convert lead button$")
+	public void user_click_on_convert_lead_button() throws Throwable {
+		wait(LogPage.getConveLeButton());
+		click_element(LogPage.getConveLeButton());
+
+	}
+
+	@When("^User click on convert button$")
+	public void user_click_on_convert_button() throws Throwable {
 		Thread.sleep(3000);
-		o_pass.sendKeys(Password);
-		o_login.click();
-		Thread.sleep(4000);
-		boolean ispresenta = driver.getPageSource().contains("Continue with this Session");
-		Thread.sleep(30);
+		click_element(LogPage.getFinalConvert());
 
-		if (ispresenta == true) {
-			System.out.println("Welcome");
-			Thread.sleep(30);
-			o_popuplogin.click();
-
-		}
-		Thread.sleep(6000);
-		boolean passwordnoti = driver.getPageSource().contains("Do you want to change it now?");
-
-		Thread.sleep(30);
-
-		if (passwordnoti == true) {
-			Thread.sleep(30);
-			driver.findElement(By.id("ext-gen164")).click();
-
-		}
-
-		Thread.sleep(3000);
-		Thread.sleep(4000);
-
-		boolean CyberGuard = driver.getPageSource().contains("CyberGuard Program Minimum Requirements");
-		if (CyberGuard == true) {
-			Thread.sleep(30);
-			driver.findElement(By.id("continue_btn_for_ag")).click();
-
-		}
-		Thread.sleep(7000);
-
-		if (driver.getTitle().equals("RSA_V3_Authentication")) {
-			PageFactory.initElements(driver, this);
-			Thread.sleep(500);
-			driver.findElement(By.cssSelector("input[name='rdChallangeList'][value='QUESTION']")).click();
-			driver.findElement(By.cssSelector("button[id='btnContinue'][text='Continue']")).click();
-			Thread.sleep(500);
-			String quest = driver.findElement(By.cssSelector("span[id='lblQuestion'][class='labelText']")).getText();
-
-			String lastchara = quest.substring(quest.length() - 1);
-
-			if (lastchara.equals("?")) {
-				String lastWord = quest.substring(quest.lastIndexOf(" ") + 1);
-				String removeQmark = lastWord.substring(0, lastWord.length() - 1);
-				Thread.sleep(500);
-				System.out.println(removeQmark);
-				o_RSAanswer.sendKeys(removeQmark);
-			} else {
-				String[] parts = quest.split("\\?");
-
-				String first = parts[0];
-				String lastWord = first.substring(first.lastIndexOf(" ") + 1);
-				Thread.sleep(500);
-
-				System.out.println(lastWord);
-				o_RSAanswer.sendKeys(lastWord);
-
-			}
-			o_RSAquestionContinue.click();
-			Thread.sleep(50);
-		}
 	}
 
-	public void f_loginpage(String qry) throws FilloException {
-		data.inText(o_userid, "Username", qry);
-		o_userclick.click();
-		data.inText(o_pass, "Password", qry);
-		o_login.click();
-		if (o_popuplogin.isDisplayed()) {
-			System.out.println("popupisdisplayed");
-			o_popuplogin.click();
-			// ExtentTestManager.getTest().info("all done");
-
-		}
+	@Then("^user validate the \"([^\"]*)\" popup message$")
+	public void user_validate_the_popup_message(String arg1) throws Throwable {
+		wait(LogPage.getConvertMessage());
+		Assert.assertTrue(LogPage.getConvertMessage().isDisplayed(), "Convert Message Not Reflects");
 	}
-}
