@@ -1,5 +1,22 @@
-Given User Launch the CRM Full Application login page                                                               # seleniumgluecode.SD_CRM_NewProspectCreation.user_Launch_the_CRM_Full_Application_login_page()
-      org.picocontainer.injectors.AbstractInjector$UnsatisfiableDependenciesException: seleniumgluecode.SD_CRM_NewProspectCreation has unsatisfied dependency 'interface org.openqa.selenium.WebDriver' for constructor 'public seleniumgluecode.SD_CRM_NewProspectCreation(org.openqa.selenium.WebDriver,webpages.loginpage)' from org.picocontainer.DefaultPicoContainer@7d3fb0ef:28<|
-	at org.picocontainer.injectors.ConstructorInjector.getGreediestSatisfiableConstructor(ConstructorInjector.java:191)
-	at org.picocontainer.injectors.ConstructorInjector.getGreediestSatisfiableConstructor(ConstructorInjector.java:110)
-	at org.picocontainer.injectors.ConstructorInjector.access$100(ConstructorInjector.java:51)
+public class SD_CRM_NewProspectCreation {
+
+	WebDriver driver = Driverselector.drivers.get();
+	loginpage lpage = new loginpage(driver);
+	TestUtils testUtils = new TestUtils(driver);
+	EO_CRM_NewProspectCreation LogPage = new EO_CRM_NewProspectCreation(driver);
+
+	@Given("^User Launch the CRM Full Application login page$")
+	public void user_Launch_the_CRM_Full_Application_login_page() throws Throwable {
+
+		lpage.navtoCRMPage();
+
+	}
+
+	@When("^the user enters valid username \"([^\"]*)\" and valid password \"([^\"]*)\"$")
+	public void the_user_enters_valid_username_and_valid_password(String arg1, String arg2) throws Throwable {
+		explicit_wait_elementvisibility(LogPage.getMail());
+		jsSendKeys(LogPage.getMail(), arg1);
+		jsSendKeys(LogPage.getPassword(), arg2);
+	}
+
+The method explicit_wait_elementvisibility(WebElement) is undefined for the type SD_CRM_NewProspectCreation
