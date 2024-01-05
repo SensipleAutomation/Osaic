@@ -1,58 +1,133 @@
-Feature: CRM New Prospect Creation 
-@ProspectCreationCRM
-Scenario Outline: Login to CRM Application 
-	Given User Launch the CRM Full Application login page 
-	When the user enters valid username "<username>" and valid password "<password>" 
-	And clicks the login button 
-	And User should be redirected to the dashboard 
+package webpages;
+
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import com.codoid.products.exception.FilloException;
+
+import datadriven.data;
+import operators.opera;
+import operators.scs;
+import reports.ExtentTestManage;
+import reports.ExtentTestManager;
+import ru.yandex.qatools.ashot.AShot;
+import ru.yandex.qatools.ashot.Screenshot;
+import ru.yandex.qatools.ashot.shooting.ShootingStrategies;
+
+
+public class homepage {
+	
+		WebDriver driver;
 	
 	
-	Examples: 
-		| username | password |
-		| mounika.golla@advisorgroup.com.crm2.qafull | $aLesforcE123 |
-@ProspectCreationCRM		
-Scenario Outline: New Prospect Creation Personal Profile 
-	User updates personal information
-	When User select the Business Development and leads 
-	And User Verifies whether the New Button is available and click 
-	And User Validate the NewLead Header "New Lead: Standard" is present 
-	When user enters "<FirstName>" value in FirstName field and "<LastName>" value in LastName field 
-	When user enters the "<FINRA>" values in FINRACD 
-	When user enters the "<DOB>" values in DOB Field 
+	@FindBy(partialLinkText="Client Management")
+    public WebElement o_clientmanagement;
 	
-	Examples: 
-		| FirstName | LastName | DOB  | FINRA |
-		| AutoJohn  | Doetest | 03/19/1993 | 54389 |
-@ProspectCreationCRM		
-Scenario Outline: New Prospect Creation Business Profile 
-	User updates Business information
-	When User Validate the "Business Profile" is present 
-	When user enters "<BusiName>" value in Business Name(DBA) field and "<BranName>" value in Branch Name field 
-	And user scroll to Assigning space 
+	@FindBy(xpath="//a[@href='https://agdev.v2020.com/authorization/apauth?e=d&n=cam'][text()='CAM']")
+	   public WebElement cam_qa;
 	
-	Examples: 
-		| BusiName | BranName |
-		| AutomationTest | TestAutomation |	
-@ProspectCreationCRM		
-Scenario Outline: New Prospect Creation Assign and Reviewing
-	user assign Recruiters and wealth management firm
-	When User validate "Assign To" is present 
-	And user assign External Recruiter Name 
-	And user assign Internal Recruiter Name 
-	And User assign wealth management firm 
-	And User enters "<Mobile>" value in personal mobile Number field and "<email>" in personal email field 
-	And User selcts the recruiting lead source 
-	And user selects 'Solo' from the Current Type of Practice dropdown from Contacting section 
-	And user click on Save Button 
-	Then User Validate the Success message Toaster 
+	@FindBy(partialLinkText="Support")
+    public WebElement o_support;
 	
-	Examples: 
-		| Mobile | email |
-		| 555-444-3322 | TestAutomation@yahooTest.in |	
-@ProspectCreationCRM		
-Scenario: New Prospect Creation Convert Lead
-	User Navigated to new page for convert lead
-    When User validate the Header Name
-    And User click on convert lead button
-    And User click on convert button
-    Then user validate the "Your lead has been converted" popup message
+	
+	/*@FindBy(css="div:contains('Client Management')")
+    public WebElement o_clientmanagement;
+	*/
+	@FindBy(xpath="//a[@href='/support/bo_reports/index.aspx']")
+   public WebElement o_BO;
+	
+	/*@FindBy(how = How.CSS, using = "td#header_td_clientmanagement")
+    public WebElement o_clientmanagement;*/
+	
+	public homepage(WebDriver driver) {
+		
+        this.driver = driver;
+        PageFactory.initElements(driver, this);
+		}
+	
+	public void navtoCRM() throws FilloException, InterruptedException{
+		
+		Thread.sleep(100);
+		//scs.fspass(driver, "homepage");
+		Thread.sleep(500);
+		JavascriptExecutor executor = (JavascriptExecutor)driver;
+		executor.executeScript("arguments[0].click();", o_BO);
+		//o_clientmanagement.click();
+		Thread.sleep(5000);
+		
+		driver.findElement(By.id("salesforce_CRM2")).click();
+		Thread.sleep(5000);
+		
+	}
+
+	public ClientManagementPage navtoclientmanagement() throws FilloException, InterruptedException, IOException{
+		
+		/*String scp = System.getProperty("user.dir")+"/sceenshots/";
+		Screenshot screenshot = new AShot().shootingStrategy(ShootingStrategies.viewportPasting(500)).takeScreenshot(driver);
+		ImageIO.write(screenshot.getImage(),"PNG",new File(scp+"ssname.png"));
+		File src=((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+		FileUtils.copyFile(src, new File(scp+"ssname.png"));
+		Thread.sleep(1000)
+		
+		//for future
+		ExtentTestManage.log("Logging into Login page");
+		ExtentTestManage.logpass(Status.PASS,"Login Successful");
+		
+		//waitForVisibility(o_clientmanagement);
+*/		Thread.sleep(100);
+		//scs.fspass(driver, "homepage");
+		Thread.sleep(500);
+		JavascriptExecutor executor = (JavascriptExecutor)driver;
+		executor.executeScript("arguments[0].click();", o_clientmanagement);
+		//o_clientmanagement.click();
+		Thread.sleep(300);
+		
+		//executor.executeScript("arguments[0].click();", cam_qa);
+		
+		//---sit----//
+		//o_support.click();
+				
+		
+		{
+		if (isAlertPresent()) {
+			driver.switchTo().alert().accept();
+			Thread.sleep(1000);
+			driver.switchTo().defaultContent();
+			}
+		}
+		
+		return new ClientManagementPage(driver);
+		
+		}
+
+	private void waitForVisibility(WebElement element) throws Error{
+        new WebDriverWait(driver, 60)
+             .until(ExpectedConditions.visibilityOf(element));
+	}
+	
+	public boolean isAlertPresent() {
+		try {
+		driver.switchTo().alert();
+		return true;
+		}// try
+		catch (Exception e) {
+		return false;
+		}// catch
+		}
+
+}
