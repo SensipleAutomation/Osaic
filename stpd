@@ -1,0 +1,12 @@
+public class SD_CRM_NewProspectCreation {
+
+	WebDriver driver=Driverselector.drivers.get();
+	loginpage lpage = new loginpage(driver);
+	EO_CRM_NewProspectCreation LogPage = new EO_CRM_NewProspectCreation(driver);
+
+	@Given("^User Launch the CRM Full Application login page$")
+	public void user_Launch_the_CRM_Full_Application_login_page() throws Throwable {
+
+		lpage.navtoCRMpage();
+
+	}
