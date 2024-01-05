@@ -43,7 +43,7 @@ public class loginpage {
 	private static String PAGE_URL_DEV_FO = "http://avincent:Welcome18@qaportaluseradmin/NTLMAuthenticate/NTLMAuthenticateAdvisorPortal.aspx?referrer=/SelectDelegateUserId.aspx";
 	private static String PAGE_URL_QA_BO = "http://spatro:Dec-2022@qaportaluseradmin/NTLMAuthenticate/NTLMAuthenticateAdvisorPortal.aspx?referrer=/SelectDelegateUserId.aspx";
 	private static String PAGE_URL_QA_FO = "http://agqa.v2020.com/login.aspx";
-	private static String PAGE_URL_CRM = "https://osaic--qafull.sandbox.my.salesforce.com/";
+	public static String PAGE_URL_CRM = "https://osaic--qafull.sandbox.my.salesforce.com/";
 
 	@FindBy(id = "userid")
 	public WebElement o_userid;
@@ -92,15 +92,17 @@ public class loginpage {
 				driver.get(PAGE_URL_PROD_BO);
 			} else if (System.getProperty("env").equals("DEV")) {
 				driver.get(PAGE_URL_DEV_BO);
-
 			}
 		}
 		return new homepage(driver);
-
 	}
 
-	public synchronized homepage navtoCRMpage() {
-		driver.get(PAGE_URL_CRM);
+	public synchronized homepage navtoLoginPageCRM() throws FilloException, InterruptedException, IOException {
+		synchronized (loginpage.class) {
+
+			driver.get(PAGE_URL_CRM);
+
+		}
 		return new homepage(driver);
 	}
 
