@@ -1,4 +1,31 @@
-@When("^User select the Business Development and leads$")
+@Given("^User Launch the CRM Full Application login page$")
+	public void user_Launch_the_CRM_Full_Application_login_page() throws Throwable {
+		getUrl();
+	}
+
+	@When("^the user enters valid username \"([^\"]*)\" and valid password \"([^\"]*)\"$")
+	public void the_user_enters_valid_username_and_valid_password(String arg1, String arg2) throws Throwable {
+		explicit_wait_elementvisibility(LogPage.getMail());
+		jsSendKeys(LogPage.getMail(), arg1);
+		jsSendKeys(LogPage.getPassword(), arg2);
+	}
+
+	@When("^clicks the login button$")
+	public void clicks_the_login_button() throws Throwable {
+		clickOnElement(LogPage.getLogButton());
+	}
+
+	@When("^User should be redirected to the dashboard$")
+	public void user_should_be_redirected_to_the_dashboard() throws Throwable {
+
+		if (explicit_wait_elementvisibility(LogPage.getDashboradElement()).isDisplayed()) {
+			System.out.println("User is on CRM HomePage");
+		} else {
+			System.out.println("Unable to login to server");
+		}
+	}
+
+	@When("^User select the Business Development and leads$")
 	public void user_select_the_Business_Development_and_leads() throws Throwable {
 		BusinessDevolpment();
 		LeadBusiness();
@@ -140,3 +167,5 @@
 		wait(LogPage.getConvertMessage());
 		Assert.assertTrue(LogPage.getConvertMessage().isDisplayed(), "Convert Message Not Reflects");
 	}
+
+}
