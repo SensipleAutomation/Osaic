@@ -1,7 +1,9 @@
+
 public class SD_CRM_NewProspectCreation {
 
-	WebDriver driver=Driverselector.drivers.get();
+	WebDriver driver;
 	loginpage lpage = new loginpage(driver);
+	TestUtils testutils = new TestUtils(driver);
 	EO_CRM_NewProspectCreation LogPage = new EO_CRM_NewProspectCreation(driver);
 
 	@Given("^User Launch the CRM Full Application login page$")
@@ -10,3 +12,12 @@ public class SD_CRM_NewProspectCreation {
 		lpage.navtoCRMpage();
 
 	}
+
+	@When("^the user enters valid username \"([^\"]*)\" and valid password \"([^\"]*)\"$")
+	public void the_user_enters_valid_username_and_valid_password(String arg1, String arg2) throws Throwable {
+		explicit_wait_elementvisibility(LogPage.getMail());
+		jsSendKeys(LogPage.getMail(), arg1);
+		jsSendKeys(LogPage.getPassword(), arg2);
+	}
+
+The method explicit_wait_elementvisibility(WebElement) is undefined for the type SD_CRM_NewProspectCreation
