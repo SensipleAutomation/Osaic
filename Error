@@ -1,317 +1,252 @@
-package webpages;
+package cucumberutils;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.nio.file.CopyOption;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-
-import javax.imageio.ImageIO;
+import java.util.stream.Stream;
 
 import org.apache.commons.io.FileUtils;
-import org.openqa.selenium.Alert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.FindBys;
-import org.openqa.selenium.support.PageFactory;
-import org.testng.Assert;
+import org.testng.annotations.AfterTest;
+
+import io.cucumber.core.gherkin.Feature;
+import io.cucumber.java.After;
+import io.cucumber.java.AfterStep;
+import io.cucumber.java.Before;
+import io.cucumber.java.Scenario;
+import utility.Azureutils;
+import webpages.GenericPageObjects;
 
 import com.codoid.products.exception.FilloException;
 
+import BaseClass.ScreenShot;
 import datadriven.data;
-import operators.scs;
-import reports.ExtentManager;
-import reports.ExtentTestManager;
-import ru.yandex.qatools.ashot.AShot;
-import ru.yandex.qatools.ashot.Screenshot;
-import ru.yandex.qatools.ashot.shooting.ShootingStrategies;
-import ru.yandex.qatools.ashot.shooting.ShootingStrategy;
-import utility.ConfigFileReader;
+import datadriven.datatrial;
+import datadriven.hashdatafromexcel;
 
-public class loginpage {
+//public class Hooks extends map_scenario_to_excel_row {	
+public class Hooks extends tcid {
+	public Scenario scenario;
+	public String tctagname;
+	public String path = "";
 
-	WebDriver driver;
+	@Before
+	public void before(Scenario scenario) throws IOException, FilloException {
 
-	private static String PAGE_URL_PROD_BO = "http://spatro:Dec-2022@portaluseradmin/NTLMAuthenticate/NTLMAuthenticateAdvisorPortal.aspx?referrer=/support/bo_reports/index.aspx";
-	// private static String PAGE_URL_PROD_FO = "https://www.v2020.com/login.aspx";
-	private static String PAGE_URL_PROD_FO = "https://www.v2020.com/APLoginredirect.aspx";
-	private static String PAGE_URL_DEV_BO = "http://agdev.v2020.com/login.aspx";
-	private static String PAGE_URL_DEV_FO = "http://avincent:Welcome18@qaportaluseradmin/NTLMAuthenticate/NTLMAuthenticateAdvisorPortal.aspx?referrer=/SelectDelegateUserId.aspx";
-	private static String PAGE_URL_QA_BO = "http://spatro:Dec-2022@qaportaluseradmin/NTLMAuthenticate/NTLMAuthenticateAdvisorPortal.aspx?referrer=/SelectDelegateUserId.aspx";
-	private static String PAGE_URL_QA_FO = "http://agqa.v2020.com/login.aspx";
-	private static String PAGE_URL_CRM = "https://osaic--qafull.sandbox.my.salesforce.com/";
+		System.out.println("hooks");
+		System.out.println("--------------------------B--------------------------------------------");
+		String currentexampletcid;
+		String ATcid = null;
+		String firstsheetName;
+		String secondsheetName = null;
 
-	@FindBy(id = "userid")
-	public WebElement o_userid;
+		this.scenario = scenario;
 
-	@FindBy(id = "ext-gen63")
-	public WebElement o_userclick;
-
-	@FindBy(id = "ext-gen4")
-	public WebElement o_passwordexpireno;
-
-	@FindBy(id = "loginpwd")
-	public WebElement o_pass;
-
-	@FindBy(css = "img[alt='Submit']")
-	public WebElement o_login;
-
-	@FindBy(id = "ext-gen121")
-	public WebElement o_popuplogin;
-
-	@FindBy(css = "input[name='rdChallangeList'][value='QUESTION']")
-	public WebElement o_RSAoptions;
-
-	@FindBy(css = "button[id='btnContinue'][text='Continue']")
-	public WebElement o_RSAoptionContinue;
-
-	@FindBy(css = "span[id='lblQuestion'][class='labelText']")
-	public WebElement o_RSAquestion;
-
-	@FindBy(css = "input[name='questionsList1_answer'][type='password']")
-	public WebElement o_RSAanswer;
-
-	@FindBy(css = "button[id='btnchQuestion'][text='Continue']")
-	public WebElement o_RSAquestionContinue;
-
-	public loginpage(WebDriver driver) {
-		this.driver = driver;
-		PageFactory.initElements(driver, this);
-	}
-
-	public synchronized homepage navtohomepageBO() throws FilloException, InterruptedException, IOException {
-		synchronized (loginpage.class) {
-
-			if (System.getProperty("env").equals("QA")) {
-				driver.get(PAGE_URL_QA_BO);
-			} else if (System.getProperty("env").equals("PROD")) {
-				driver.get(PAGE_URL_PROD_BO);
-			} else if (System.getProperty("env").equals("DEV")) {
-				driver.get(PAGE_URL_DEV_BO);
-
+		Collection<String> taglist = scenario.getSourceTagNames();
+		for (String tag : taglist) {
+			if (tag.contains("tc")) {
+				String[] tags = tag.split(":");
+				tctagname = tags[1];
 			}
 		}
-		return new homepage(driver);
 
-	}
+		// System.out.println(scenario.);
+		// System.out.println();
+		System.out.println("TcTagname:" + tctagname);
 
-	public synchronized homepage navtoCRMPage() throws FilloException, InterruptedException, IOException {
-		synchronized (loginpage.class) {
-			driver.get(PAGE_URL_CRM);
-		}
-		return new homepage(driver);
-	}
+		URI featurefilepathraw = scenario.getUri();
+		System.out.println("featurefilepathraw:" + featurefilepathraw.toString());
+		String featurefilepathasstring = featurefilepathraw.toString();
+		String[] featurefilepatharray = featurefilepathasstring.split(":///");
+		String featurefilepath = featurefilepatharray[1];
+		System.out.print("\nfeaturefilepath: " + featurefilepath);
+		path = Paths.get(featurefilepath).toAbsolutePath().toString();
+		try (Stream<String> lines = Files.lines(Paths.get(path))) {
+			Integer currentscenario = scenario.getLine();
+			int examplelinenumber = currentscenario;
+			System.out.print("\ncurrentline: " + examplelinenumber);
+			// System.out.println("print next line number :
+			// "+lines.skip(examplelinenumber).findFirst().get());
+			String currentexamplelinenumber = lines.skip(examplelinenumber - 1).findFirst().get();
+			System.out.print("\ncurrentexamplelinenumber: " + currentexamplelinenumber);
+			currentexamplelinenumber.replaceAll("\\s", "");
+			String[] testdata = currentexamplelinenumber.split("\\|");
+			currentexampletcid = testdata[1];
+			System.out.print("\ncurrentexampletcid: " + currentexampletcid);
+			firstsheetName = testdata[2];
+			System.out.print("\ncurrentexampletcid: " + firstsheetName);
 
-	public synchronized homepage navtohomepage(String qry) throws FilloException, InterruptedException, IOException {
-		synchronized (loginpage.class) {
-			String excelname = System.getProperty("env");
-			if (!excelname.contains("FO")) {
-				Thread.sleep(10);
-				o_userid.clear();
-				Thread.sleep(10);
-				data.inText(o_userid, "Username", qry);
-				o_userclick.click();
-				Thread.sleep(3000);
-				data.inText(o_pass, "Password", qry);
-				o_login.click();
-				Thread.sleep(4000);
-				boolean ispresenta = driver.getPageSource().contains("Continue with this Session");
-				Thread.sleep(30);
-				if (ispresenta == true) {
-
-					// String draw =o_popuplogin.getCssValue("class");
-					System.out.println("Welcome");
-					/*
-					 * Alert alert = driver.switchTo().alert(); alert.accept();
-					 */
-					Thread.sleep(30);
-					o_popuplogin.click();
-
-				}
-				Thread.sleep(6000);
-				boolean passwordnoti = driver.getPageSource().contains("Do you want to change it now?");
-				// List<WebElement> ispresentb = driver.findElements(By.id("ext-gen162"));
-				Thread.sleep(30);
-
-				if (passwordnoti == true) {
-
-					// String draw =o_popuplogin.getCssValue("class");
-					// System.out.println("Welcome");
-					/*
-					 * Alert alert = driver.switchTo().alert(); alert.accept();
-					 */
-					Thread.sleep(30);
-					driver.findElement(By.id("ext-gen164")).click();
-
-				}
-				// Password Notification
-				Thread.sleep(3000);
-				Thread.sleep(4000);
-
-				boolean CyberGuard = driver.getPageSource().contains("CyberGuard Program Minimum Requirements");
-				if (CyberGuard == true) {
-
-					// String draw =o_popuplogin.getCssValue("class");
-					// System.out.println("Welcome");
-					/*
-					 * Alert alert = driver.switchTo().alert(); alert.accept();
-					 */
-					Thread.sleep(30);
-					driver.findElement(By.id("continue_btn_for_ag")).click();
-
-				}
-				Thread.sleep(7000);
-
-				if (driver.getTitle().equals("RSA_V3_Authentication")) {
-					PageFactory.initElements(driver, this);
-					Thread.sleep(500);
-					driver.findElement(By.cssSelector("input[name='rdChallangeList'][value='QUESTION']")).click();
-					driver.findElement(By.cssSelector("button[id='btnContinue'][text='Continue']")).click();
-					Thread.sleep(500);
-
-					String quest = driver.findElement(By.cssSelector("span[id='lblQuestion'][class='labelText']"))
-							.getText();
-					String lastchara = quest.substring(quest.length() - 1);
-					// System.out.println(lastchara);
-					if (lastchara.equals("?")) {
-						String lastWord = quest.substring(quest.lastIndexOf(" ") + 1);
-						String removeQmark = lastWord.substring(0, lastWord.length() - 1);
-						Thread.sleep(500);
-						System.out.println(removeQmark);
-						o_RSAanswer.sendKeys(removeQmark);
-					} else {
-						String[] parts = quest.split("\\?");
-
-						String first = parts[0];
-						String lastWord = first.substring(first.lastIndexOf(" ") + 1);
-						Thread.sleep(500);
-						// String second = parts[1];
-						System.out.println(lastWord);
-						o_RSAanswer.sendKeys(lastWord);
-
-					}
-
-					o_RSAquestionContinue.click();
-					Thread.sleep(50);
-				}
-
-			}
-		}
-		return new homepage(driver);
-
-	}
-
-	public synchronized homepage navtohomepageasFO() throws FilloException, InterruptedException, IOException {
-		synchronized (loginpage.class) {
-			ConfigFileReader CR = new ConfigFileReader();
-			String env1 = System.getProperty("env");
-			System.out.println(env1);
-			if (System.getProperty("env").equals("QA")) {
-				driver.get(PAGE_URL_QA_FO);
-				loginwithusernamepassword(CR.getQAFOusername(), CR.getQAFOpassword());
-			} else if (System.getProperty("env").equals("PROD")) {
-				driver.get(PAGE_URL_PROD_FO);
-				loginwithusernamepassword(CR.getPRODFOusername(), CR.getPRODFOpassword());
-			} else if (System.getProperty("env").equals("DEV")) {
-				driver.get(PAGE_URL_DEV_FO);
-				loginwithusernamepassword(CR.getDEVFOusername(), CR.getDEVFOpassword());
+			if (testdata.length > 3) {
+				ATcid = testdata[3];
+				System.out.print("\ncurrentexampletcid: " + ATcid);
+				secondsheetName = testdata[4];
+				System.out.print("\ncurrentexampletcid: " + secondsheetName);
 			}
 
-			return new homepage(driver);
-
 		}
-	}
+		Testcaseid.set(currentexampletcid);
 
-	public void loginwithusernamepassword(String UserName, String Password) throws InterruptedException {
-
-		Thread.sleep(10);
-
-		o_userid.clear();
-		Thread.sleep(10);
-		o_userid.sendKeys(UserName);
-
-		o_userclick.click();
-		Thread.sleep(3000);
-		o_pass.sendKeys(Password);
-		o_login.click();
-		Thread.sleep(4000);
-		boolean ispresenta = driver.getPageSource().contains("Continue with this Session");
-		Thread.sleep(30);
-
-		if (ispresenta == true) {
-			System.out.println("Welcome");
-			Thread.sleep(30);
-			o_popuplogin.click();
-
-		}
-		Thread.sleep(6000);
-		boolean passwordnoti = driver.getPageSource().contains("Do you want to change it now?");
-
-		Thread.sleep(30);
-
-		if (passwordnoti == true) {
-			Thread.sleep(30);
-			driver.findElement(By.id("ext-gen164")).click();
-
+		if (featurefilepath.contains("API_Features")) {
+			// hashdatafromexcel hashdatafromexcelcreate = new hashdatafromexcel();
+			// hashdatafromexcelcreate.createhashmapfromexcel(currentexampletcid,"TestData_QA","CRM2_API");
 		}
 
-		Thread.sleep(3000);
-		Thread.sleep(4000);
-
-		boolean CyberGuard = driver.getPageSource().contains("CyberGuard Program Minimum Requirements");
-		if (CyberGuard == true) {
-			Thread.sleep(30);
-			driver.findElement(By.id("continue_btn_for_ag")).click();
-
+		hashdatafromexcel hashdatafromexcelcreate = new hashdatafromexcel();
+		if (System.getProperty("env").equals("QA")) {
+			// hashdatafromexcelcreate.createhashmapfromexcel(currentexampletcid,ATcid,"TestData_QA",firstsheetName,secondsheetName);
+		} else if (System.getProperty("env").equals("PROD")) {
+			hashdatafromexcelcreate.createhashmapfromexcel(currentexampletcid, ATcid, "TestData_PROD", firstsheetName,
+					secondsheetName);
+		} else if (System.getProperty("env").equals("DEV")) {
+			hashdatafromexcelcreate.createhashmapfromexcel(currentexampletcid, ATcid, "TestData_DEV", firstsheetName,
+					secondsheetName);
 		}
-		Thread.sleep(7000);
 
-		if (driver.getTitle().equals("RSA_V3_Authentication")) {
-			PageFactory.initElements(driver, this);
-			Thread.sleep(500);
-			driver.findElement(By.cssSelector("input[name='rdChallangeList'][value='QUESTION']")).click();
-			driver.findElement(By.cssSelector("button[id='btnContinue'][text='Continue']")).click();
-			Thread.sleep(500);
-			String quest = driver.findElement(By.cssSelector("span[id='lblQuestion'][class='labelText']")).getText();
+		// hashdatafromexcelcreate.createhashmapfromexcel(currentexampletcid,"TestData_BOQA",sheetName);
 
-			String lastchara = quest.substring(quest.length() - 1);
+		/*
+		 * datatrial datcreate = new datatrial();
+		 * datcreate.createhashmap(currentexampletcid);
+		 */
 
-			if (lastchara.equals("?")) {
-				String lastWord = quest.substring(quest.lastIndexOf(" ") + 1);
-				String removeQmark = lastWord.substring(0, lastWord.length() - 1);
-				Thread.sleep(500);
-				System.out.println(removeQmark);
-				o_RSAanswer.sendKeys(removeQmark);
+		/*
+		 * String numberofaccounts = data.getTestValue("no_of_accounts",
+		 * currentexampletcid); String numberofgoals = data.getTestValue("no_of_goals",
+		 * currentexampletcid); String totnumofacc=numberofaccounts;
+		 * System.out.println("totnumofacc:"+totnumofacc); List<String> accounts_to_add
+		 * = Arrays.asList(totnumofacc.split(",")); if(!numberofaccounts.equals("")){
+		 * 
+		 * for(String accountnumloop:accounts_to_add){ //String
+		 * tcidmul=data.getTestValue("TCID", accountnumloop) ;
+		 * if(!accountnumloop.equals(currentexampletcid)){ datatrial datcreatemultiple =
+		 * new datatrial(); datcreatemultiple.createhashmap(accountnumloop); } }
+		 * 
+		 * }
+		 */
+		// String Execution_Server=data.getTestValue("Execution_Server",
+		// currentexampletcid);
+		String Execution_Server = "";
+		if (!featurefilepath.contains("API_Features")) {
+			Driverselector driverselector = new Driverselector();
+			if (Execution_Server.equalsIgnoreCase("Sauce")) {
+				driverselector.selectBrowser("SAUCE", "CHROME");
 			} else {
-				String[] parts = quest.split("\\?");
-
-				String first = parts[0];
-				String lastWord = first.substring(first.lastIndexOf(" ") + 1);
-				Thread.sleep(500);
-
-				System.out.println(lastWord);
-				o_RSAanswer.sendKeys(lastWord);
-
+				driverselector.selectBrowser("LOCAL", "CHROME");
 			}
-			o_RSAquestionContinue.click();
-			Thread.sleep(50);
 		}
+
 	}
 
-	public void f_loginpage(String qry) throws FilloException {
-		data.inText(o_userid, "Username", qry);
-		o_userclick.click();
-		data.inText(o_pass, "Password", qry);
-		o_login.click();
-		if (o_popuplogin.isDisplayed()) {
-			System.out.println("popupisdisplayed");
-			o_popuplogin.click();
-			// ExtentTestManager.getTest().info("all done");
+	@AfterStep
+	public void aftertestScenario(Scenario scenario) throws FilloException, IOException, InterruptedException {
+		scenario.attach(screenshot.getByteScreenshot(), "image/png", scenario.getName());
+	}
+
+	@After
+	public void afterScenario(Scenario scenario) throws FilloException, IOException, InterruptedException {
+		System.out.println("-----------------JUA-------------");
+		System.out.println(scenario.getName() + " Status - " + scenario.getStatus());
+		String status = scenario.getStatus().toString();
+		String planid = "";
+		String userstory = "";
+		String azuretestcaseid = "";
+
+		Collection<String> taglist = scenario.getSourceTagNames();
+		for (String tag : taglist) {
+			if (tag.contains("tp")) {
+				String[] tags = tag.split(":");
+				planid = tags[1];
+			} else if (tag.contains("tc")) {
+				String[] tags = tag.split(":");
+				azuretestcaseid = tags[1];
+			} else if (tag.contains("us")) {
+				String[] tags = tag.split(":");
+				userstory = tags[1];
+			}
 
 		}
+		if (scenario.isFailed()) {
+			scenario.attach(screenshot.getByteScreenshot(), "image/png", scenario.getName());
+		}
+
+		/*
+		 * Stream<String> lines = Files.lines(Paths.get(path)); Integer currentscenario
+		 * = scenario.getLine(); int examplelinenumber =currentscenario; String
+		 * isendofscenariooutline=lines.skip(examplelinenumber).findFirst().get();
+		 * if(!isendofscenariooutline.contains("|")) {
+		 * 
+		 * 
+		 * System.out.println(planid); System.out.println(userstory);
+		 * System.out.println(azuretestcaseid); System.out.println(status);
+		 * 
+		 * //Azureutils.update_results_in_azure_devops(planid,userstory,azuretestcaseid,
+		 * status); }
+		 */
+
+		// String tcid =Testcaseid1;
+		/*
+		 * String Tcid = tcid.getqry();
+		 * 
+		 * WebDriver driver= Driverselector.drivers.get(); resultupdate excelresult =
+		 * new resultupdate(); String sstatus = scenario.getStatus().toString();
+		 * System.out.println("------------------------------"+Tcid+sstatus); if
+		 * (sstatus.equals("PASSED")){ excelresult.updateexcel("Result", "Passed",
+		 * Tcid);
+		 * 
+		 * } Date now1 = new Date(); SimpleDateFormat dateFormat = new
+		 * SimpleDateFormat("dd_MM_YY_hh_mm_ss"); String time1 =
+		 * dateFormat.format(now1); String sfailname = data.getTestValue("TCID",
+		 * Tcid)+"_"+data.getTestValue("recir_acctyp", Tcid)+"_"+
+		 * data.getTestValue("accsetsrt_regtype", Tcid)+"_"+
+		 * data.getTestValue("recir_program", Tcid)+time1+"_Fail";
+		 * if(scenario.isFailed()) {
+		 * 
+		 * 
+		 * if(!data.getTestValue("accsetsrt_regtype", Tcid).equals("UGMA/UTMA")) {
+		 * scs.fsfail(driver, sfailname); }else{ String sfailnames =
+		 * Tcid+"_"+data.getTestValue("recir_acctyp",Tcid)+"_UGMA_UTMA_"+
+		 * data.getTestValue("Recir_program",Tcid); scs.fsfail(driver, sfailnames); }
+		 * 
+		 * excelresult.updateexcel("Result", "Failed", Tcid); Path path =
+		 * Paths.get("screenshot/Fail/"+sfailname+".png"); byte[] data =
+		 * Files.readAllBytes(path); File file = new
+		 * File("screenshot/Fail/"+sfailname+".png"); scenario.getId(); //
+		 * scenario.embed(Files.readAllBytes(file.toPath()), "Failure_Screenshot");
+		 * scenario.embed(data, "image/png", "Failure_Screenshot");
+		 * //scenario.attach(data, "application/vnd.ms-excel", "Failure_Screenshot");
+		 * 
+		 * }
+		 * 
+		 * 
+		 * int closebrowser =Integer.parseInt(System.getProperty("closebrowser"));
+		 * if(closebrowser==1) { driver.quit(); }
+		 */
+
 	}
+
+	// String qry="Select * from Sheet1 where TCID='"+Testcaseid+"'";
+	/*
+	 * String scstatus = scenario.getStatus().toString(); Path path =
+	 * Paths.get("Result/resultsheet.xlsx"); byte[] data = Files.readAllBytes(path);
+	 * File file = new File("Result/resultsheet.xlsx"); scenario.getId();
+	 * //scenario.embed(Files.readAllBytes(file.toPath())); scenario.attach(data,
+	 * "application/vnd.ms-excel", "name.xlsx");
+	 */
+
+	// feature.
+
+	// excelresult.updateexcel("Result",scstatus , qry);
+
 }
