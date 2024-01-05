@@ -1,36 +1,133 @@
-public class TestUtils {
+package webpages;
 
-	public TestUtils(WebDriver driver) {
-		this.driver = driver;
-		PageFactory.initElements(driver, this);
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import com.codoid.products.exception.FilloException;
+
+import datadriven.data;
+import operators.opera;
+import operators.scs;
+import reports.ExtentTestManage;
+import reports.ExtentTestManager;
+import ru.yandex.qatools.ashot.AShot;
+import ru.yandex.qatools.ashot.Screenshot;
+import ru.yandex.qatools.ashot.shooting.ShootingStrategies;
+
+
+public class homepage {
+	
+		WebDriver driver;
+	
+	
+	@FindBy(partialLinkText="Client Management")
+    public WebElement o_clientmanagement;
+	
+	@FindBy(xpath="//a[@href='https://agdev.v2020.com/authorization/apauth?e=d&n=cam'][text()='CAM']")
+	   public WebElement cam_qa;
+	
+	@FindBy(partialLinkText="Support")
+    public WebElement o_support;
+	
+	
+	/*@FindBy(css="div:contains('Client Management')")
+    public WebElement o_clientmanagement;
+	*/
+	@FindBy(xpath="//a[@href='/support/bo_reports/index.aspx']")
+   public WebElement o_BO;
+	
+	/*@FindBy(how = How.CSS, using = "td#header_td_clientmanagement")
+    public WebElement o_clientmanagement;*/
+	
+	public homepage(WebDriver driver) {
+		
+        this.driver = driver;
+        PageFactory.initElements(driver, this);
+		}
+	
+	public void navtoCRM() throws FilloException, InterruptedException{
+		
+		Thread.sleep(100);
+		//scs.fspass(driver, "homepage");
+		Thread.sleep(500);
+		JavascriptExecutor executor = (JavascriptExecutor)driver;
+		executor.executeScript("arguments[0].click();", o_BO);
+		//o_clientmanagement.click();
+		Thread.sleep(5000);
+		
+		driver.findElement(By.id("salesforce_CRM2")).click();
+		Thread.sleep(5000);
+		
 	}
 
-	static WebDriver driver;
+	public ClientManagementPage navtoclientmanagement() throws FilloException, InterruptedException, IOException{
+		
+		/*String scp = System.getProperty("user.dir")+"/sceenshots/";
+		Screenshot screenshot = new AShot().shootingStrategy(ShootingStrategies.viewportPasting(500)).takeScreenshot(driver);
+		ImageIO.write(screenshot.getImage(),"PNG",new File(scp+"ssname.png"));
+		File src=((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+		FileUtils.copyFile(src, new File(scp+"ssname.png"));
+		Thread.sleep(1000)
+		
+		//for future
+		ExtentTestManage.log("Logging into Login page");
+		ExtentTestManage.logpass(Status.PASS,"Login Successful");
+		
+		//waitForVisibility(o_clientmanagement);
+*/		Thread.sleep(100);
+		//scs.fspass(driver, "homepage");
+		Thread.sleep(500);
+		JavascriptExecutor executor = (JavascriptExecutor)driver;
+		executor.executeScript("arguments[0].click();", o_clientmanagement);
+		//o_clientmanagement.click();
+		Thread.sleep(300);
+		
+		//executor.executeScript("arguments[0].click();", cam_qa);
+		
+		//---sit----//
+		//o_support.click();
+				
+		
+		{
+		if (isAlertPresent()) {
+			driver.switchTo().alert().accept();
+			Thread.sleep(1000);
+			driver.switchTo().defaultContent();
+			}
+		}
+		
+		return new ClientManagementPage(driver);
+		
+		}
 
-	public static Boolean bl_flag = false;
-	static double total_var = 0;
-
-	public static String getRandomSSN() {
-		String ssn = null;
-		SimpleDateFormat f = new SimpleDateFormat("yyMMddss");
-		ssn = f.format(new Date()) + 0;
-
-		return ssn;
-
+	private void waitForVisibility(WebElement element) throws Error{
+        new WebDriverWait(driver, 60)
+             .until(ExpectedConditions.visibilityOf(element));
 	}
+	
+	public boolean isAlertPresent() {
+		try {
+		driver.switchTo().alert();
+		return true;
+		}// try
+		catch (Exception e) {
+		return false;
+		}// catch
+		}
 
-	public static void scorllToElementAndClick(WebElement e) {
-		JavascriptExecutor executor = (JavascriptExecutor) driver;
-		executor.executeScript("arguments[0].scrollIntoView(true);", e);
-		e.click();
-	}
-
-	public static void scorllToElement(WebElement e) {
-		JavascriptExecutor executor = (JavascriptExecutor) driver;
-		executor.executeScript("arguments[0].scrollIntoView(true);", e);
-	}
-
-	public static void jsSendKeys(WebElement e, String value) {
-		JavascriptExecutor jse = (JavascriptExecutor) driver;
-		jse.executeScript("arguments[0].setAttribute('value', '" + value + "')", e);
-	}
+}
