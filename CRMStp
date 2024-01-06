@@ -1,0 +1,39 @@
+package seleniumgluecode;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+
+import cucumberutils.Driverselector;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
+import utility.TestUtils;
+import webpages.EO_CRM_NewProspectCreation;
+import webpages.homepage;
+import webpages.loginpage;
+
+public class SD_CRM_NewProspectCreation {
+	WebDriver driver = Driverselector.drivers.get();
+	loginpage lpage = new loginpage(driver);
+	homepage hpage = new homepage(driver);
+	TestUtils test = new TestUtils(null);
+	EO_CRM_NewProspectCreation LogPage = new EO_CRM_NewProspectCreation(driver);
+
+	@Given("^user login the CRM Application with credentials \"([^\"]*)\" and \"([^\"]*)\"$")
+	public void user_login_the_CRM_Application_with_credentials_and(String username, String password) throws Throwable {
+		lpage.loginToCRM();
+		hpage.loginToCRM(username, password);
+	}
+
+	@Then("^user should be redirected to the homepage of CRM Application$")
+	public void user_should_be_redirected_to_the_homepage_of_CRM_Application() throws Throwable {
+		LogPage.homepageValidation();
+
+	}
+
+	@Given("^User select the Business Development and leads$")
+	public void user_select_the_Business_Development_and_leads() throws Throwable {
+//		LogPage.bu();
+	}
+
+}
