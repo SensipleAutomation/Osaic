@@ -29,105 +29,120 @@ import ru.yandex.qatools.ashot.AShot;
 import ru.yandex.qatools.ashot.Screenshot;
 import ru.yandex.qatools.ashot.shooting.ShootingStrategies;
 
-
 public class homepage {
-	
-		WebDriver driver;
-	
-	
-	@FindBy(partialLinkText="Client Management")
-    public WebElement o_clientmanagement;
-	
-	@FindBy(xpath="//a[@href='https://agdev.v2020.com/authorization/apauth?e=d&n=cam'][text()='CAM']")
-	   public WebElement cam_qa;
-	
-	@FindBy(partialLinkText="Support")
-    public WebElement o_support;
-	
-	
-	/*@FindBy(css="div:contains('Client Management')")
-    public WebElement o_clientmanagement;
-	*/
-	@FindBy(xpath="//a[@href='/support/bo_reports/index.aspx']")
-   public WebElement o_BO;
-	
-	/*@FindBy(how = How.CSS, using = "td#header_td_clientmanagement")
-    public WebElement o_clientmanagement;*/
-	
+
+	WebDriver driver;
+
+	@FindBy(partialLinkText = "Client Management")
+	public WebElement o_clientmanagement;
+
+	@FindBy(xpath = "//a[@href='https://agdev.v2020.com/authorization/apauth?e=d&n=cam'][text()='CAM']")
+	public WebElement cam_qa;
+
+	@FindBy(partialLinkText = "Support")
+	public WebElement o_support;
+
+	/*
+	 * @FindBy(css="div:contains('Client Management')") public WebElement
+	 * o_clientmanagement;
+	 */
+	@FindBy(xpath = "//a[@href='/support/bo_reports/index.aspx']")
+	public WebElement o_BO;
+
+	/*
+	 * @FindBy(how = How.CSS, using = "td#header_td_clientmanagement") public
+	 * WebElement o_clientmanagement;
+	 */
+
+	@FindBy(xpath = "//input[@name='username']")
+	private WebElement Mail;
+
+	@FindBy(xpath = "//input[@id='password']")
+	private WebElement Password;
+
+	@FindBy(xpath = "//input[@id='Login']")
+	private WebElement LogButton;
+
 	public homepage(WebDriver driver) {
-		
-        this.driver = driver;
-        PageFactory.initElements(driver, this);
-		}
-	
-	public void navtoCRM() throws FilloException, InterruptedException{
-		
+
+		this.driver = driver;
+		PageFactory.initElements(driver, this);
+	}
+
+	public void navtoCRM() throws FilloException, InterruptedException {
+
 		Thread.sleep(100);
-		//scs.fspass(driver, "homepage");
+		// scs.fspass(driver, "homepage");
 		Thread.sleep(500);
-		JavascriptExecutor executor = (JavascriptExecutor)driver;
+		JavascriptExecutor executor = (JavascriptExecutor) driver;
 		executor.executeScript("arguments[0].click();", o_BO);
-		//o_clientmanagement.click();
+		// o_clientmanagement.click();
 		Thread.sleep(5000);
-		
+
 		driver.findElement(By.id("salesforce_CRM2")).click();
 		Thread.sleep(5000);
-		
+
 	}
 
-	public ClientManagementPage navtoclientmanagement() throws FilloException, InterruptedException, IOException{
-		
-		/*String scp = System.getProperty("user.dir")+"/sceenshots/";
-		Screenshot screenshot = new AShot().shootingStrategy(ShootingStrategies.viewportPasting(500)).takeScreenshot(driver);
-		ImageIO.write(screenshot.getImage(),"PNG",new File(scp+"ssname.png"));
-		File src=((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-		FileUtils.copyFile(src, new File(scp+"ssname.png"));
-		Thread.sleep(1000)
-		
-		//for future
-		ExtentTestManage.log("Logging into Login page");
-		ExtentTestManage.logpass(Status.PASS,"Login Successful");
-		
-		//waitForVisibility(o_clientmanagement);
-*/		Thread.sleep(100);
-		//scs.fspass(driver, "homepage");
+	public ClientManagementPage navtoclientmanagement() throws FilloException, InterruptedException, IOException {
+
+		/*
+		 * String scp = System.getProperty("user.dir")+"/sceenshots/"; Screenshot
+		 * screenshot = new
+		 * AShot().shootingStrategy(ShootingStrategies.viewportPasting(500)).
+		 * takeScreenshot(driver); ImageIO.write(screenshot.getImage(),"PNG",new
+		 * File(scp+"ssname.png")); File
+		 * src=((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+		 * FileUtils.copyFile(src, new File(scp+"ssname.png")); Thread.sleep(1000)
+		 * 
+		 * //for future ExtentTestManage.log("Logging into Login page");
+		 * ExtentTestManage.logpass(Status.PASS,"Login Successful");
+		 * 
+		 * //waitForVisibility(o_clientmanagement);
+		 */ Thread.sleep(100);
+		// scs.fspass(driver, "homepage");
 		Thread.sleep(500);
-		JavascriptExecutor executor = (JavascriptExecutor)driver;
+		JavascriptExecutor executor = (JavascriptExecutor) driver;
 		executor.executeScript("arguments[0].click();", o_clientmanagement);
-		//o_clientmanagement.click();
+		// o_clientmanagement.click();
 		Thread.sleep(300);
-		
-		//executor.executeScript("arguments[0].click();", cam_qa);
-		
-		//---sit----//
-		//o_support.click();
-				
-		
+
+		// executor.executeScript("arguments[0].click();", cam_qa);
+
+		// ---sit----//
+		// o_support.click();
+
 		{
-		if (isAlertPresent()) {
-			driver.switchTo().alert().accept();
-			Thread.sleep(1000);
-			driver.switchTo().defaultContent();
+			if (isAlertPresent()) {
+				driver.switchTo().alert().accept();
+				Thread.sleep(1000);
+				driver.switchTo().defaultContent();
 			}
 		}
-		
-		return new ClientManagementPage(driver);
-		
-		}
 
-	private void waitForVisibility(WebElement element) throws Error{
-        new WebDriverWait(driver, 60)
-             .until(ExpectedConditions.visibilityOf(element));
+		return new ClientManagementPage(driver);
+
 	}
-	
+
+	private void waitForVisibility(WebElement element) throws Error {
+		new WebDriverWait(driver, 60).until(ExpectedConditions.visibilityOf(element));
+	}
+
 	public boolean isAlertPresent() {
 		try {
-		driver.switchTo().alert();
-		return true;
-		}// try
+			driver.switchTo().alert();
+			return true;
+		} // try
 		catch (Exception e) {
-		return false;
-		}// catch
-		}
+			return false;
+		} // catch
+	}
+
+	public synchronized homepage loginToCRM(String username, String password) {
+		Mail.sendKeys(username);
+		Password.sendKeys(password);
+		LogButton.click();
+		return this;
+	}
 
 }
