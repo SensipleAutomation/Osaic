@@ -1,108 +1,365 @@
 package webpages;
 
-import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.UnsupportedFlavorException;
-import java.io.IOException;
-
-import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
-import datadriven.hashdatafromexcel;
+import utility.TestUtils;
 
-public class clientpage {
-	
+public class EO_CRM_NewProspectCreation {
+
 	WebDriver driver;
-	
-	
+	TestUtils test = new TestUtils(null);
+	@FindBy(xpath = "//input[@name='username']")
+	private WebElement Mail;
 
-	@FindBy(xpath="//div[@class='banner-text']//h2")
-	public WebElement Clientname;
-	@FindBy(xpath="//ul[@role='tablist']/li[2]/a/span")
-	public WebElement Account_tab;
-	@FindBy(xpath="//tbody/tr[1]/td[2]/a")
-	public WebElement FirstAccountNumber;
-	@FindBy(xpath="//span[@class='client-header ng-star-inserted']")
-	//@FindBy(className="client-header ng-star-inserted")
-	public WebElement Clientpage_Title;
-	@FindBy(xpath="//web-button[@name='save']//button/span")
-	public WebElement Saveandcontinue_Button;
-	@FindBy(xpath="//web-employment-information//h3//span[contains(@class,'web-green')]")
-	public WebElement Empinfo_greenicon;
-	@FindBy(xpath="//web-other-profile-details//h3//span[contains(@class,'web-green')]")
-	public WebElement otherdetails_greenicon;
-	@FindBy(xpath="//h4[contains(text(),'Success')]")
-	public WebElement Success_banner;
-	@FindBy(xpath="//button[@label='DISMISS']")
-	public WebElement dismiss_Button;
-	
-	public clientpage(WebDriver driver)
-	{
-		this.driver=driver;
+	@FindBy(xpath = "//input[@id='password']")
+	private WebElement Password;
+
+	@FindBy(xpath = "//input[@id='Login']")
+	private WebElement LogButton;
+
+	@FindBy(xpath = "//div[@id='usernamegroup']//preceding-sibling::div[@id='error']")
+	private WebElement ErrorDisplayed;
+
+	@FindBy(xpath = "//div[contains(@class,'slds-global-header__item')]//parent::div[@class='slds-global-header__logo']")
+	private WebElement DashboradElement;
+
+	@FindBy(xpath = "//*[contains(@class, 'appName slds-context-bar__label-action slds-context-bar__app-name')]")
+	private WebElement BusinessHeader;
+
+	@FindBy(xpath = "//button[@class='slds-button slds-show']")
+	private WebElement BusinessSelect;
+
+	@FindBy(xpath = "//one-app-launcher-search-bar[@class='al-menu-search-bar']")
+	private WebElement BusiSearch;
+
+	@FindBy(xpath = "//div[@class='oneConsoleNav navexConsoleNav']//following::div[contains(@class,'selectedListItem ')]")
+	private WebElement LeadsHead;
+
+	@FindBy(xpath = "//div[@class='slds-context-bar__icon-action']")
+	private WebElement LeadArrow;
+
+	@FindBy(xpath = "//div[@class='slds-context-bar__icon-action']//following::a[@data-label='Leads']")
+	private WebElement LeadSelect;
+
+	@FindBy(xpath = "//div[text()='Add to Campaign']//preceding::a[@class='forceActionLink']")
+	private WebElement NewButton;
+
+	@FindBy(xpath = "//div[@class='slds-modal__header']")
+	private WebElement NewLeadHeader;
+
+	@FindBy(xpath = "//input[@placeholder='First Name']")
+	private WebElement Firstname;
+
+	@FindBy(xpath = "//input[@placeholder='Last Name']")
+	private WebElement Lastname;
+
+	@FindBy(xpath = "//label[text()='FINRA CRD']")
+	private WebElement ScrollDOB;
+
+	@FindBy(xpath = "//input[@name='CRD__c']")
+	private WebElement FINRACRD;
+
+	@FindBy(xpath = "//input[@name='Date_of_Birth__c']")
+	private WebElement DOBInput;
+
+	@FindBy(xpath = "//span[text()='BUSINESS PROFILE']")
+	private WebElement ScrollBusiness;
+
+	@FindBy(xpath = "//input[@name='Business_Name_DBA__c']")
+	private WebElement BusinessName;
+
+	@FindBy(xpath = "//input[@name='Company']")
+	private WebElement BranchName;
+
+	@FindBy(xpath = "//span[text()='ASSIGNED TO']")
+	private WebElement scrollAssign;
+
+	@FindBy(xpath = "(//input)[last()-45]")
+	private WebElement ExtRecNam;
+
+	@FindBy(xpath = "(//input)[last()-43]")
+	private WebElement IntRecNam;
+
+	@FindBy(xpath = "//label[text()='Assigned Internal Recruiter Name']//following::ul//following::span[text()='Mounika Golla BO']")
+	private WebElement IntRecNamSel;
+
+	@FindBy(xpath = "(//label[text()='Assigned External Recruiter Name']//following::ul//following::span[text()='Mounika Golla BO'])[1]")
+	private WebElement ExtRecNamSel;
+
+	@FindBy(xpath = "//button[@aria-label='Assigned Wealth Management Firm, --None--']")
+	private WebElement AWMFirmDrop;
+
+	@FindBy(xpath = "//span[text()='Osaic']")
+	private WebElement dropOsaic;
+
+	@FindBy(xpath = "//input[@name='MobilePhone']")
+	private WebElement PerMobNum;
+
+	@FindBy(xpath = "//input[@name='Email']")
+	private WebElement PerEmail;
+
+	@FindBy(xpath = "//button[@aria-label='Recruiting Lead Source, --None--']")
+	private WebElement RecleSource;
+
+	@FindBy(xpath = "(//span[@class='slds-media__body']//following::span[text()='Marketing'])[1]")
+	private WebElement LeadMarket;
+
+//	@FindBy(xpath = "//label[text()='Current Type of Practice']")
+//	private WebElement CurPraTyp;
+
+	@FindBy(xpath = "//button[@aria-label='Current Type of Practice, --None--']")
+	private WebElement CurPraDrop;
+
+	@FindBy(xpath = "//span[text()='Solo']")
+	private WebElement SoloSel;
+
+	@FindBy(xpath = "//button[text()='Save']")
+	private WebElement saveButton;
+
+	@FindBy(xpath = "//button[text()='Convert Lead']")
+	private WebElement ConveLeButton;
+
+	@FindBy(xpath = "//div[@role='alertdialog']")
+	private WebElement NewLeadToast;
+
+	@FindBy(xpath = "//slot[contains(@class,'slds-page-header__title slds')]")
+	private WebElement LeadHeader;
+
+	@FindBy(xpath = "//h2[contains(@class, 'slds-p-top_large slds-p-horizontal_medium')]")
+	private WebElement convertHeader;
+
+	@FindBy(xpath = "//button[text()='Convert']")
+	private WebElement finalConvert;
+
+	@FindBy(xpath = "//h2[text()='Your lead has been converted']")
+	private WebElement ConvertMessage;
+
+//	@FindBy(xpath = "(//div[contains(@class, 'test-id__section-content ')])[2]")
+//	private WebElement printProfile;
+//
+//	public WebElement getPrintProfile() {
+//		return printProfile;
+//	}
+
+	public WebElement getConvertHeader() {
+		return convertHeader;
+	}
+
+	public WebElement getFinalConvert() {
+		return finalConvert;
+	}
+
+	public WebElement getConvertMessage() {
+		return ConvertMessage;
+	}
+
+	public WebElement getLeadHeader() {
+		return LeadHeader;
+	}
+
+	public WebElement getSaveButton() {
+		return saveButton;
+	}
+
+	public WebElement getConveLeButton() {
+		return ConveLeButton;
+	}
+
+	public WebElement getNewLeadToast() {
+		return NewLeadToast;
+	}
+
+	public WebElement getCurPraDrop() {
+		return CurPraDrop;
+	}
+
+	public WebElement getSoloSel() {
+		return SoloSel;
+	}
+
+//	public WebElement getCurPraTyp() {
+//		return CurPraTyp;
+//	}
+
+	public WebElement getLeadMarket() {
+		return LeadMarket;
+	}
+
+	public WebElement getPerMobNum() {
+		return PerMobNum;
+	}
+
+	public WebElement getPerEmail() {
+		return PerEmail;
+	}
+
+	public WebElement getRecleSource() {
+		return RecleSource;
+	}
+
+	public WebElement getAWMFirmDrop() {
+		return AWMFirmDrop;
+	}
+
+	public WebElement getDropOsaic() {
+		return dropOsaic;
+	}
+
+	public WebElement getIntRecNamSel() {
+		return IntRecNamSel;
+	}
+
+	public WebElement getExtRecNamSel() {
+		return ExtRecNamSel;
+	}
+
+	public WebElement getExtRecNam() {
+		return ExtRecNam;
+	}
+
+	public WebElement getIntRecNam() {
+		return IntRecNam;
+	}
+
+	public WebElement getScrollAssign() {
+		return scrollAssign;
+	}
+
+	public WebElement getScrollBusiness() {
+		return ScrollBusiness;
+	}
+
+	public WebElement getBusinessName() {
+		return BusinessName;
+	}
+
+	public WebElement getBranchName() {
+		return BranchName;
+	}
+
+	public WebElement getFINRACRD() {
+		return FINRACRD;
+	}
+
+	public WebElement getDOBInput() {
+		return DOBInput;
+	}
+
+	public WebElement getScrollDOB() {
+		return ScrollDOB;
+	}
+
+	public WebElement getFirstname() {
+		return Firstname;
+	}
+
+	public WebElement getLastname() {
+		return Lastname;
+	}
+
+	public WebElement getNewLeadHeader() {
+		return NewLeadHeader;
+	}
+
+	public WebElement getNewButton() {
+		return NewButton;
+	}
+
+	public WebElement getLeadsHead() {
+		return LeadsHead;
+	}
+
+	public WebElement getLeadArrow() {
+		return LeadArrow;
+	}
+
+	public WebElement getLeadSelect() {
+		return LeadSelect;
+	}
+
+	public WebElement getBusinessHeader() {
+		return BusinessHeader;
+	}
+
+	public void setBusinessHeader(WebElement businessHeader) {
+		BusinessHeader = businessHeader;
+	}
+
+	public WebElement getBusinessSelect() {
+		return BusinessSelect;
+	}
+
+	public void setBusinessSelect(WebElement businessSelect) {
+		BusinessSelect = businessSelect;
+	}
+
+	public WebElement getBusiSearch() {
+		return BusiSearch;
+	}
+
+	public void setBusiSearch(WebElement busiSearch) {
+		BusiSearch = busiSearch;
+	}
+
+	public WebElement getDashboradElement() {
+		return DashboradElement;
+	}
+
+	public WebElement getErrorDisplayed() {
+		return ErrorDisplayed;
+	}
+
+	public EO_CRM_NewProspectCreation(WebDriver driver) {
+		this.driver = driver;
 		PageFactory.initElements(driver, this);
-	}
-	//select the accordion by providing title of the accordion eg:'Other Profile Details','Employment Information'
-	public  WebElement selectaccordion(String Accordiontitle) {
-		WebElement clientaccordion =driver.findElement(By.xpath("//span[@class='heading'][contains(text(),'"+Accordiontitle+"')]"));
-	return clientaccordion;
-	}
-	
-	//This method will select the specific dropdown and select the values in the dropdown list
-	//Parameter 1- dropdownname is the name of the dropdown from html page
-	//parameter2-empstatus is the name of the dropdown from html page
-	public void selectdropdown(String dropdownname,String dropdownvalue) throws InterruptedException
-	{
-		dropdownpath(dropdownname).click();
-		Thread.sleep(500);
-		driver.findElement(By.xpath("//p-dropdownitem/li[@aria-label='"+dropdownvalue+"']")).click();
-	}
-	
-	//This method will auto generate the xpath for all the dropdown fileds
-	public WebElement dropdownpath(String dropdownname)
-	{
-		return driver.findElement(By.xpath("//web-field[@name='"+dropdownname+"']//web-select//div[1]/span"));	
+
 	}
 
-	//This method will auto generate the xpath for all the text fileds
-	public WebElement textfieldpath(String fieldtitlename)
-	{
-		return driver.findElement(By.xpath("//web-field[@name='"+fieldtitlename+"']//web-text//input"));	
+	public WebElement getMail() {
+		return Mail;
 	}
-	//This method is used to select the text field erase old data  and provide the data	
-	//parameter "fieldtitlename" should be the name of the field that need to be selected
-	//parameter excelfield is the data from excel sheet
-	public void edittextfield(String fieldtitlename,String excelfield) throws InterruptedException {
-		textfieldpath(fieldtitlename).click();
-		textfieldpath(fieldtitlename).sendKeys(Keys.chord(Keys.CONTROL,"a",Keys.DELETE));
-		textfieldpath(fieldtitlename).sendKeys(hashdatafromexcel.hmap.get(excelfield));
-	Thread.sleep(1000);
+
+	public WebElement getPassword() {
+		return Password;
 	}
-	
-	//This method will copy the text value of text filed and validate that with excel data
-	public void validatetext(String fieldtitlename) throws UnsupportedFlavorException, IOException
-	{
-		textfieldpath(fieldtitlename).click();
-		textfieldpath(fieldtitlename).sendKeys(Keys.chord(Keys.CONTROL,"a"));
-		textfieldpath(fieldtitlename).sendKeys(Keys.chord(Keys.CONTROL,"c"));
-		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-		Object data=clipboard.getData(DataFlavor.stringFlavor);
-		String fieldvalue= (String) data;
-		if(fieldtitlename=="zipCode")
-		{
-		String zipcode5=fieldvalue.substring(0, 4);
-		
-		fieldvalue=zipcode5;
+
+	public WebElement getLogButton() {
+		return LogButton;
+
+	}
+
+	public void homepageValidation() {
+		if (TestUtils.explicit_wait_elementvisibility(DashboradElement).isDisplayed()) {
+			System.out.println("User is on CRM HomePage");
+		} else {
+			System.out.println("Unable to login to server");
 		}
-		System.out.println(hashdatafromexcel.hmap.containsValue(fieldvalue));
-		System.out.println(fieldvalue);
 	}
 
-	
-
-
+//	public void BusinessHeader() throws InterruptedException {
+//		WebElement BusiHead = TestUtils.explicit_wait_elementvisibility(getBusinessHeader());
+//
+//		String BusiHeadText = BusiHead.getText();
+//
+//		String expectedText = "Business Development";
+//
+//		if (BusiHeadText.equals(expectedText)) {
+//
+//			System.out.println("Element text is as expected: " + BusiHeadText);
+//		} else {
+//			Thread.sleep(1000);
+//			test.click_element(getBusinessSelect());
+//			test.enter_values(getBusiSearch(), "Business");
+//			test.enter();
+//			System.out.println("Element text Selected : Business Development");
+//
+//		}
 }
