@@ -329,4 +329,43 @@ public class EO_CRM_NewProspectCreation {
 	public WebElement getLogButton() {
 		return LogButton;
 	}
+public void BusinessDevolpment() throws InterruptedException {
+		WebElement BusiHead = test.explicit_wait_elementvisibility(getBusinessHeader());
+
+		String BusiHeadText = BusiHead.getText();
+
+		String expectedText = "Business Development";
+
+		if (BusiHeadText.equals(expectedText)) {
+
+			System.out.println("Element text is as expected: " + BusiHeadText);
+		} else {
+			Thread.sleep(1000);
+			test.click_element(getBusinessSelect());
+			test.enter_values(getBusiSearch(), "Business");
+			test.enter();
+			System.out.println("Element text Selected : Business Development");
+
+		}
+	}
+
+	public void LeadBusiness() throws InterruptedException {
+		WebElement LeadHead = test.explicit_wait_elementvisibility(getLeadsHead());
+
+		String expectedLead = LeadHead.getText();
+
+		String expectedHead = "Leads";
+
+		if (expectedLead.equals(expectedHead)) {
+			test.click_element(LeadHead);
+			System.out.println("Element text is as expected: " + expectedLead);
+		} else {
+			Thread.sleep(1000);
+			test.click_element(LeadArrow);
+			test.click_element(getLeadSelect());
+			System.out.println("Element text Selected : Leads");
+
+		}
+The static method explicit_wait_elementvisibility(WebElement) from the type TestUtils should be accessed in a static way
+	}
 }
