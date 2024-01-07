@@ -1,1 +1,13 @@
-Implicit super constructor TestUtils() is undefined. Must explicitly invoke another constructor
+public WebElement getPassword() {
+		return Password;
+	}
+
+	public WebElement getLogButton() {
+		return LogButton;
+
+	}
+
+	public void dashboardisDisplayed() {
+		if (TestUtils.explicit_wait_elementvisibility(getDashboradElement()).isDisplayed()) {
+			System.out.println("User is on CRM HomePage");
+		}
