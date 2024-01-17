@@ -1,372 +1,73 @@
-package webpages;
-
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import utility.TestUtils;
-
-public class EO_CRM_NewProspectCreation {
-
-	WebDriver driver;
-	TestUtils test;
-
-	public EO_CRM_NewProspectCreation(WebDriver driver) {
-		this.driver = driver;
-		this.test = new TestUtils(driver);
-		PageFactory.initElements(driver, this);
-	}
-
-	@FindBy(xpath = "//input[@name='username']")
-	private WebElement Mail;
-
-	@FindBy(xpath = "//input[@id='password']")
-	private WebElement Password;
-
-	@FindBy(xpath = "//input[@id='Login']")
-	private WebElement LogButton;
-
-	@FindBy(xpath = "//div[@id='usernamegroup']//preceding-sibling::div[@id='error']")
-	private WebElement ErrorDisplayed;
-
-	@FindBy(xpath = "//div[contains(@class,'slds-global-header__item')]//parent::div[@class='slds-global-header__logo']")
-	private WebElement DashboradElement;
-
-	@FindBy(xpath = "//*[contains(@class, 'appName slds-context-bar__label-action slds-context-bar__app-name')]")
-	private WebElement BusinessHeader;
-
-	@FindBy(xpath = "//button[@class='slds-button slds-show']")
-	private WebElement BusinessSelect;
-
-	@FindBy(xpath = "//one-app-launcher-search-bar[@class='al-menu-search-bar']")
-	private WebElement BusiSearch;
-
-	@FindBy(xpath = "//div[@class='oneConsoleNav navexConsoleNav']//following::div[contains(@class,'selectedListItem ')]")
-	private WebElement LeadsHead;
-
-	@FindBy(xpath = "//div[@class='slds-context-bar__icon-action']")
-	private WebElement LeadArrow;
-
-	@FindBy(xpath = "//div[@class='slds-context-bar__icon-action']//following::a[@data-label='Leads']")
-	private WebElement LeadSelect;
-
-	@FindBy(xpath = "//div[text()='Add to Campaign']//preceding::a[@class='forceActionLink']")
-	private WebElement NewButton;
-
-	@FindBy(xpath = "//div[@class='slds-modal__header']")
-	private WebElement NewLeadHeader;
-
-	@FindBy(xpath = "//input[@placeholder='First Name']")
-	private WebElement Firstname;
-
-	@FindBy(xpath = "//input[@placeholder='Last Name']")
-	private WebElement Lastname;
-
-	@FindBy(xpath = "//label[text()='FINRA CRD']")
-	private WebElement ScrollDOB;
-
-	@FindBy(xpath = "//input[@name='CRD__c']")
-	private WebElement FINRACRD;
-
-	@FindBy(xpath = "//input[@name='Date_of_Birth__c']")
-	private WebElement DOBInput;
-
-	@FindBy(xpath = "//span[text()='BUSINESS PROFILE']")
-	private WebElement ScrollBusiness;
-
-	@FindBy(xpath = "//input[@name='Business_Name_DBA__c']")
-	private WebElement BusinessName;
-
-	@FindBy(xpath = "//input[@name='Company']")
-	private WebElement BranchName;
-
-	@FindBy(xpath = "//span[text()='ASSIGNED TO']")
-	private WebElement scrollAssign;
-
-	@FindBy(xpath = "(//input)[last()-45]")
-	private WebElement ExtRecNam;
-
-	@FindBy(xpath = "(//input)[last()-43]")
-	private WebElement IntRecNam;
-
-	@FindBy(xpath = "//label[text()='Assigned Internal Recruiter Name']//following::ul//following::span[text()='Mounika Golla BO']")
-	private WebElement IntRecNamSel;
-
-	@FindBy(xpath = "(//label[text()='Assigned External Recruiter Name']//following::ul//following::span[text()='Mounika Golla BO'])[1]")
-	private WebElement ExtRecNamSel;
-
-	@FindBy(xpath = "//button[@aria-label='Assigned Wealth Management Firm, --None--']")
-	private WebElement AWMFirmDrop;
-
-	@FindBy(xpath = "//span[text()='Osaic']")
-	private WebElement dropOsaic;
-
-	@FindBy(xpath = "//input[@name='MobilePhone']")
-	private WebElement PerMobNum;
-
-	@FindBy(xpath = "//input[@name='Email']")
-	private WebElement PerEmail;
-
-	@FindBy(xpath = "//button[@aria-label='Recruiting Lead Source, --None--']")
-	private WebElement RecleSource;
-
-	@FindBy(xpath = "(//span[@class='slds-media__body']//following::span[text()='Marketing'])[1]")
-	private WebElement LeadMarket;
-
-//	@FindBy(xpath = "//label[text()='Current Type of Practice']")
-//	private WebElement CurPraTyp;
-
-	@FindBy(xpath = "//button[@aria-label='Current Type of Practice, --None--']")
-	private WebElement CurPraDrop;
-
-	@FindBy(xpath = "//span[text()='Solo']")
-	private WebElement SoloSel;
-
-	@FindBy(xpath = "//button[text()='Save']")
-	private WebElement saveButton;
-
-	@FindBy(xpath = "//button[text()='Convert Lead']")
-	private WebElement ConveLeButton;
-
-	@FindBy(xpath = "//div[@role='alertdialog']")
-	private WebElement NewLeadToast;
-
-	@FindBy(xpath = "//slot[contains(@class,'slds-page-header__title slds')]")
-	private WebElement LeadHeader;
-
-	@FindBy(xpath = "//h2[contains(@class, 'slds-p-top_large slds-p-horizontal_medium')]")
-	private WebElement convertHeader;
-
-	@FindBy(xpath = "//button[text()='Convert']")
-	private WebElement finalConvert;
-
-	@FindBy(xpath = "//h2[text()='Your lead has been converted']")
-	private WebElement ConvertMessage;
-
-//	@FindBy(xpath = "(//div[contains(@class, 'test-id__section-content ')])[2]")
-//	private WebElement printProfile;
-//
-//	public WebElement getPrintProfile() {
-//		return printProfile;
-//	}
-
-	public WebElement getConvertHeader() {
-		return convertHeader;
-	}
-
-	public WebElement getFinalConvert() {
-		return finalConvert;
-	}
-
-	public WebElement getConvertMessage() {
-		return ConvertMessage;
-	}
-
-	public WebElement getLeadHeader() {
-		return LeadHeader;
-	}
-
-	public WebElement getSaveButton() {
-		return saveButton;
-	}
-
-	public WebElement getConveLeButton() {
-		return ConveLeButton;
-	}
-
-	public WebElement getNewLeadToast() {
-		return NewLeadToast;
-	}
-
-	public WebElement getCurPraDrop() {
-		return CurPraDrop;
-	}
-
-	public WebElement getSoloSel() {
-		return SoloSel;
-	}
-
-//	public WebElement getCurPraTyp() {
-//		return CurPraTyp;
-//	}
-
-	public WebElement getLeadMarket() {
-		return LeadMarket;
-	}
-
-	public WebElement getPerMobNum() {
-		return PerMobNum;
-	}
-
-	public WebElement getPerEmail() {
-		return PerEmail;
-	}
-
-	public WebElement getRecleSource() {
-		return RecleSource;
-	}
-
-	public WebElement getAWMFirmDrop() {
-		return AWMFirmDrop;
-	}
-
-	public WebElement getDropOsaic() {
-		return dropOsaic;
-	}
-
-	public WebElement getIntRecNamSel() {
-		return IntRecNamSel;
-	}
-
-	public WebElement getExtRecNamSel() {
-		return ExtRecNamSel;
-	}
-
-	public WebElement getExtRecNam() {
-		return ExtRecNam;
-	}
-
-	public WebElement getIntRecNam() {
-		return IntRecNam;
-	}
-
-	public WebElement getScrollAssign() {
-		return scrollAssign;
-	}
-
-	public WebElement getScrollBusiness() {
-		return ScrollBusiness;
-	}
-
-	public WebElement getBusinessName() {
-		return BusinessName;
-	}
-
-	public WebElement getBranchName() {
-		return BranchName;
-	}
-
-	public WebElement getFINRACRD() {
-		return FINRACRD;
-	}
-
-	public WebElement getDOBInput() {
-		return DOBInput;
-	}
-
-	public WebElement getScrollDOB() {
-		return ScrollDOB;
-	}
-
-	public WebElement getFirstname() {
-		return Firstname;
-	}
-
-	public WebElement getLastname() {
-		return Lastname;
-	}
-
-	public WebElement getNewLeadHeader() {
-		return NewLeadHeader;
-	}
-
-	public WebElement getNewButton() {
-		return NewButton;
-	}
-
-	public WebElement getLeadsHead() {
-		return LeadsHead;
-	}
-
-	public WebElement getLeadArrow() {
-		return LeadArrow;
-	}
-
-	public WebElement getLeadSelect() {
-		return LeadSelect;
-	}
-
-	public WebElement getBusinessHeader() {
-		return BusinessHeader;
-	}
-
-	public void setBusinessHeader(WebElement businessHeader) {
-		BusinessHeader = businessHeader;
-	}
-
-	public WebElement getBusinessSelect() {
-		return BusinessSelect;
-	}
-
-	public void setBusinessSelect(WebElement businessSelect) {
-		BusinessSelect = businessSelect;
-	}
-
-	public WebElement getBusiSearch() {
-		return BusiSearch;
-	}
-
-	public void setBusiSearch(WebElement busiSearch) {
-		BusiSearch = busiSearch;
-	}
-
-	public WebElement getDashboradElement() {
-		return DashboradElement;
-	}
-
-	public WebElement getErrorDisplayed() {
-		return ErrorDisplayed;
-	}
-
-//	public EO_CRM_NewProspectCreation(WebDriver driver) {
-//		this.driver = driver;
-//		PageFactory.initElements(driver, this);
-//
-//	}
-
-	public WebElement getMail() {
-		return Mail;
-	}
-
-	public WebElement getPassword() {
-		return Password;
-	}
-
-	public WebElement getLogButton() {
-		return LogButton;
-
-	}
-
-	public void homepageValidation() {
-		System.out.println("Debug: Element displayed - " + DashboradElement.isDisplayed());
-
-		if (TestUtils.explicit_wait_elementvisibility(DashboradElement).isDisplayed()) {
-			System.out.println("User is on CRM HomePage");
-		} else {
-			System.out.println("Unable to login to server");
-		}
-	}
-
-	public void businessHeader() throws InterruptedException {
-		WebElement businessHead = TestUtils.explicit_wait_elementvisibility(getBusinessHeader());
-		String businessHeadText = businessHead.getText();
-		String expectedText = "Business Development";
-		System.out.println(businessHeadText);
-		if (businessHeadText.equals(expectedText)) {
-			System.out.println("Element text is as expected: " + businessHeadText);
-		} else {
-			Thread.sleep(1000);
-			test.click_element(getBusinessSelect());
-			test.enter_values(getBusiSearch(), "Business");
-			test.enter();
-			System.out.println("Element text Selected : Business Development");
-		}
-	}
-
-}
+1. Title: Incorrect Retention of FINRA Registration ID after Switching from 'Yes' to 'No' and Back to 'Yes'
+
+Steps to Reproduce:
+Navigate to the question area that asks, "Are you a Registered in FINRA?"
+Click on the 'Yes' button.
+Enter a valid ID in the opened text field.
+Click the 'Save' button.
+Click on the 'No' button.
+Click the 'Save' button.
+Once again, click on the 'Yes' button.
+Observe that the previously entered ID is still present in the text field.
+Expected Behaviour:
+When the user switches from 'Yes' to 'No' and then back to 'Yes,' the previously entered FINRA ID should not be retained in the text field. The field should either be blank or reset to its default state.
+Actual Behaviour:
+The system retains the FINRA ID even after switching from 'Yes' to 'No' and back to 'Yes,' leading to potential confusion for the user.
+2. Title: Data Overwriting Issue between Personal Cell Phone and Personal Home Phone Fields
+
+Steps to Reproduce:
+Navigate to the user profile or data entry section where Personal Cell Phone and Personal Home Phone fields are available.
+Enter a valid phone number in the mandatory Personal Cell Phone field.
+Click the 'Save' button to save the entered Personal Cell Phone number.
+Without refreshing the page or navigating away, attempt to enter a different phone number in the optional Personal Home Phone field.
+Observe that the entered phone number in the Personal Home Phone field is incorrectly reflecting in the Personal Cell Phone field.
+Expected Behaviour:
+The data entered in the Personal Home Phone field should not overwrite or affect the data previously entered in the mandatory Personal Cell Phone field.
+
+Actual Behaviour:
+Entering data in the Personal Home Phone field results in the same data being reflected in the Personal Cell Phone field, causing a data integrity issue.
+
+3. Title: Premature Validation Error Trigger in Business Street Address Field
+
+Steps to Reproduce:
+Navigate to the section where the Business Street Address text field is present.
+Click on the Business Street Address field to enter values.
+Observe that a validation prompt appears immediately upon clicking into the field, stating, "Please enter values."
+Expected Behaviour:
+Validation prompts should only occur when the user attempts to move away from the field or submits the form without entering required details. The error should not be triggered upon initially clicking into the field.
+Actual Behaviour:
+The validation prompt appears prematurely, even before any attempt to save or submit the form, hindering the user from entering values smoothly.
+
+4. Title: Unintended Duplicate Opening of +Location Fields on Enter Key Press
+
+Steps to Reproduce:
+
+Navigate to the "Other Office Locations" section.
+Below the list of office locations, locate the "+Location" button.
+Click the "+Location" button to open the set of fields for adding a new office location.
+Observe that the form opens successfully.
+After the form is open, press the "Enter" key on the keyboard.
+Notice that a new set of fields opens, duplicating the form unnecessarily.
+
+
+
+
+Expected Behaviour:
+Pressing the "Enter" key after the initial opening of the form should not trigger the duplication of the +Location fields. The form should remain unchanged unless the user manually clicks the "+Location" button again.
+Actual Behaviour:
+Pressing the "Enter" key unintentionally triggers the opening of a new set of fields, causing unnecessary duplication.
+
+5. Title: Save Button Remains Enabled After Deleting Unmodified Fields in +Location Form
+
+Steps to Reproduce:
+
+Navigate to the "Other Office Locations" section.
+Below the list of office locations, locate the "+Location" button.
+Click the "+Location" button to open the set of fields for adding a new office location.
+click delete
+Without making any changes.
+Observe that the Save button remains enabled even though no changes have been made.
+Expected Behaviour:
+The Save button should only be enabled if changes have been made to the fields within the +Location form. Deleting unmodified fields should not keep the Save button enabled.
+Actual Behaviour:
+The Save button remains enabled even after deleting unmodified fields within the +Location form, which may lead to confusion as it suggests unsaved changes.
