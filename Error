@@ -1,73 +1,35 @@
-1. Title: Incorrect Retention of FINRA Registration ID after Switching from 'Yes' to 'No' and Back to 'Yes'
+String randomMobileNumber = generateRandomMobileNumber();
+        System.out.println("Random Mobile Number: " + randomMobileNumber);
 
-Steps to Reproduce:
-Navigate to the question area that asks, "Are you a Registered in FINRA?"
-Click on the 'Yes' button.
-Enter a valid ID in the opened text field.
-Click the 'Save' button.
-Click on the 'No' button.
-Click the 'Save' button.
-Once again, click on the 'Yes' button.
-Observe that the previously entered ID is still present in the text field.
-Expected Behaviour:
-When the user switches from 'Yes' to 'No' and then back to 'Yes,' the previously entered FINRA ID should not be retained in the text field. The field should either be blank or reset to its default state.
-Actual Behaviour:
-The system retains the FINRA ID even after switching from 'Yes' to 'No' and back to 'Yes,' leading to potential confusion for the user.
-2. Title: Data Overwriting Issue between Personal Cell Phone and Personal Home Phone Fields
+        // Example of generating random email address
+        String randomEmailAddress = generateRandomEmailAddress();
+        System.out.println("Random Email Address: " + randomEmailAddress);
+    }
 
-Steps to Reproduce:
-Navigate to the user profile or data entry section where Personal Cell Phone and Personal Home Phone fields are available.
-Enter a valid phone number in the mandatory Personal Cell Phone field.
-Click the 'Save' button to save the entered Personal Cell Phone number.
-Without refreshing the page or navigating away, attempt to enter a different phone number in the optional Personal Home Phone field.
-Observe that the entered phone number in the Personal Home Phone field is incorrectly reflecting in the Personal Cell Phone field.
-Expected Behaviour:
-The data entered in the Personal Home Phone field should not overwrite or affect the data previously entered in the mandatory Personal Cell Phone field.
+    public static String generateRandomMobileNumber() {
+        Random random = new Random();
+        // Generating a 10-digit random mobile number
+        StringBuilder mobileNumber = new StringBuilder("9"); // Assuming Indian mobile numbers starting with 9
+        for (int i = 0; i < 9; i++) {
+            mobileNumber.append(random.nextInt(10));
+        }
+        return mobileNumber.toString();
+    }
 
-Actual Behaviour:
-Entering data in the Personal Home Phone field results in the same data being reflected in the Personal Cell Phone field, causing a data integrity issue.
-
-3. Title: Premature Validation Error Trigger in Business Street Address Field
-
-Steps to Reproduce:
-Navigate to the section where the Business Street Address text field is present.
-Click on the Business Street Address field to enter values.
-Observe that a validation prompt appears immediately upon clicking into the field, stating, "Please enter values."
-Expected Behaviour:
-Validation prompts should only occur when the user attempts to move away from the field or submits the form without entering required details. The error should not be triggered upon initially clicking into the field.
-Actual Behaviour:
-The validation prompt appears prematurely, even before any attempt to save or submit the form, hindering the user from entering values smoothly.
-
-4. Title: Unintended Duplicate Opening of +Location Fields on Enter Key Press
-
-Steps to Reproduce:
-
-Navigate to the "Other Office Locations" section.
-Below the list of office locations, locate the "+Location" button.
-Click the "+Location" button to open the set of fields for adding a new office location.
-Observe that the form opens successfully.
-After the form is open, press the "Enter" key on the keyboard.
-Notice that a new set of fields opens, duplicating the form unnecessarily.
+    public static String generateRandomEmailAddress() {
+        Random random = new Random();
+        // Generating a random email address with a random number and a common domain
+        String username = "user" + random.nextInt(1000); // Appending a random number to the username
+        String domain = "@example.com"; // You can change this to your desired domain
+        return username + domain;
+    }
+}
 
 
 
+WebElement mobileNumberInput = driver.findElement(By.id("mobileNumber"));
+mobileNumberInput.sendKeys(generateRandomMobileNumber());
 
-Expected Behaviour:
-Pressing the "Enter" key after the initial opening of the form should not trigger the duplication of the +Location fields. The form should remain unchanged unless the user manually clicks the "+Location" button again.
-Actual Behaviour:
-Pressing the "Enter" key unintentionally triggers the opening of a new set of fields, causing unnecessary duplication.
-
-5. Title: Save Button Remains Enabled After Deleting Unmodified Fields in +Location Form
-
-Steps to Reproduce:
-
-Navigate to the "Other Office Locations" section.
-Below the list of office locations, locate the "+Location" button.
-Click the "+Location" button to open the set of fields for adding a new office location.
-click delete
-Without making any changes.
-Observe that the Save button remains enabled even though no changes have been made.
-Expected Behaviour:
-The Save button should only be enabled if changes have been made to the fields within the +Location form. Deleting unmodified fields should not keep the Save button enabled.
-Actual Behaviour:
-The Save button remains enabled even after deleting unmodified fields within the +Location form, which may lead to confusion as it suggests unsaved changes.
+// Assuming you have a WebElement representing an input field for email address
+WebElement emailInput = driver.findElement(By.id("email"));
+emailInput.sendKeys(generateRandomEmailAddress());
