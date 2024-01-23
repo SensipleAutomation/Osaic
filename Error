@@ -1,6 +1,5 @@
-public static void closeDriver() {
-        if (driver != null) {
-            driver.quit();
-            driver = null;  // Reset the static driver variable to null after quitting
-        }
-    }
+public synchronized homepage driverClose() throws FilloException, InterruptedException, IOException {
+		driver.quit();
+
+		return new homepage(driver);
+	}
