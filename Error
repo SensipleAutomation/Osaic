@@ -1,2 +1,1 @@
-//div[contains(@class, 'horizontal_small')] 
-after this i have slot and after that records-record-layout-row on this in 14 th position ihave the span[text()='Contact']
+(//div[contains(@class, 'horizontal_small')]//span[text()='Contact'])[last()]
