@@ -1,7 +1,10 @@
 rpuliendran@pw1etsquas030av MINGW64 ~/git/web/apps/eo-bdd ((0265f26645...))
-$ git fetch origin
-remote: Azure Repos
-remote: Found 71 objects to send. (293 ms)
-Unpacking objects: 100% (71/71), 91.62 KiB | 75.00 KiB/s, done.
+$ git pull origin master
 From ssh://pw1appdvop01.ibddomain.net:22/AdvisorGroup/Applications/_git/web
-   ecabe90c52..687dfcd3e0  master     -> origin/master
+ * branch                  master     -> FETCH_HEAD
+error: Your local changes to the following files would be overwritten by merge:
+        apps/dashboard-bdd/New_configuration (1).launch
+Please commit your changes or stash them before you merge.
+Aborting
+Updating files: 100% (544/544), done.
+Merge with strategy ort failed.
