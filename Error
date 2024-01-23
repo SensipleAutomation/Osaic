@@ -1,1 +1,1 @@
-(//records-record-layout-row)[position()=20]//div/dl/dt/following-sibling::div/span
+(//records-record-layout-row//*[position()=8])[position()=20]
