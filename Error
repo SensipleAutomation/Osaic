@@ -1,1 +1,10 @@
-(//ul[@class='slds-button-group-list']/li)[last()]
+public void closeDriver() {
+    try {
+        if (driver != null) {
+            driver.quit();
+        }
+    } catch (NullPointerException e) {
+        // Handle the exception as per your requirements
+        System.err.println("NullPointerException caught: " + e.getMessage());
+    }
+}
