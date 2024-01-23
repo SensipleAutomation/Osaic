@@ -1,3 +1,8 @@
-git add .
-git commit -m "Resolved conflicts in New_configuration (1).launch"
-git checkout -- apps/dashboard-bdd/New_configuration\ (1).launch
+no changes added to commit (use "git add" and/or "git commit -a")
+
+rpuliendran@pw1etsquas030av MINGW64 ~/git/web/apps/eo-bdd ((6aa9f072ac...))
+$ git checkout -- apps/dashboard-bdd/New_configuration/ (1).launch
+bash: syntax error near unexpected token `('
+
+rpuliendran@pw1etsquas030av MINGW64 ~/git/web/apps/eo-bdd ((6aa9f072ac...))
+$
