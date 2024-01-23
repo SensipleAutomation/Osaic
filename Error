@@ -1,1 +1,1 @@
-//div[@class='slds-form-element__control']//following::span[text()='Contact']
+(//records-record-layout-row)[position()=2]
