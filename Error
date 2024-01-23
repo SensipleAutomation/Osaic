@@ -1,1 +1,1 @@
-(//div[contains(@class, 'horizontal_small')])[9]//following::*[text()='Contact']
+//div[contains(@class, 'horizontal_small')]//*[text()='Contact']
