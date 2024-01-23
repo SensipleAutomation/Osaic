@@ -1,0 +1,178 @@
+package seleniumgluecode;
+
+import org.openqa.selenium.WebDriver;
+import org.testng.Assert;
+
+import cucumberutils.Driverselector;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import utility.TestUtils;
+import webpages.EO_CRM_NewProspectCreation;
+import webpages.homepage;
+import webpages.loginpage;
+
+public class SD_CRMNewProspectCreation {
+	WebDriver driver = Driverselector.drivers.get();
+	loginpage lpage = new loginpage(driver);
+	EO_CRM_NewProspectCreation crm = new EO_CRM_NewProspectCreation(driver);
+
+	@Given("^user login the CRM Application with credentials \"([^\"]*)\" and \"([^\"]*)\"$")
+	public void user_login_the_CRM_Application_with_credentials_and(String user, String password) throws Throwable {
+		lpage.loginToCRM();
+		crm.loginToCRM(user, password);
+	}
+
+	@Given("^user should be redirected to the homepage of CRM Application$")
+	public void user_should_be_redirected_to_the_homepage_of_CRM_Application() throws Throwable {
+		crm.dashboard();
+	}
+
+	@Given("^User select the Business Development and leads$")
+	public void user_select_the_Business_Development_and_leads() throws Throwable {
+		crm.BusinessDevolpment();
+		crm.Lead();
+	}
+
+	@Given("^User Verifies whether the New Button is available and click$")
+	public void user_Verifies_whether_the_New_Button_is_available_and_click() throws Throwable {
+		crm.newButton();
+
+	}
+
+	@Given("^User Validate the NewLead Header is present$")
+	public void user_Validate_the_NewLead_Header_is_present() throws Throwable {
+		crm.NewHead();
+	}
+
+	@Given("^user enters \"([^\"]*)\" value in FirstName field and \"([^\"]*)\" value in LastName field$")
+	public void user_enters_value_in_FirstName_field_and_value_in_LastName_field(String First, String Last)
+			throws Throwable {
+		crm.Negative();
+		crm.firstLast(First, Last);
+	}
+
+	@Given("^user enters the \"([^\"]*)\" values in FINRACD$")
+	public void user_enters_the_values_in_FINRACD(String finra) throws Throwable {
+		crm.finra(finra);
+	}
+
+	@Given("^user enters the \"([^\"]*)\" values in DOB Field$")
+	public void user_enters_the_values_in_DOB_Field(String dob) throws Throwable {
+		crm.dob(dob);
+	}
+
+	@Given("^User Validate the BusinessProfile is present$")
+	public void user_Validate_the_BusinessProfile_is_present() throws Throwable {
+		crm.BusinessProfile();
+	}
+
+	@Given("^user enters \"([^\"]*)\" value in Business Name\\(DBA\\) field and \"([^\"]*)\" value in Branch Name field$")
+	public void user_enters_value_in_Business_Name_DBA_field_and_value_in_Branch_Name_field(String nam, String bran)
+			throws Throwable {
+		crm.BusiNB(nam, bran);
+	}
+
+	@Given("^User validate \"([^\"]*)\" is present$")
+	public void user_validate_is_present(String arg1) throws Throwable {
+		crm.Assigne();
+	}
+
+	@Given("^user assign External Recruiter Name$")
+	public void user_assign_External_Recruiter_Name() throws Throwable {
+		crm.External();
+	}
+
+	@Given("^user assign Internal Recruiter Name$")
+	public void user_assign_Internal_Recruiter_Name() throws Throwable {
+		crm.Internal();
+	}
+
+	@Given("^User assign wealth management firm$")
+	public void user_assign_wealth_management_firm() throws Throwable {
+		crm.wealth();
+	}
+
+	@Given("User enters value in personal mobile Number field and value in personal email field")
+	public void user_enters_value_in_personal_mobile_Number_field_and_value_in_personal_email_field() {
+		crm.mobEmail();
+	}
+
+	@Given("^User selcts the recruiting lead source$")
+	public void user_selcts_the_recruiting_lead_source() throws Throwable {
+		crm.recLead();
+	}
+
+	@Given("^user selects Solo from the Current Type of Practice dropdown from Contacting section$")
+	public void user_selects_Solo_from_the_Current_Type_of_Practice_dropdown_from_Contacting_section()
+			throws Throwable {
+		crm.curPrac();
+	}
+
+	@Given("^user click on Save Button$")
+	public void user_click_on_Save_Button() throws Throwable {
+		crm.finSave();
+	}
+
+	@Given("^User Validate the Success message Toaster$")
+	public void user_Validate_the_Success_message_Toaster() throws Throwable {
+//		crm.toaster();
+	}
+
+	@Given("^User validate the Header Name$")
+	public void user_validate_the_Header_Name() throws Throwable {
+//		crm.leadPageHead();
+	}
+
+	@Given("^User click on convert lead button$")
+	public void user_click_on_convert_lead_button() throws Throwable {
+		crm.ClickLead();
+	}
+
+	@Given("^User click on convert button$")
+	public void user_click_on_convert_button() throws Throwable {
+		crm.convertHead();
+		crm.finaConvert();
+	}
+
+	@Given("^user validate the PopupMessage popup message$")
+	public void user_validate_the_PopupMessage_popup_message() throws Throwable {
+
+		crm.oppTab();
+
+	}
+
+	@Given("^user fill the form in opportunites page with \"([^\"]*)\"$")
+	public void user_fill_the_form_in_opportunites_page_with(String value) throws Throwable {
+		crm.contactEdit();
+		crm.channel();
+		crm.values(value);
+		crm.homeSelect();
+	}
+
+	@Given("^user click on invite button and validate the toaster$")
+	public void user_click_on_invite_button_and_validate_the_toaster() throws Throwable {
+		crm.inviteBut();
+		crm.invite();
+
+	}
+
+	@Given("^user validate that the external id is generated$")
+	public void user_validate_that_the_external_id_is_generated() throws Throwable {
+		crm.ext();
+	}
+
+	@Given("^User delete the Created prospect and validate the toaster$")
+	public void user_delete_the_Created_prospect_and_validate_the_toaster() throws Throwable {
+		crm.DeleteProspect();
+
+		crm.cases();
+
+	}
+
+	@Given("^User search for the prospect and delete the created user$")
+	public void user_search_for_the_prospect_and_delete_the_created_user() throws Throwable {
+		crm.Select();
+
+	}
+
+}
