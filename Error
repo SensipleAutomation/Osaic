@@ -1,2 +1,1 @@
-//ul[@class='slds-button-group-list']/li[@class='slds-dropdown-trigger slds-dropdown-trigger_click slds-button_last overflow']
-//li[@class='slds-dropdown-trigger slds-dropdown-trigger_click slds-button_last overflow']
+//ul[@class='slds-button-group-list']/li[@class='slds-dropdown-trigger slds-dropdown-trigger_click slds-button_last overflow'][last()]
