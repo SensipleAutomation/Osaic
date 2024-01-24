@@ -1,1 +1,1 @@
-(//div[contains(@class, 'horizontal_small')]//span[text()='Contact'])[last()]
+js.executeScript("window.scrollBy(0, 500);");
