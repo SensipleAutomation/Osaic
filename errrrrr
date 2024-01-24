@@ -1,13 +1,5 @@
-public WebElement getPassword() {
-		return Password;
-	}
-
-	public WebElement getLogButton() {
-		return LogButton;
-
-	}
-
-	public void dashboardisDisplayed() {
-		if (TestUtils.explicit_wait_elementvisibility(getDashboradElement()).isDisplayed()) {
-			System.out.println("User is on CRM HomePage");
-		}
+public synchronized void closeDriver() {
+        if (driver != null) {
+            driver.quit();
+        }
+    }
