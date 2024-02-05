@@ -5,3 +5,17 @@ public void copymail() {
 		WebElement element = mailInvited;
 		String text = element.getText();
 		System.out.println("Mail:" + text);
+		TestUtils.sleep(1000);
+		Actions actions = new Actions(driver);
+		actions.keyDown(Keys.CONTROL).sendKeys("c").keyUp(Keys.CONTROL).perform();
+
+	}
+
+	public void logmail() throws FilloException, InterruptedException, IOException {
+		WebElement targetElement = Mail;
+		Actions actions = new Actions(driver);
+		targetElement.click();
+		actions.keyDown(Keys.CONTROL).sendKeys("v").keyUp(Keys.CONTROL);
+		actions.build().perform();
+
+	}
