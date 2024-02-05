@@ -1,2 +1,1 @@
-Actions actions = new Actions(driver);
-actions.sendKeys(Keys.chord(Keys.CONTROL, "c")).perform();
+actions.keyDown(Keys.CONTROL).sendKeys("c").keyUp(Keys.CONTROL).perform();
