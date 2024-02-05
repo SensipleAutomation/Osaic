@@ -1,3 +1,10 @@
-for (String handle : driver.getWindowHandles()) {
-			driver.switchTo().window(handle);
-		}
+//	public String copymail() throws FilloException, InterruptedException, IOException {
+//		JavascriptExecutor js = (JavascriptExecutor) driver;
+//		js.executeScript("window.scrollTo(0, 0);");
+//		TestUtils.sleep(1000);
+//		WebElement element = mailInvited;
+//		String text = element.getText();
+//		System.out.println("Mail:" + text);
+//		return text;
+//
+//	}
