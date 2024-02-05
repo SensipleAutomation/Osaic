@@ -1,1 +1,6 @@
-js.executeScript("window.scrollBy(0, 500);");
+((JavascriptExecutor) driver).executeScript("window.open()");
+
+		// Switch to the newly opened tab
+		for (String handle : driver.getWindowHandles()) {
+			driver.switchTo().window(handle);
+		}
