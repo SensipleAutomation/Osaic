@@ -1,38 +1,47 @@
-Feature: New Prospect creation for Express Onboarding in CRM Application 
 @login 
-Scenario Outline: Login to CRM Application with valid credentials 
-	Given user login the CRM Application with credentials "<username>" and "<password>" 
-	Then user should be redirected to the homepage of CRM Application 
-	
-	Examples: 
-		| username             | password       |
-		| mounika.golla@advisorgroup.com.crm2.qafull       | $aLesforcE123   |
+Feature: New Prospect creation for Express Onboarding in CRM Application 
 
-Scenario Outline: Creating a New Prospect for Express Onboarding 
-	Given User select the Business Development and leads 
+Scenario Outline: New Prospect Creation in crm and Login to EO  
+	Given user login the CRM Application with credentials "<username>" and "<password>" 
+	And user should be redirected to the homepage of CRM Application 
+	And User select the Business Development and leads 
 	And User Verifies whether the New Button is available and click 
-	And User Validate the NewLead Header is present 
-	And user enters "<FirstName>" value in FirstName field and "<LastName>" value in LastName field 
-	And user enters the "<FINRACD>" values in FINRACD 
+	And User Validate the NewLead Header is present
+	And user enters "<FirstName>" value in FirstName field and "<LastName>" value in LastName field
+	And user enters the "<FINRACD>" values in FINRACD
 	And user enters the "<DOB>" values in DOB Field 
-	And User Validate the "<BusinessProfile>" is present 
-	And user enters "<BusinessName>" value in Business Name(DBA) field and "<BranchName>" value in Branch Name field 
-	And user scroll to Assigning space 
-	And User validate "<AssigningSpace>" is present 
+	And User Validate the BusinessProfile is present
+	And user enters "<BusinessName>" value in Business Name(DBA) field and "<BranchName>" value in Branch Name field
+	And User validate "<AssigningSpace>" is present
 	And user assign External Recruiter Name 
 	And user assign Internal Recruiter Name 
 	And User assign wealth management firm 
-	And User enters "<MobileNumber>" value in personal mobile Number field and "<Email>" in personal email field 
+	And User enters value in personal mobile Number field and value in personal email field 
 	And User selcts the recruiting lead source 
-	And user selects 'Solo' from the Current Type of Practice dropdown from Contacting section 
+	And user selects Solo from the Current Type of Practice dropdown from Contacting section 
 	And user click on Save Button 
-	Then User Validate the Success message Toaster 
-			
-	When User validate the Header Name 
+	And User Validate the Success message Toaster 
+	And User validate the Header Name 
 	And User click on convert lead button 
 	And User click on convert button 
-	Then user validate the "<PopupMessage>" popup message 
-			
+	And user validate the PopupMessage popup message 
+	And user fill the form in opportunites page with "<value>"
+	And user click on invite button and validate the toaster
+	And user validate that the external id is generated
+	And User open new window and login with newly created prospect
+	And user click login button after passing "<EoPassword>"
+	#And User delete the Created prospect and validate the toaster
+	#And User search for the prospect and delete the created user
 	Examples: 
-		| FirstName | LastName | FINRACD      | DOB        | BusinessProfile          | BusinessName  | BranchName | AssigningSpace | MobileNumber  | Email                   | PopupMessage            |
-		| AutoDemoTest      | Deat      | 65432   | 04/04/1994 | TestAuto | ABC Company   | Branch1    | Assign1        | 1234567890    | john.doe@example.com   | Convert Message Reflects|		
+		| username             | password       | FirstName | LastName | FINRACD      | DOB        | BusinessName  | BranchName | value | EoPassword |
+		| mounika.golla@advisorgroup.com.crm2.qafull       | $aLesforcE123   | AutoDemoTest      | Deat      | 654321   | 04/04/1994 | TesAuto | ABC Test | 1 | P@55w0rd$321 |
+		
+		
+Scenario Outline: Learn Module cases Approval and closing
+	Given user validate welcome board and click on Learn Module complete button
+	
+	Examples: 
+		| tes             | pas       | 
+		| test       | $aLE123   | 
+		
+		
