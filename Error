@@ -1,6 +1,9 @@
-((JavascriptExecutor) driver).executeScript("window.open()");
+public void copymail() throws FilloException, InterruptedException, IOException {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("window.scrollTo(0, 0);");
+		TestUtils.sleep(1000);
+		WebElement element = mailInvited;
+		String text = element.getText();
+		System.out.println("Mail:" + text);
 
-		// Switch to the newly opened tab
-		for (String handle : driver.getWindowHandles()) {
-			driver.switchTo().window(handle);
-		}
+	}
