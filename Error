@@ -1,1 +1,53 @@
-String originalHandle = driver.getWindowHandle();
+@FindBy(xpath = "(//input[contains(@class,'web-input')])[1]")
+	private WebElement Mail;
+
+	@FindBy(xpath = "(//input[contains(@class,'web-input')])[2]")
+	private WebElement Password;
+
+	@FindBy(xpath = "//web-button[@type='submit']")
+	private WebElement LogButton;
+
+	@FindBy(xpath = "//a[text()='OVERVIEW']")
+	private WebElement OVButton;
+
+	@FindBy(xpath = "//h1[text()='Welcome Portal']")
+	private WebElement welcomeHeader;
+
+	@FindBy(xpath = "(//span[text()='Complete'])[1]")
+	private WebElement learnCompletebutton;
+
+	@FindBy(xpath = "(//p[contains(@class, 'slds-truncate')])[12]")
+	private WebElement mailInvited;
+
+	public synchronized CasesApprovalAndClosing loginToEO(String username, String password) {
+		Mail.sendKeys(username);
+		Password.sendKeys(password);
+		LogButton.click();
+		return this;
+	}
+
+	public void overview() {
+		TestUtils.sleep(2000);
+		OVButton.click();
+		Assert.assertTrue(welcomeHeader.isDisplayed(), "Dashboard Welcome Header Not Present");
+	}
+
+	public void learnComplete() {
+		Assert.assertTrue(learnCompletebutton.isDisplayed(), "Learn Complete Button not present");
+		learnCompletebutton.click();
+	}
+
+	public String copymail() throws FilloException, InterruptedException, IOException {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("window.scrollTo(0, 0);");
+		TestUtils.sleep(1000);
+		WebElement element = mailInvited;
+		String text = element.getText();
+		System.out.println("Mail:" + text);
+		return text;
+
+	}
+	public void logmail() throws FilloException, InterruptedException, IOException {
+		String mail = copymail();
+		Mail.sendKeys(mail);
+	}
