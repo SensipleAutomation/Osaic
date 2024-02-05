@@ -1,44 +1,21 @@
+import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+
+// ...
+
 public void copymail() {
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("window.scrollTo(0, 0);");
-		TestUtils.sleep(1000);
-		WebElement element = mailInvited;
-		String text = element.getText();
-		System.out.println("Mail:" + text);
-		TestUtils.sleep(1000);
-		Actions actions = new Actions(driver);
-		actions.keyDown(Keys.CONTROL).sendKeys("c").keyUp(Keys.CONTROL).perform();
+    // Scroll and get text as before
+    JavascriptExecutor js = (JavascriptExecutor) driver;
+    js.executeScript("window.scrollTo(0, 0);");
+    TestUtils.sleep(1000);
+    WebElement element = mailInvited;
+    String text = element.getText();
+    System.out.println("Mail:" + text);
+    TestUtils.sleep(1000);
 
-	}
-
-	public void logmail() throws FilloException, InterruptedException, IOException {
-		WebElement targetElement = Mail;
-		Actions actions = new Actions(driver);
-		targetElement.click();
-		actions.keyDown(Keys.CONTROL).sendKeys("v").keyUp(Keys.CONTROL);
-		actions.build().perform();
-
-	}
-
-@Given("^user validate that the external id is generated$")
-	public void user_validate_that_the_external_id_is_generated() throws Throwable {
-		crm.ext();
-		cac.copymail();
-		TestUtils.sleep(1500);
-//		cac.mailCopied();
-
-	}
-
-	@Given("^User open new window and login with newly created prospect$")
-	public void user_open_new_window_and_login_with_newly_created_prospect() throws Throwable {
-
-		((JavascriptExecutor) driver).executeScript("window.open()");
-		for (String handle : driver.getWindowHandles()) {
-			driver.switchTo().window(handle);
-		}
-		lpage.loginToEO();
-		TestUtils.sleep(1500);
-		cac.logmail();
-		
-
-	}
+    // Copy text to clipboard
+    StringSelection stringSelection = new StringSelection(text);
+    Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+    clipboard.setContents(stringSelection, null);
+}
