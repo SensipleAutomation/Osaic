@@ -1,19 +1,22 @@
-String originalHandle = driver.getWindowHandle();
+WebElement sourceElement = driver.findElement(By.id("sourceElementId"));
 
-// Open a new tab
-((JavascriptExecutor) driver).executeScript("window.open()");
+        // Create an Actions object
+        Actions actions = new Actions(driver);
 
-try {
-    // Switch to the newly opened tab
-    for (String handle : driver.getWindowHandles()) {
-        if (!handle.equals(originalHandle)) {
-            driver.switchTo().window(handle);
-            lpage.loginToEO();
-            TestUtils.sleep(1000);
-            cac.copymail();
-        }
-    }
-} finally {
-    // Switch back to the original tab
-    driver.switchTo().window(originalHandle);
-}
+        // Select the text in the source element (performing Ctrl+A)
+        actions.keyDown(Keys.CONTROL).sendKeys("a").keyUp(Keys.CONTROL);
+
+        // Perform the copy operation (performing Ctrl+C)
+        actions.keyDown(Keys.CONTROL).sendKeys("c").keyUp(Keys.CONTROL);
+
+        // Locate the element you want to paste into
+        WebElement targetElement = driver.findElement(By.id("targetElementId"));
+
+        // Click on the target element to focus on it
+        targetElement.click();
+
+        // Perform the paste operation (performing Ctrl+V)
+        actions.keyDown(Keys.CONTROL).sendKeys("v").keyUp(Keys.CONTROL);
+
+        // Build and perform the Actions sequence
+        actions.build().perform();
