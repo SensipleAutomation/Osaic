@@ -1,21 +1,7 @@
-import java.awt.*;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
-
-// ...
-
-public void copymail() {
-    // Scroll and get text as before
-    JavascriptExecutor js = (JavascriptExecutor) driver;
-    js.executeScript("window.scrollTo(0, 0);");
-    TestUtils.sleep(1000);
-    WebElement element = mailInvited;
-    String text = element.getText();
-    System.out.println("Mail:" + text);
-    TestUtils.sleep(1000);
-
-    // Copy text to clipboard
-    StringSelection stringSelection = new StringSelection(text);
-    Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-    clipboard.setContents(stringSelection, null);
-}
+after test
+PASSED: scenario("New Prospect Creation in crm and Login to EO", "New Prospect creation for Express Onboarding in CRM Application")
+        Runs Cucumber Scenarios
+FAILED: scenario("Learn Module cases Approval and closing", "New Prospect creation for Express Onboarding in CRM Application")
+        Runs Cucumber Scenarios
+java.lang.ArrayIndexOutOfBoundsException: Index 4 out of bounds for length 4
+	at cucumberutils.Hooks.before(Hooks.java:96)
