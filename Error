@@ -1,9 +1,1 @@
-public void copymail() throws FilloException, InterruptedException, IOException {
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("window.scrollTo(0, 0);");
-		TestUtils.sleep(1000);
-		WebElement element = mailInvited;
-		String text = element.getText();
-		System.out.println("Mail:" + text);
-
-	}
+driver.switchTo().window((String) driver.getWindowHandles().toArray()[0]);
