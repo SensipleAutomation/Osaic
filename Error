@@ -1,1 +1,7 @@
-actions.keyDown(Keys.CONTROL).sendKeys("c").keyUp(Keys.CONTROL).perform();
+public void copymail() {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("window.scrollTo(0, 0);");
+		TestUtils.sleep(1000);
+		WebElement element = mailInvited;
+		String text = element.getText();
+		System.out.println("Mail:" + text);
