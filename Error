@@ -1,33 +1,19 @@
-public String copymail() throws FilloException, InterruptedException, IOException {
-    JavascriptExecutor js = (JavascriptExecutor) driver;
-    js.executeScript("window.scrollTo(0, 0);");
-    TestUtils.sleep(1000);
-    WebElement element = mailInvited;
-    return element.getText(); // Return the extracted email
-}
-
-public void logmail() throws FilloException, InterruptedException, IOException {
-    String mail = copymail();
-    synchronized (this) {
-        Mail.sendKeys(mail);
-    }
-}
-
-
 String originalHandle = driver.getWindowHandle();
-		((JavascriptExecutor) driver).executeScript("window.open()");
 
-		// Switch to the newly opened tab
-		for (String handle : driver.getWindowHandles()) {
-			driver.switchTo().window(handle);
-		}
-		lpage.loginToEO();
-		driver.switchTo().window(originalHandle);
-		TestUtils.sleep(1000);
-		cac.copymail();
-		TestUtils.sleep(1000);
-		for (String handle : driver.getWindowHandles()) {
-			driver.switchTo().window(handle);
-		}
-		TestUtils.sleep(1500);
-		cac.logmail();
+// Open a new tab
+((JavascriptExecutor) driver).executeScript("window.open()");
+
+try {
+    // Switch to the newly opened tab
+    for (String handle : driver.getWindowHandles()) {
+        if (!handle.equals(originalHandle)) {
+            driver.switchTo().window(handle);
+            lpage.loginToEO();
+            TestUtils.sleep(1000);
+            cac.copymail();
+        }
+    }
+} finally {
+    // Switch back to the original tab
+    driver.switchTo().window(originalHandle);
+}
