@@ -12,3 +12,22 @@ public void logmail() throws FilloException, InterruptedException, IOException {
         Mail.sendKeys(mail);
     }
 }
+
+
+String originalHandle = driver.getWindowHandle();
+		((JavascriptExecutor) driver).executeScript("window.open()");
+
+		// Switch to the newly opened tab
+		for (String handle : driver.getWindowHandles()) {
+			driver.switchTo().window(handle);
+		}
+		lpage.loginToEO();
+		driver.switchTo().window(originalHandle);
+		TestUtils.sleep(1000);
+		cac.copymail();
+		TestUtils.sleep(1000);
+		for (String handle : driver.getWindowHandles()) {
+			driver.switchTo().window(handle);
+		}
+		TestUtils.sleep(1500);
+		cac.logmail();
