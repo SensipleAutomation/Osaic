@@ -1,2 +1,19 @@
-org.openqa.selenium.WebDriverException: disconnected: received Inspector.detached event
-  (failed to check if window was closed: disconnected: not connected to DevTools)
+TcTagname:null
+featurefilepathraw:file:///C:/Users/rpuliendran/git/web/apps/eo-bdd/src/test/resources/UI_Features/CRM_NewProspectCreation.feature
+
+featurefilepath: C:/Users/rpuliendran/git/web/apps/eo-bdd/src/test/resources/UI_Features/CRM_NewProspectCreation.feature
+currentline: 45
+currentexamplelinenumber: 		| 223344556       | 72 Suite 187   | Alaska | 99550 |
+currentexampletcid:  223344556       
+currentexampletcid:  72 Suite 187   
+currentexampletcid:  Alaska 
+currentexampletcid:  99550 testfield :Execution_Server_ 223344556       
+testfield :Execution_Platform_ 223344556       
+testfield :Execution_Device_ 223344556       
+testfield :Execution_Browser_ 223344556       
+C:\Users\rpuliendran\git\web\apps\eo-bdd\downloadedfiles\ 223344556       \
+Feb 06, 2024 4:09:53 PM org.openqa.selenium.remote.ProtocolHandshake createSession
+INFO: Detected dialect: W3C
+  Given user validate welcome board and click on Learn Module complete button                     # seleniumgluecode.SD_CRMNewProspectCreation.user_validate_welcome_board_and_click_on_Learn_Module_complete_button()
+      org.openqa.selenium.NoSuchElementException: no such element: Unable to locate element: {"method":"xpath","selector":"//a[text()='OVERVIEW']"}
+  (Session info: chrome=120.0.6099.217)
