@@ -1,21 +1,26 @@
 package seleniumgluecode;
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 
 import cucumberutils.Driverselector;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import utility.TestUtils;
+import webpages.CasesApprovalAndClosing;
 import webpages.EO_CRM_NewProspectCreation;
 import webpages.homepage;
 import webpages.loginpage;
 
 public class SD_CRMNewProspectCreation {
+
 	WebDriver driver = Driverselector.drivers.get();
 	loginpage lpage = new loginpage(driver);
 	EO_CRM_NewProspectCreation crm = new EO_CRM_NewProspectCreation(driver);
-
+	CasesApprovalAndClosing cac = new CasesApprovalAndClosing(driver);
+	String originalWindowHandle = driver.getWindowHandle();
 	@Given("^user login the CRM Application with credentials \"([^\"]*)\" and \"([^\"]*)\"$")
 	public void user_login_the_CRM_Application_with_credentials_and(String user, String password) throws Throwable {
 		lpage.loginToCRM();
@@ -159,20 +164,73 @@ public class SD_CRMNewProspectCreation {
 	@Given("^user validate that the external id is generated$")
 	public void user_validate_that_the_external_id_is_generated() throws Throwable {
 		crm.ext();
-	}
-
-	@Given("^User delete the Created prospect and validate the toaster$")
-	public void user_delete_the_Created_prospect_and_validate_the_toaster() throws Throwable {
-		crm.DeleteProspect();
-
-		crm.cases();
+		cac.copymail();
+		TestUtils.sleep(1500);
+//		cac.mailCopied();
 
 	}
 
-	@Given("^User search for the prospect and delete the created user$")
-	public void user_search_for_the_prospect_and_delete_the_created_user() throws Throwable {
-		crm.Select();
+	@Given("^User open new window and login with newly created prospect$")
+	public void user_open_new_window_and_login_with_newly_created_prospect() throws Throwable {
+		
+		((JavascriptExecutor) driver).executeScript("window.open()");
+		for (String handle : driver.getWindowHandles()) {
+			driver.switchTo().window(handle);
+		}
+		lpage.loginToEO();
+		TestUtils.sleep(1500);
+		cac.logmail();
 
 	}
 
+	@Given("^user click login button after passing \"([^\"]*)\"$")
+	public void user_click_login_button_after_passing(String Password) throws Throwable {
+		cac.loginToEO(Password);
+
+	}
+
+//	@Given("^User delete the Created prospect and validate the toaster$")
+//	public void user_delete_the_Created_prospect_and_validate_the_toaster() throws Throwable {
+////		crm.DeleteProspect();
+////
+////		crm.cases();
+//
+//	}
+//
+//	@Given("^User search for the prospect and delete the created user$")
+//	public void user_search_for_the_prospect_and_delete_the_created_user() throws Throwable {
+////		crm.Select();
+//
+//	}
+
+	@Given("^user validate welcome board and click on Learn Module complete button$")
+	public void user_validate_welcome_board_and_click_on_Learn_Module_complete_button() throws Throwable {
+		cac.overview();
+		cac.learnComplete();
+	}
+
+	@Given("^User enter the Personal Information \"([^\"]*)\" and \"([^\"]*)\" and \"([^\"]*)\" and \"([^\"]*)\"$")
+	public void user_enter_the_Personal_Information_and_and_and(String ssn, String Address, String city, String zip)
+			throws Throwable {
+		cac.personalInformation(ssn, Address, city, zip);
+
+	}
+
+	@Given("^user enter business Information \"([^\"]*)\" and \"([^\"]*)\" and \"([^\"]*)\" and \"([^\"]*)\" and \"([^\"]*)\"$")
+	public void user_enter_business_Information_and_and_and_and(String current, String address, String city, String zip,
+			String phone) throws Throwable {
+		cac.BusinessInformation(current, address, city, zip, phone);
+		cac.affiliationQuestion();
+
+	}
+
+	@Given("^user enter values in transition assistance \"([^\"]*)\" and \"([^\"]*)\" and \"([^\"]*)\" and \"([^\"]*)\"$")
+	public void user_enter_values_in_transition_assistance_and_and_and(String Total, String Split, String Tot,
+			String Spl) throws Throwable {
+		cac.revenue(Total, Split);
+		cac.AssestsAccounts(Tot, Spl);
+		cac.topProducts();
+		TestUtils.sleep(3000);
+		driver.switchTo().window(originalWindowHandle);
+	}
 }
