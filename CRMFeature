@@ -1,6 +1,6 @@
-@login 
+@login
 Feature: New Prospect creation for Express Onboarding in CRM Application 
-
+ 
 Scenario Outline: New Prospect Creation in crm and Login to EO  
 	Given user login the CRM Application with credentials "<username>" and "<password>" 
 	And user should be redirected to the homepage of CRM Application 
@@ -30,18 +30,17 @@ Scenario Outline: New Prospect Creation in crm and Login to EO
 	And user validate that the external id is generated
 	And User open new window and login with newly created prospect
 	And user click login button after passing "<EoPassword>"
+	And user validate welcome board and click on Learn Module complete button
+	And User enter the Personal Information "<ssn>" and "<Address>" and "<city>" and "<zipcode>"
+	And user enter business Information "AutomationTest" and "33 Suite" and "Alabama" and "34521" and "555-222-1111"
+	And user enter values in transition assistance "9000" and "1000" and "6000" and "1000"
 	#And User delete the Created prospect and validate the toaster
 	#And User search for the prospect and delete the created user
 	Examples: 
-		| username             | password       | FirstName | LastName | FINRACD      | DOB        | BusinessName  | BranchName | value | EoPassword |
-		| mounika.golla@advisorgroup.com.crm2.qafull       | $aLesforcE123   | AutoDemoTest      | Deat      | 654321   | 04/04/1994 | TesAuto | ABC Test | 1 | P@55w0rd$321 |
+		| username             | password       | FirstName | LastName | FINRACD      | DOB        | BusinessName  | BranchName | value | EoPassword |  ssn             | Address       | city | zipcode |
+		| mounika.golla@advisorgroup.com.crm2.qafull       | $aLesforcE123  | AutoDemoTest   | Deat      | 654321   | 04/04/1994 | TesAuto | ABC Test | 1 | P@55w0rd$321 | 223344556  | 72 Suite 187   | Alaska | 99550 |
 		
 		
-Scenario Outline: Learn Module cases Approval and closing
-	Given user validate welcome board and click on Learn Module complete button
-	
-	Examples: 
-		| tes             | pas       | 
-		| test       | $aLE123   | 
+		
 		
 		
