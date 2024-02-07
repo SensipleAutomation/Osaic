@@ -1,0 +1,410 @@
+package webpages;
+
+import java.io.IOException;
+
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+import org.testng.Assert;
+import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+
+import com.codoid.products.exception.FilloException;
+
+import utility.TestUtils;
+
+public class CasesApprovalAndClosing {
+	WebDriver driver;
+
+	public CasesApprovalAndClosing(WebDriver driver) {
+		this.driver = driver;
+		PageFactory.initElements(driver, this);
+
+	}
+
+	loginpage lpage = new loginpage(null);
+
+	@FindBy(xpath = "(//input[contains(@class,'web-input')])[1]")
+	private WebElement Mail;
+
+	@FindBy(xpath = "(//input[contains(@class,'web-input')])[2]")
+	private WebElement Password;
+
+	@FindBy(xpath = "//web-button[@type='submit']")
+	private WebElement LogButton;
+
+	@FindBy(xpath = "//a[text()='OVERVIEW']")
+	private WebElement OVButton;
+
+	@FindBy(xpath = "//h1[text()='Welcome Portal']")
+	private WebElement welcomeHeader;
+
+	@FindBy(xpath = "(//span[text()='Get Started'])[1]")
+	private WebElement learnCompletebutton;
+
+	@FindBy(xpath = "(//p[contains(@class, 'slds-truncate')])[12]")
+	private WebElement mailInvited;
+
+	@FindBy(xpath = "//label[text()='Date of Birth']")
+	private WebElement scrollSSn;
+
+	@FindBy(xpath = "//input[@class='p-inputtext p-component p-element web-input-text ng-untouched ng-pristine ng-invalid']")
+	private WebElement ssnNumber;
+
+	@FindBy(xpath = "//label[text()='Home Address']/following::input[1]")
+	private WebElement homAddress;
+
+	@FindBy(xpath = "//label[text()='City']/following::input[1]")
+	private WebElement cityText;
+
+	@FindBy(xpath = "//label[text()='Zip Code']/following::input[1]")
+	private WebElement zip;
+
+	@FindBy(xpath = "(//span[text()='Select'])[1]")
+	private WebElement stateDrop;
+
+	@FindBy(xpath = "//span[text()='Arizona']")
+	private WebElement selectState;
+
+	@FindBy(xpath = "//label[text()='Personal Email']")
+	private WebElement saveScroll;
+
+	@FindBy(xpath = "(//span[text()='SAVE'])[1]")
+	private WebElement perSaveButton;
+
+	@FindBy(xpath = "//span[text()='Business Information ']")
+	private WebElement scrBusi;
+
+	@FindBy(xpath = "//label[text()='Current B/D']/following::input[1]")
+	private WebElement curBD;
+
+	@FindBy(xpath = "//label[text()='Business Street Address']/following::input[1]")
+	private WebElement busiAddress;
+
+	@FindBy(xpath = "//h4[text()='Primary Business Location']/following::input[5]")
+	private WebElement busiCity;
+
+	@FindBy(xpath = "//h4[text()='Primary Business Location']/following::span[7]")
+	private WebElement busiStateDrop;
+
+	@FindBy(xpath = "//span[text()='Colorado']")
+	private WebElement busSelectState;
+
+	@FindBy(xpath = "//h4[text()='Primary Business Location']/following::input[7]")
+	private WebElement busZip;
+
+	@FindBy(xpath = "//h4[text()='Primary Business Location']/following::input[8]")
+	private WebElement busPhone;
+
+	@FindBy(xpath = "(//span[text()='SAVE'])[2]")
+	private WebElement busSaveButton;
+
+	@FindBy(xpath = "//span[text()='Affiliation Questions ']")
+	private WebElement scrAffi;
+
+	@FindBy(xpath = "//label[text()='How are you affiliated today?']//following::span[text()='Select'][1]")
+	private WebElement affTodayques;
+
+	@FindBy(xpath = "//span[text()='Employee of Bank or Credit Union']")
+	private WebElement affTodquesSelect;
+
+	@FindBy(xpath = "//label[text()='Are you joining as individual or with a team?']//following::span[text()='Select'][1]")
+	private WebElement joiningQues;
+
+	@FindBy(xpath = "//span[text()='Individual']")
+	private WebElement joiningQuesSelect;
+
+	@FindBy(xpath = "//label[text()='Registered and Producing Representative']")
+	private WebElement registered;
+
+	@FindBy(xpath = "//label[text()='When would you like to be affiliated?']//following::input[1]")
+	private WebElement dateBox;
+
+	@FindBy(xpath = "//span[text()='Today']")
+	private WebElement datToday;
+
+	@FindBy(xpath = "//label[text()='How would you like to be affiliated?']//following::span[3]")
+	private WebElement affiQues;
+
+	@FindBy(xpath = "//span[text()='Commission Only']")
+	private WebElement affiQueSel;
+
+	@FindBy(xpath = "//label[text()='Will you join directly, or through an existing Branch/Enterprise?']//following::span[3]")
+	private WebElement branchQue;
+
+	@FindBy(xpath = "//span[text()='Direct']")
+	private WebElement branchQueSel;
+
+	@FindBy(xpath = "(//span[text()='SAVE'])[3]")
+	private WebElement affSave;
+
+	@FindBy(xpath = "//span[text()='CONTINUE']")
+	private WebElement proInfCont;
+
+	@FindBy(xpath = "//span[text()='Revenue ']")
+	private WebElement scrRevenue;
+
+	@FindBy(xpath = "//span[text()='Revenue ']//following::input[1]")
+	private WebElement totTrail;
+
+	@FindBy(xpath = "//span[text()='Revenue ']//following::input[2]")
+	private WebElement platform;
+
+	@FindBy(xpath = "//span[text()='Revenue ']//following::input[3]")
+	private WebElement money;
+
+	@FindBy(xpath = "//span[text()='Revenue ']//following::input[4]")
+	private WebElement trail;
+
+	@FindBy(xpath = "//span[text()='Revenue ']//following::input[5]")
+	private WebElement Schwab;
+
+	@FindBy(xpath = "//span[text()='Revenue ']//following::input[6]")
+	private WebElement Annuities;
+
+	@FindBy(xpath = "//span[text()='Revenue ']//following::input[7]")
+	private WebElement Insurance;
+
+	@FindBy(xpath = "//span[text()='Revenue ']//following::input[8]")
+	private WebElement Mutual;
+
+	@FindBy(xpath = "//span[text()='Revenue ']//following::input[9]")
+	private WebElement General;
+
+	@FindBy(xpath = "//span[text()='Revenue ']//following::input[10]")
+	private WebElement Alternatives;
+
+	@FindBy(xpath = "//label[text()='Alternatives ']")
+	private WebElement countClick;
+
+	@FindBy(xpath = "//span[text()='Assets And Accounts ']")
+	private WebElement scrAssests;
+
+	@FindBy(xpath = "//span[text()='Assets And Accounts ']//following::input[1]")
+	private WebElement AUA;
+
+	@FindBy(xpath = "//span[text()='Assets And Accounts ']//following::input[2]")
+	private WebElement platform2;
+
+	@FindBy(xpath = "//span[text()='Assets And Accounts ']//following::input[3]")
+	private WebElement Money2;
+
+	@FindBy(xpath = "//span[text()='Assets And Accounts ']//following::input[4]")
+	private WebElement Fidelity;
+
+	@FindBy(xpath = "//span[text()='Assets And Accounts ']//following::input[5]")
+	private WebElement Variable;
+
+	@FindBy(xpath = "//span[text()='Assets And Accounts ']//following::input[6]")
+	private WebElement Brokerage;
+
+	@FindBy(xpath = "//span[text()='Assets And Accounts ']//following::input[7]")
+	private WebElement Direct;
+
+	@FindBy(xpath = "//label[text()='Brokerage (All Products)']")
+	private WebElement clickBrok;
+
+	@FindBy(xpath = "//label[text()='Total Number Of Accounts (on platform and brokerage)*']//following::input[1]")
+	private WebElement noOfAcc;
+
+	@FindBy(xpath = "//span[text()='Top Products ']")
+	private WebElement scrProd;
+
+	@FindBy(xpath = "(//label[text()='Not Applicable'])[1]")
+	private WebElement notApp1;
+
+	@FindBy(xpath = "(//label[text()='Not Applicable'])[2]")
+	private WebElement notApp2;
+
+	@FindBy(xpath = "(//label[text()='Not Applicable'])[3]")
+	private WebElement notApp3;
+
+	public synchronized CasesApprovalAndClosing loginToEO(String password) {
+		Password.sendKeys(password);
+		LogButton.click();
+		return this;
+	}
+
+	public void overview() {
+		TestUtils.sleep(2000);
+		OVButton.click();
+		Assert.assertTrue(welcomeHeader.isDisplayed(), "Dashboard Welcome Header Not Present");
+	}
+
+	public void learnComplete() {
+		Assert.assertTrue(learnCompletebutton.isDisplayed(), "Learn Complete Button not present");
+		learnCompletebutton.click();
+	}
+
+	public void copymail() {
+		// Scroll and get text as before
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("window.scrollTo(0, 0);");
+		TestUtils.sleep(1000);
+		WebElement element = mailInvited;
+		String text = element.getText();
+		System.out.println("Mail:" + text);
+		TestUtils.sleep(1000);
+
+		// Copy text to clipboard
+		StringSelection stringSelection = new StringSelection(text);
+		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+		clipboard.setContents(stringSelection, null);
+	}
+
+	public void logmail() throws FilloException, InterruptedException, IOException {
+		WebElement targetElement = Mail;
+		Actions actions = new Actions(driver);
+		targetElement.click();
+		actions.keyDown(Keys.CONTROL).sendKeys("v").keyUp(Keys.CONTROL);
+		actions.build().perform();
+
+	}
+
+	public synchronized CasesApprovalAndClosing personalInformation(String ssn, String Address, String city,
+			String zipco) {
+		TestUtils.sleep(1000);
+		WebElement element = scrollSSn;
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].scrollIntoView();", element);
+		TestUtils.sleep(1000);
+		ssnNumber.sendKeys(ssn);
+		TestUtils.sleep(1000);
+		homAddress.click();
+		homAddress.sendKeys(Address);
+		cityText.sendKeys(city);
+		TestUtils.sleep(1000);
+		stateDrop.click();
+		TestUtils.sleep(1000);
+		selectState.click();
+		zip.sendKeys(zipco);
+		js.executeScript("arguments[0].scrollIntoView();", saveScroll);
+		TestUtils.sleep(1000);
+		perSaveButton.click();
+		return this;
+
+	}
+
+	public synchronized CasesApprovalAndClosing BusinessInformation(String current, String address, String city,
+			String zipc, String phone) {
+		WebElement element = scrBusi;
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].scrollIntoView();", element);
+		TestUtils.sleep(1000);
+		curBD.sendKeys(current);
+		TestUtils.sleep(1000);
+		busiAddress.click();
+		busiAddress.sendKeys(address);
+		busiCity.sendKeys(city);
+		TestUtils.sleep(1000);
+		busiStateDrop.click();
+		TestUtils.sleep(1000);
+		busSelectState.click();
+		TestUtils.sleep(1000);
+		busZip.sendKeys(zipc);
+		TestUtils.sleep(1000);
+		busPhone.sendKeys(phone);
+		js.executeScript("arguments[0].scrollIntoView();", busiCity);
+		TestUtils.sleep(1000);
+		busSaveButton.click();
+		TestUtils.sleep(1000);
+		return this;
+
+	}
+
+	public void affiliationQuestion() {
+		WebElement element = scrAffi;
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].scrollIntoView();", element);
+		TestUtils.sleep(1000);
+		affTodayques.click();
+		TestUtils.sleep(1000);
+		affTodquesSelect.click();
+		TestUtils.sleep(1000);
+		joiningQues.click();
+		TestUtils.sleep(1000);
+		joiningQuesSelect.click();
+		TestUtils.sleep(2000);
+		registered.click();
+		TestUtils.sleep(1000);
+		dateBox.click();
+		TestUtils.sleep(1000);
+		datToday.click();
+		TestUtils.sleep(1000);
+		affiQues.click();
+		TestUtils.sleep(1000);
+		affiQueSel.click();
+		TestUtils.sleep(1000);
+		branchQue.click();
+		TestUtils.sleep(1000);
+		branchQueSel.click();
+		TestUtils.sleep(1000);
+		affSave.click();
+		TestUtils.sleep(1000);
+		proInfCont.click();
+		TestUtils.sleep(1000);
+	}
+
+	public synchronized CasesApprovalAndClosing revenue(String Total, String Split) {
+		WebElement element = scrRevenue;
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].scrollIntoView();", element);
+		totTrail.sendKeys(Total);
+		platform.sendKeys(Split);
+		money.sendKeys(Split);
+		trail.sendKeys(Split);
+		Schwab.sendKeys(Split);
+		Annuities.sendKeys(Split);
+		Insurance.sendKeys(Split);
+		Mutual.sendKeys(Split);
+		General.sendKeys(Split);
+		Alternatives.sendKeys(Split);
+		countClick.click();
+		TestUtils.sleep(1000);
+		perSaveButton.click();
+		TestUtils.sleep(1000);
+		return this;
+
+	}
+
+	public synchronized CasesApprovalAndClosing AssestsAccounts(String Tot, String Spl) {
+		WebElement element = scrAssests;
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].scrollIntoView();", element);
+		AUA.sendKeys(Tot);
+		platform2.sendKeys(Spl);
+		Money2.sendKeys(Spl);
+		Fidelity.sendKeys(Spl);
+		Variable.sendKeys(Spl);
+		Brokerage.sendKeys(Spl);
+		Direct.sendKeys(Spl);
+		clickBrok.click();
+		TestUtils.sleep(1000);
+		noOfAcc.sendKeys(Spl);
+		TestUtils.sleep(1000);
+		busSaveButton.click();
+		TestUtils.sleep(1000);
+		return this;
+
+	}
+
+	public void topProducts() {
+		WebElement element = scrAssests;
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].scrollIntoView();", element);
+		TestUtils.sleep(1000);
+		notApp1.click();
+		notApp2.click();
+		notApp3.click();
+		TestUtils.sleep(1000);
+		affSave.click();
+		TestUtils.sleep(1000);
+		proInfCont.click();
+
+	}
+}
