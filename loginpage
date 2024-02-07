@@ -1,15 +1,35 @@
 package webpages;
 
+import java.io.File;
 import java.io.IOException;
-import org.openqa.selenium.By;
+import java.util.Date;
+import java.util.List;
 
+import javax.imageio.ImageIO;
+
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.PageFactory;
+import org.testng.Assert;
+
 import com.codoid.products.exception.FilloException;
 
 import datadriven.data;
+import operators.scs;
+import reports.ExtentManager;
+import reports.ExtentTestManager;
+import ru.yandex.qatools.ashot.AShot;
+import ru.yandex.qatools.ashot.Screenshot;
+import ru.yandex.qatools.ashot.shooting.ShootingStrategies;
+import ru.yandex.qatools.ashot.shooting.ShootingStrategy;
 import utility.ConfigFileReader;
 
 public class loginpage {
@@ -24,7 +44,7 @@ public class loginpage {
 	private static String PAGE_URL_QA_BO = "http://spatro:Dec-2022@qaportaluseradmin/NTLMAuthenticate/NTLMAuthenticateAdvisorPortal.aspx?referrer=/SelectDelegateUserId.aspx";
 	private static String PAGE_URL_QA_FO = "http://agqa.v2020.com/login.aspx";
 	private static String CRM_PAGE_URL = "https://osaic--qafull.sandbox.my.salesforce.com/";
-	private static String PAGE_URL_DEV_EO = "https://dev.osaic.com/welcome/login";
+	private static String EO_Page_URL = "https://qa.osaic.com/welcome/login";
 
 	@FindBy(id = "userid")
 	public WebElement o_userid;
@@ -83,9 +103,9 @@ public class loginpage {
 
 		return new homepage(driver);
 	}
-
+	
 	public synchronized homepage loginToEO() throws FilloException, InterruptedException, IOException {
-		driver.get(PAGE_URL_DEV_EO);
+		driver.get(EO_Page_URL);
 
 		return new homepage(driver);
 	}
