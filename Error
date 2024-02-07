@@ -1,11 +1,32 @@
-WebElement selectedDateElement = browserDriver.findElement(By.xpath("//div[contains(@class,'datepicker__day--selected')]"));
-
-// Get the text of the selected date
-String date = selectedDateElement.getText();
-
-// Convert the text to an integer, add 1, and convert it back to a string
-int dat = Integer.parseInt(date) + 1;
-String d = String.valueOf(dat);
-
-// Find the element with the new date and click it
-browserDriver.findElement(By.xpath("//div[text()='" + d + "']")).click();
+public void affiliationQuestion() {
+		WebElement element = scrAffi;
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].scrollIntoView();", element);
+		TestUtils.sleep(1000);
+		affTodayques.click();
+		TestUtils.sleep(1000);
+		affTodquesSelect.click();
+		TestUtils.sleep(1000);
+		joiningQues.click();
+		TestUtils.sleep(1000);
+		joiningQuesSelect.click();
+		TestUtils.sleep(2000);
+		registered.click();
+		TestUtils.sleep(1000);
+		dateBox.click();
+		TestUtils.sleep(1000);
+		datToday.click();
+		TestUtils.sleep(1000);
+		affiQues.click();
+		TestUtils.sleep(1000);
+		affiQueSel.click();
+		TestUtils.sleep(1000);
+		branchQue.click();
+		TestUtils.sleep(1000);
+		branchQueSel.click();
+		TestUtils.sleep(1000);
+		affSave.click();
+		TestUtils.sleep(1000);
+		proInfCont.click();
+		TestUtils.sleep(1000);
+	}
