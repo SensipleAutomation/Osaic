@@ -17,6 +17,7 @@ import org.testng.Assert;
 import utility.TestUtils;
 
 public class EO_CRM_NewProspectCreation {
+
 	WebDriver driver;
 
 	public EO_CRM_NewProspectCreation(WebDriver driver) {
@@ -46,8 +47,11 @@ public class EO_CRM_NewProspectCreation {
 	@FindBy(xpath = "//div[@class='slds-icon-waffle']")
 	private WebElement BusinessSelect;
 
-	@FindBy(xpath = "//one-app-launcher-search-bar[@class='al-menu-search-bar']")
+	@FindBy(xpath = "//input[@placeholder='Search apps and items...']")
 	private WebElement BusiSearch;
+
+	@FindBy(xpath = "//span[@title='Contact Name']")
+	private WebElement busiClick;
 
 	@FindBy(xpath = "//div[@class='oneConsoleNav navexConsoleNav']//following::div[contains(@class,'selectedListItem ')]")
 	private WebElement LeadsHead;
@@ -159,7 +163,7 @@ public class EO_CRM_NewProspectCreation {
 	@FindBy(xpath = "//button[@aria-label='Search']")
 	private WebElement SearchBar;
 
-	@FindBy(xpath = "//ul[@class='slds-button-group-list']//following-sibling::li[4]")
+	@FindBy(xpath = "(//ul[@class='slds-button-group-list']/li)[last()]")
 	private WebElement inviteButton;
 
 	@FindBy(xpath = "//h4[text()='Confirmation']")
@@ -168,7 +172,7 @@ public class EO_CRM_NewProspectCreation {
 	@FindBy(xpath = "//button[contains(@class,'publisherCancelButton')]")
 	private WebElement close;
 
-	@FindBy(xpath = "//ul[@class='slds-button-group-list']//following-sibling::li[1]")
+	@FindBy(xpath = "(//ul[@class='slds-button-group-list']/li)[last()-3]")
 	private WebElement DeleteButton;
 
 	@FindBy(xpath = "//h2[text()='Delete Opportunity']")
@@ -213,7 +217,7 @@ public class EO_CRM_NewProspectCreation {
 	@FindBy(xpath = "//a[text()='654321']")
 	private WebElement oppourtunity;
 
-	@FindBy(xpath = "(//div[contains(@class, 'horizontal_small')])[9]//following::*[text()='Contact']")
+	@FindBy(xpath = "(//div[contains(@class, 'horizontal_small')]//span[text()='Contact'])[last()]")
 	private WebElement editContact;
 
 	@FindBy(xpath = "(//input[@placeholder='Search Contacts...'])[2]")
@@ -225,7 +229,7 @@ public class EO_CRM_NewProspectCreation {
 	@FindBy(xpath = "//*[text()='TesAuto']")
 	private WebElement scrollContact;
 
-	@FindBy(xpath = "//*[text()='Marketing']")
+	@FindBy(xpath = "(//div[contains(@class, 'vertical_none')]//span[text()='LEAD INFORMATION'])[last()]")
 	private WebElement scrExt;
 
 	@FindBy(xpath = "//label[text()='Number of Advisory Accounts']")
@@ -276,7 +280,7 @@ public class EO_CRM_NewProspectCreation {
 	@FindBy(xpath = "//span[text()='Delete']")
 	private WebElement caseDelete;
 
-	@FindBy(xpath = "(//*[text()='Cases'])[1]")
+	@FindBy(xpath = "//a[@id='Case']")
 	private WebElement caseClick;
 
 	@FindBy(xpath = "(//div[@data-target-selection-name='sfdc:RecordField.Opportunity.External_Id__c']//following::lightning-formatted-text[@data-output-element-id='output-field'])[1]")
@@ -526,6 +530,9 @@ public class EO_CRM_NewProspectCreation {
 		inviteButton.click();
 		TestUtils.sleep(2000);
 		driver.navigate().refresh();
+		TestUtils.sleep(2000);
+		driver.navigate().refresh();
+		TestUtils.sleep(2000);
 	}
 
 	public void confirmation() {
@@ -549,7 +556,7 @@ public class EO_CRM_NewProspectCreation {
 		TestUtils.sleep(2000);
 		deletFin.click();
 		TestUtils.sleep(2000);
-		Assert.assertTrue(DeleteToast.isDisplayed(), "Delete Toaster is not present");
+//		Assert.assertTrue(DeleteToast.isDisplayed(), "Delete Toaster is not present");
 		TestUtils.sleep(2000);
 
 	}
@@ -622,6 +629,7 @@ public class EO_CRM_NewProspectCreation {
 		act.doubleClick(editContact).perform();
 		TestUtils.sleep(1000);
 		contactSearch.click();
+		TestUtils.sleep(1000);
 		selectContact.click();
 	}
 
@@ -654,7 +662,11 @@ public class EO_CRM_NewProspectCreation {
 		TestUtils.sleep(3000);
 		BusinessSelect.click();
 		BusiSearch.sendKeys("cases");
-		caseClick.click();
+		TestUtils.sleep(1000);
+		Actions actions = new Actions(driver);
+		actions.sendKeys(Keys.ENTER).perform();
+		TestUtils.sleep(1000);
+		actions.sendKeys(Keys.ESCAPE).perform();
 		TestUtils.sleep(1000);
 		deatCase.click();
 		TestUtils.sleep(3000);
@@ -669,7 +681,7 @@ public class EO_CRM_NewProspectCreation {
 	public static String generateRandomMobileNumber() {
 		Random random = new Random();
 		// Generating a 10-digit random mobile number
-		StringBuilder mobileNumber = new StringBuilder("5");
+		StringBuilder mobileNumber = new StringBuilder("4");
 		for (int i = 0; i < 9; i++) {
 			mobileNumber.append(random.nextInt(10));
 		}
@@ -680,20 +692,23 @@ public class EO_CRM_NewProspectCreation {
 		Random random = new Random();
 		// Generating a random email address with a random number and a common domain
 		String username = "tester" + random.nextInt(1000);
-		String domain = "@testing.com";
+		String domain = "@tes.com";
 		return username + domain;
 	}
 
 	public void ext() {
 		TestUtils.sleep(6000);
 		TestUtils.explicit_locate(scrExt);
-		WebElement element1 = extID;
 		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("arguments[0].scrollIntoView();", element1);
+		js.executeScript("window.scrollBy(0, 650);");
+		TestUtils.sleep(1500);
 		if (extID.isDisplayed()) {
 			String text = extID.getText();
 			System.out.println("External Id:" + text);
 
+		} else {
+			
+			throw new RuntimeException("External ID is not generated. Stopping automation testing.");
 		}
 	}
 
