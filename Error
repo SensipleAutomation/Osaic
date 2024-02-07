@@ -1,14 +1,3 @@
-public void ext() {
-		TestUtils.sleep(6000);
-		TestUtils.explicit_locate(scrExt);
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("window.scrollBy(0, 650);");
-		TestUtils.sleep(1500);
-		if (extID.isDisplayed()) {
-			String text = extID.getText();
-			System.out.println("External Id:" + text);
-
-		} else {
-        // If external ID is not displayed, stop the automation
-        throw new RuntimeException("External ID is not displayed. Stopping automation.");
-    }
+((JavascriptExecutor) driver).executeScript("window.open()");
+		for (String handle : driver.getWindowHandles()) {
+			driver.switchTo().window(handle);
