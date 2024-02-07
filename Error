@@ -1,14 +1,1 @@
-// Store the handle of the original window
-String originalWindowHandle = driver.getWindowHandle();
-
-// Open a new window
-((JavascriptExecutor) driver).executeScript("window.open()");
-
-// Switch to the new window
-for (String handle : driver.getWindowHandles()) {
-    driver.switchTo().window(handle);
-    // Perform actions in the new window if needed
-}
-
-// Switch back to the original window
-driver.switchTo().window(originalWindowHandle);
+A class file was not written. The project may be inconsistent, if so try refreshing this project and building it
