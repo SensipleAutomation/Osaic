@@ -1,32 +1,11 @@
-public void affiliationQuestion() {
-		WebElement element = scrAffi;
+public void ext() {
+		TestUtils.sleep(6000);
+		TestUtils.explicit_locate(scrExt);
 		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("arguments[0].scrollIntoView();", element);
-		TestUtils.sleep(1000);
-		affTodayques.click();
-		TestUtils.sleep(1000);
-		affTodquesSelect.click();
-		TestUtils.sleep(1000);
-		joiningQues.click();
-		TestUtils.sleep(1000);
-		joiningQuesSelect.click();
-		TestUtils.sleep(2000);
-		registered.click();
-		TestUtils.sleep(1000);
-		dateBox.click();
-		TestUtils.sleep(1000);
-		datToday.click();
-		TestUtils.sleep(1000);
-		affiQues.click();
-		TestUtils.sleep(1000);
-		affiQueSel.click();
-		TestUtils.sleep(1000);
-		branchQue.click();
-		TestUtils.sleep(1000);
-		branchQueSel.click();
-		TestUtils.sleep(1000);
-		affSave.click();
-		TestUtils.sleep(1000);
-		proInfCont.click();
-		TestUtils.sleep(1000);
-	}
+		js.executeScript("window.scrollBy(0, 650);");
+		TestUtils.sleep(1500);
+		if (extID.isDisplayed()) {
+			String text = extID.getText();
+			System.out.println("External Id:" + text);
+
+		}
