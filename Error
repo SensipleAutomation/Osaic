@@ -8,4 +8,7 @@ public void ext() {
 			String text = extID.getText();
 			System.out.println("External Id:" + text);
 
-		}
+		} else {
+        // If external ID is not displayed, stop the automation
+        throw new RuntimeException("External ID is not displayed. Stopping automation.");
+    }
