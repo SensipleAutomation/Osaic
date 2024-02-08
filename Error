@@ -1,16 +1,1 @@
-if (extID.isDisplayed()) {
-    String text = extID.getText();
-    System.out.println("External Id:" + text);
-} else {
-    // If not displayed, refresh the page
-    driver.navigate().refresh();
-
-    // Check again after refreshing
-    if (extID.isDisplayed()) {
-        String text = extID.getText();
-        System.out.println("External Id:" + text);
-    } else {
-        // If still not displayed, throw an exception
-        throw new RuntimeException("External ID is not generated. Stopping automation testing.");
-    }
-}
+js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
