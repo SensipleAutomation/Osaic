@@ -232,5 +232,7 @@ public class SD_CRMNewProspectCreation {
 		cac.topProducts();
 		TestUtils.sleep(3000);
 		driver.switchTo().window(originalWindowHandle);
+		TestUtils.sleep(1500);
+		cac.crmApprovals();
 	}
 }
