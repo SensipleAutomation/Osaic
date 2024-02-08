@@ -224,6 +224,12 @@ public class CasesApprovalAndClosing {
 	@FindBy(xpath = "(//label[text()='Not Applicable'])[3]")
 	private WebElement notApp3;
 
+	@FindBy(xpath = "//a[text()='Related']")
+	private WebElement relatedClick;
+
+	@FindBy(xpath = "(//span[text()='View All'])[1]")
+	private WebElement viewAll;
+
 	public synchronized CasesApprovalAndClosing loginToEO(String password) {
 		Password.sendKeys(password);
 		LogButton.click();
@@ -406,5 +412,14 @@ public class CasesApprovalAndClosing {
 		TestUtils.sleep(1000);
 		proInfCont.click();
 
+	}
+
+	public void crmApprovals() {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("window.scrollBy(0, 510);");
+		TestUtils.sleep(1000);
+		relatedClick.click();
+		TestUtils.sleep(1000);
+		viewAll.click();
 	}
 }
