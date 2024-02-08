@@ -165,6 +165,15 @@ public class EO_CRM_NewProspectCreation {
 
 	@FindBy(xpath = "(//ul[@class='slds-button-group-list']/li)[last()]")
 	private WebElement inviteButton;
+	
+	@FindBy(xpath = "//button[text()='Yes']")
+	private WebElement yesButton;
+	
+	@FindBy(xpath = "//p[text()='The invite to the Welcome Hub has been sent to your prospect.']")
+	private WebElement confirmationInvite;
+	
+	@FindBy(xpath = "//button[@title='Close this window']")
+	private WebElement invitedClose;
 
 	@FindBy(xpath = "//h4[text()='Confirmation']")
 	private WebElement confirmToaster;
@@ -529,6 +538,12 @@ public class EO_CRM_NewProspectCreation {
 	public void invite() {
 		inviteButton.click();
 		TestUtils.sleep(2000);
+		Actions actions = new Actions(driver);
+		actions.sendKeys(Keys.ENTER).perform();
+		TestUtils.explicit_locate(confirmationInvite);
+		TestUtils.sleep(1000);
+		invitedClose.click();
+		TestUtils.sleep(1000);
 		driver.navigate().refresh();
 		TestUtils.sleep(2000);
 		driver.navigate().refresh();
