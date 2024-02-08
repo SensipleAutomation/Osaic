@@ -1,1 +1,3 @@
-A class file was not written. The project may be inconsistent, if so try refreshing this project and building it
+        Runs Cucumber Scenarios
+org.openqa.selenium.JavascriptException: javascript error: Cannot read properties of undefined (reading 'defaultView')
+  (Session info: chrome=120.0.6099.217)
