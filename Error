@@ -1,4 +1,4 @@
-A class file was not written. The project may be inconsistent, if so try refreshing this project and building it
+JavascriptExecutor js = (JavascriptExecutor) driver;
 
-del /q/f/s %TEMP%\*
-
+        // Example: Scroll down by 500 pixels
+        js.executeScript("window.scrollBy(0, 500);");
