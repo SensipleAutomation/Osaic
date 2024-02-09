@@ -1,11 +1,20 @@
-while (true) {
+WebDriverWait wait = new WebDriverWait(driver, 10);
+
+		
+		WebElement refreshButtonLocator = refresh;
+
+		
+		WebElement targetElementLocator = case2;
+
+		
+		while (true) {
             try {
                 // Click the refresh button
-                driver.findElement(refreshButtonLocator).click();
+                refreshButtonLocator.click();
 
                 // Wait for the target element to be present, timeout set to 1 second
                 wait.withTimeout(java.time.Duration.ofSeconds(1))
-                    .until(ExpectedConditions.presenceOfElementLocated(targetElementLocator));
+                    .until(ExpectedConditions.visibilityOf(targetElementLocator));
 
                 // If the above line is reached, it means the target element is found
                 // Break out of the loop
