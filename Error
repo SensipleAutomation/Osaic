@@ -1,21 +1,18 @@
-WebElement refreshButtonLocator = refresh;
-		WebElement anotherButtonLocator = refresClick;
+for (int i = 0; i < 10; i++) {
+    try {
+        // Click the button
+        buttonToClick.click();
 
-		WebElement targetElementLocator = case2;
+        // Wait for the target element to be clickable, timeout set to 2 seconds
+        wait.withTimeout(java.time.Duration.ofSeconds(2))
+                .until(ExpectedConditions.elementToBeClickable(targetElementLocator));
 
-		while (true) {
-			try {
+        // If the above line is reached, it means the target element is clickable
+        // Click on the target element
+        targetElementLocator.click();
+        break; // Break out of the loop once the target element is found
 
-				refreshButtonLocator.click();
-				anotherButtonLocator.click();
-				wait.withTimeout(java.time.Duration.ofSeconds(2))
-						.until(ExpectedConditions.elementToBeClickable(targetElementLocator));
-				targetElementLocator.click();
-
-				break;
-			} catch (Exception e) {
-
-				e.printStackTrace();
-
-			}
-		}
+    } catch (Exception e) {
+        // Handle any exceptions or continue with the next iteration
+        e.printStackTrace(); // Print the exception for debugging purposes
+    }
