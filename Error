@@ -1,16 +1,17 @@
 WebDriverWait wait = new WebDriverWait(driver, 10);
 
 WebElement refreshButtonLocator = refresh; // Assuming refresh is already initialized and of type WebElement
-WebElement targetElementLocator = case2; // Assuming case2 is already initialized and of type WebElement
+WebElement anotherButtonLocator = anotherButton; // Assuming anotherButton is already initialized and of type WebElement
+WebElement targetElementLocator = targetElement; // Assuming targetElement is already initialized and of type WebElement
 
 while (true) {
     try {
         // Click the refresh button
-        ((WebElement) refreshButtonLocator).click(); // Explicitly cast if necessary
+        refreshButtonLocator.click();
 
         // Wait for the target element to be present, timeout set to 1 second
         wait.withTimeout(java.time.Duration.ofSeconds(1))
-                .until(ExpectedConditions.visibilityOf((WebElement) targetElementLocator)); // Explicitly cast if necessary
+                .until(ExpectedConditions.visibilityOf(targetElementLocator));
 
         // If the above line is reached, it means the target element is found
         // Break out of the loop
@@ -18,5 +19,16 @@ while (true) {
     } catch (Exception e) {
         // Handle any exceptions or continue with the next iteration
         e.printStackTrace(); // Print the exception for debugging purposes
+
+        try {
+            // Click another button
+            anotherButtonLocator.click();
+
+            // Wait for a brief moment before continuing to the next iteration
+            Thread.sleep(1000); // Adjust the sleep duration as needed
+        } catch (Exception ex) {
+            // Handle any exceptions related to clicking another button
+            ex.printStackTrace();
+        }
     }
 }
