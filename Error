@@ -1,25 +1,16 @@
- WebDriverWait wait = new WebDriverWait(driver, 10);
-
-        // Define the refresh button element
-        By refreshButtonLocator = By.id("your_refresh_button_id");
-
-        // Define the element you are waiting for
-        By targetElementLocator = By.id("your_target_element_id");
-
-        // Continue refreshing until the target element is found
-        while (true) {
+while (true) {
             try {
-                // Wait for the refresh button to be clickable
-                WebElement refreshButton = wait.until(ExpectedConditions.elementToBeClickable(refreshButtonLocator));
-
                 // Click the refresh button
-                refreshButton.click();
+                driver.findElement(refreshButtonLocator).click();
 
-                // Wait for the target element to be present
-                wait.until(ExpectedConditions.presenceOfElementLocated(targetElementLocator));
+                // Wait for the target element to be present, timeout set to 1 second
+                wait.withTimeout(java.time.Duration.ofSeconds(1))
+                    .until(ExpectedConditions.presenceOfElementLocated(targetElementLocator));
 
-                // If the above line is reached, it means the target element is found, break out of the loop
+                // If the above line is reached, it means the target element is found
+                // Break out of the loop
                 break;
             } catch (Exception e) {
                 // Handle any exceptions or continue with the next iteration
             }
+        }
