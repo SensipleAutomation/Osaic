@@ -1,16 +1,21 @@
-for (int i = 0; i < 10; i++) {
+while (true) {
     try {
-        // Click the button
-        buttonToClick.click();
+        // Click the refresh button
+        refreshButton.click();
 
-        // Wait for the target element to be clickable, timeout set to 2 seconds
+        // Click another button
+        anotherButton.click();
+
+        // Wait for the target element to be present, timeout set to 2 seconds
         wait.withTimeout(java.time.Duration.ofSeconds(2))
-                .until(ExpectedConditions.elementToBeClickable(targetElementLocator));
+            .until(ExpectedConditions.presenceOfElementLocated(By.id("your_target_element_id"))); // Adjust the locator based on your scenario
 
-        // If the above line is reached, it means the target element is clickable
+        // If the above line is reached, it means the target element is found
         // Click on the target element
-        targetElementLocator.click();
-        break; // Break out of the loop once the target element is found
+        targetElement.click();
+
+        // Break out of the loop once the target element is found
+        break;
 
     } catch (Exception e) {
         // Handle any exceptions or continue with the next iteration
