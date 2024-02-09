@@ -1,23 +1,2 @@
-while (true) {
-    try {
-        // Click the refresh button
-        refreshButton.click();
-
-        // Click another button
-        anotherButton.click();
-
-        // Sleep for 2 seconds (adjust as needed)
-        Thread.sleep(2000);
-
-        // Check if the target element is present
-        if (driver.findElements(By.id("your_target_element_id")).size() > 0) {
-            // If the target element is found, click on it and break out of the loop
-            driver.findElement(By.id("your_target_element_id")).click();
-            break;
-        }
-
-    } catch (Exception e) {
-        // Handle any exceptions or continue with the next iteration
-        e.printStackTrace(); // Print the exception for debugging purposes
-    }
-}
+ String script = "arguments[0].value = 'approved';";
+        ((JavascriptExecutor) driver).executeScript(script, approvalInput);
