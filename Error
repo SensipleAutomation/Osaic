@@ -1,2 +1,8 @@
- String script = "arguments[0].value = 'approved';";
-        ((JavascriptExecutor) driver).executeScript(script, approvalInput);
+Robot robot = new Robot();
+
+            // Simulate typing "OK" using key presses
+            robot.keyPress(KeyEvent.VK_O);   // Press the 'O' key
+            robot.keyRelease(KeyEvent.VK_O); // Release the 'O' key
+
+            robot.keyPress(KeyEvent.VK_K);   // Press the 'K' key
+            robot.keyRelease(KeyEvent.VK_K); 
