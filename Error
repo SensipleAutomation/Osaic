@@ -1,13 +1,45 @@
-// Assuming 'approvedCheck' is a WebElement representing the element with the 'approved' text
-if (approvedCheck.isDisplayed()) {
-    String actualText = approvedCheck.getText();
-    String expectedText = "Approved";
-
-    if (actualText.equals(expectedText)) {
-        System.out.println("Learn Step 3 cases Approved");
-    } else {
-        throw new RuntimeException("Cases Not Approved. Actual text: " + actualText + ". Stopping automation testing.");
-    }
-} else {
-    throw new RuntimeException("Cases Not Approved. Element not displayed. Stopping automation testing.");
-}
+public void processing() throws AWTException {
+		Actions act = new Actions(driver);
+		process.click();
+		WebElement element = scrApr;
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].scrollIntoView();", element);
+		TestUtils.sleep(1000);
+		statusDrop.click();
+		clsClick.click();
+		comment.click();
+		TestUtils.sleep(1000);
+		act.sendKeys(comment, "Okay").perform();
+		TestUtils.sleep(1000);
+		forApp.click();
+		forAppSelect.click();
+		WebElement element1 = scrApr;
+		js.executeScript("arguments[0].scrollIntoView();", element1);
+		TestUtils.sleep(1000);
+		apSave.click();
+		TestUtils.sleep(2000);
+		backTOcases.click();
+		TestUtils.sleep(2000);
+		refresh.click();
+		TestUtils.sleep(1000);
+		case3.click();
+		TestUtils.sleep(2000);
+		prelimCaseProcess.click();
+		js.executeScript("arguments[0].scrollIntoView();", scrPril);
+		TestUtils.sleep(1000);
+		pretext1.click();
+		TestUtils.sleep(1000);
+		act.sendKeys(pretext1, "Okay").perform();
+		preText.click();
+		TestUtils.sleep(1000);
+		act.sendKeys(preText, "Okay").perform();
+		TestUtils.sleep(1000);
+		case3status.click();
+		clsClick.click();
+		case3drop.click();
+		forAppSelect.click();
+		js.executeScript("arguments[0].scrollIntoView();", case3status);
+		case3Save.click();
+		TestUtils.sleep(1000);
+		backTOcases.click();
+		TestUtils.sleep(1000);
