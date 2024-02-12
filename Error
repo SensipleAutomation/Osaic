@@ -1,10 +1,32 @@
-Clicking on the first element
-Clicking on the second element
-Checking if the third element is displayed
-Second element not found. Retrying...
-Clicking on the first element
-Clicking on the second element
-Checking if the third element is displayed
-Clicking on the first element
-Clicking on the second element
-Checking if the third element is displayed
+while (true) {
+    try {
+        System.out.println("Clicking on the first element");
+        WebElement firstElement = wait.until(ExpectedConditions.elementToBeClickable(refresh));
+        firstElement.click();
+
+        // Wait for one second (1000 milliseconds)
+        Thread.sleep(1000);
+
+        System.out.println("Clicking on the second element");
+        WebElement secondElement = wait.until(ExpectedConditions.elementToBeClickable(refresClick));
+        secondElement.click();
+
+        // Check if the third element is displayed and enabled
+        System.out.println("Checking if the third element is displayed and enabled");
+        WebElement thirdElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("case2")));
+        
+        if (thirdElement.isDisplayed() && thirdElement.isEnabled()) {
+            TestUtils.sleep(2000);
+            thirdElement.click();
+            System.out.println("Third element found. Exiting the loop.");
+            break;
+        }
+    } catch (org.openqa.selenium.NoSuchElementException e) {
+        // Handle the case where the second element is not found
+        System.out.println("Second element not found. Retrying...");
+    } catch (Exception e) {
+        // Handle other exceptions
+        System.out.println("Exception occurred: " + e.getMessage());
+        e.printStackTrace();
+    }
+}
