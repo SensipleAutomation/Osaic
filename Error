@@ -1,7 +1,13 @@
+// Assuming 'approvedCheck' is a WebElement representing the element with the 'approved' text
 if (approvedCheck.isDisplayed()) {
-			System.out.println("Learn Step 3 cases Approved");
-		} else {
-			
-			throw new RuntimeException("Cases Not Approved. Stopping automation testing.");
-			
-		}
+    String actualText = approvedCheck.getText();
+    String expectedText = "Approved";
+
+    if (actualText.equals(expectedText)) {
+        System.out.println("Learn Step 3 cases Approved");
+    } else {
+        throw new RuntimeException("Cases Not Approved. Actual text: " + actualText + ". Stopping automation testing.");
+    }
+} else {
+    throw new RuntimeException("Cases Not Approved. Element not displayed. Stopping automation testing.");
+}
