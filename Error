@@ -1,1 +1,1 @@
-driver.switchTo().window((String) driver.getWindowHandles().toArray()[0]);
+//tr[position()=3]/td[position()=2]
