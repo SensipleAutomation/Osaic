@@ -1,26 +1,24 @@
-// Example: Click on the elements in a loop until the third element is found
-		while (true) {
-			try {
-				// Wait for the first element to be present and clickable
-				WebElement firstElement = wait.until(ExpectedConditions.elementToBeClickable(refresh));
-				firstElement.click();
+while (true) {
+    try {
+        System.out.println("Clicking on the first element");
+        WebElement firstElement = wait.until(ExpectedConditions.elementToBeClickable(refresh));
+        firstElement.click();
 
-				// Wait for one second (1000 milliseconds)
-				Thread.sleep(1000);
+        // Wait for one second (1000 milliseconds)
+        Thread.sleep(1000);
 
-				// Wait for the second element to be present and clickable
-				WebElement secondElement = wait.until(ExpectedConditions.elementToBeClickable(refresClick));
-				secondElement.click();
+        System.out.println("Clicking on the second element");
+        WebElement secondElement = wait.until(ExpectedConditions.elementToBeClickable(refresClick));
+        secondElement.click();
 
-				// Check if the third element is present, if so, break out of the loop
-				if (case2.isDisplayed()) {
-					TestUtils.sleep(2000);
-					case2.click();
-					System.out.println("Third element found. Exiting the loop.");
-					break;
-				}
-			} catch (Exception e) {
-				// Handle exceptions or log messages if needed
-				e.printStackTrace();
-			}
-		}
+        if (case2.isDisplayed()) {
+            TestUtils.sleep(2000);
+            case2.click();
+            System.out.println("Third element found. Exiting the loop.");
+            break;
+        }
+    } catch (Exception e) {
+        System.out.println("Exception occurred: " + e.getMessage());
+        e.printStackTrace();
+    }
+}
