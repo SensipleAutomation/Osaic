@@ -1,1 +1,1 @@
-//div[@aria-label='Preliminary Transitions Summary']//following-sibling::div[contains(@class, 'slds-rich-text-editor']
+//div[@aria-label='Preliminary Transitions Summary']//following-sibling::div[contains(@class, 'slds-rich-text-editor')]
