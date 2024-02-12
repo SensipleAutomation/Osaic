@@ -1,7 +1,1 @@
-@Given("^User open new window and login with newly created prospect$")
-	public void user_open_new_window_and_login_with_newly_created_prospect() throws Throwable {
-
-		((JavascriptExecutor) driver).executeScript("window.open()");
-		for (String handle : driver.getWindowHandles()) {
-			driver.switchTo().window(handle);
-		}
+driver.switchTo().window((String) driver.getWindowHandles().toArray()[0]);
