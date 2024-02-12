@@ -1,31 +1,26 @@
- WebDriverWait wait = new WebDriverWait(driver, 10);
+// Example: Click on the elements in a loop until the third element is found
+		while (true) {
+			try {
+				// Wait for the first element to be present and clickable
+				WebElement firstElement = wait.until(ExpectedConditions.elementToBeClickable(refresh));
+				firstElement.click();
 
-        // Locator for the elements you want to click
-        By firstElementLocator = By.id("firstElementId");
-        By secondElementLocator = By.id("secondElementId");
-        By thirdElementLocator = By.id("thirdElementId");
+				// Wait for one second (1000 milliseconds)
+				Thread.sleep(1000);
 
-        // Example: Click on the elements in a loop until the third element is found
-        while (true) {
-            try {
-                // Wait for the first element to be present and clickable
-                WebElement firstElement = wait.until(ExpectedConditions.elementToBeClickable(firstElementLocator));
-                firstElement.click();
+				// Wait for the second element to be present and clickable
+				WebElement secondElement = wait.until(ExpectedConditions.elementToBeClickable(refresClick));
+				secondElement.click();
 
-                // Wait for one second (1000 milliseconds)
-                Thread.sleep(1000);
-
-                // Wait for the second element to be present and clickable
-                WebElement secondElement = wait.until(ExpectedConditions.elementToBeClickable(secondElementLocator));
-                secondElement.click();
-
-                // Check if the third element is present, if so, break out of the loop
-                if (driver.findElements(thirdElementLocator).size() > 0) {
-                    System.out.println("Third element found. Exiting the loop.");
-                    break;
-                }
-            } catch (Exception e) {
-                // Handle exceptions or log messages if needed
-                e.printStackTrace();
-            }
-        }
+				// Check if the third element is present, if so, break out of the loop
+				if (case2.isDisplayed()) {
+					TestUtils.sleep(2000);
+					case2.click();
+					System.out.println("Third element found. Exiting the loop.");
+					break;
+				}
+			} catch (Exception e) {
+				// Handle exceptions or log messages if needed
+				e.printStackTrace();
+			}
+		}
