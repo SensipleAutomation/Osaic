@@ -1,1 +1,7 @@
-//tr[position()=3]/td[position()=2]
+if (approvedCheck.isDisplayed()) {
+			System.out.println("Learn Step 3 cases Approved");
+		} else {
+			
+			throw new RuntimeException("Cases Not Approved. Stopping automation testing.");
+			
+		}
