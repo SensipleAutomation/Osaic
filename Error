@@ -1,76 +1,14 @@
- process.click();
-    
-    WebElement element = scrApr;
-    JavascriptExecutor js = (JavascriptExecutor) driver;
-    js.executeScript("arguments[0].scrollIntoView();", element);
-    TestUtils.sleep(1000);
-    
-    statusDrop.click();
-    clsClick.click();
-    comment.click();
-    TestUtils.sleep(1000);
-    
-    js.executeScript("arguments[0].value = 'Okay';", comment);
-    TestUtils.sleep(1000);
-    
-    forApp.click();
-    forAppSelect.click();
-    
-    WebElement element1 = scrApr;
-    js.executeScript("arguments[0].scrollIntoView();", element1);
-    TestUtils.sleep(1000);
-    
-    apSave.click();
-    TestUtils.sleep(2000);
-    
-    backTOcases.click();
-    TestUtils.sleep(2000);
-    
-    refresh.click();
-    TestUtils.sleep(1000);
-    
-    case3.click();
-    TestUtils.sleep(2000);
-    
-    prelimCaseProcess.click();
-    js.executeScript("arguments[0].scrollIntoView();", scrPril);
-    TestUtils.sleep(1000);
-    
-    pretext1.click();
-    TestUtils.sleep(1000);
-    
-    js.executeScript("arguments[0].value = 'Okay';", pretext1);
-    
-    preText.click();
-    TestUtils.sleep(1000);
-    
-    js.executeScript("arguments[0].value = 'Okay';", preText);
-    TestUtils.sleep(1000);
-    
-    case3status.click();
-    clsClick.click();
-    case3drop.click();
-    forAppSelect.click();
-    
-    js.executeScript("arguments[0].scrollIntoView();", case3status);
-    
-    case3Save.click();
-    TestUtils.sleep(1000);
-    
-    backTOcases.click();
-    TestUtils.sleep(1000);
-    
-    if (approvedCheck.isDisplayed()) {
-        String actualText = approvedCheck.getText();
-        String expectedText = "Approved";
+try {
+            Robot robot = new Robot();
 
-        if (actualText.equals(expectedText)) {
-            System.out.println("Learn Step 3 cases Approved");
-        } else {
-            throw new RuntimeException(
-                    "Cases Not Approved. Actual text: " + actualText + ". Stopping automation testing.");
+            // Press and release 'O'
+            robot.keyPress(KeyEvent.VK_O);
+            robot.keyRelease(KeyEvent.VK_O);
+
+            // Press and release 'K'
+            robot.keyPress(KeyEvent.VK_K);
+            robot.keyRelease(KeyEvent.VK_K);
+
+        } catch (AWTException e) {
+            e.printStackTrace();
         }
-    } else {
-        throw new RuntimeException("Cases Not Approved. Element not displayed. Stopping automation testing.");
-    }
-}
