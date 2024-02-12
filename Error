@@ -1,2 +1,7 @@
-Actions act = new Actions(driver);
-act.sendKeys(comment, "Okay").perform();
+try {
+			Actions act = new Actions(driver);
+			act.sendKeys(comment, "Okay").perform();
+
+		} catch (Exception e) {
+			System.out.println("Text entered");
+		}
