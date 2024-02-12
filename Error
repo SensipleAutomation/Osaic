@@ -11,13 +11,18 @@ while (true) {
         WebElement secondElement = wait.until(ExpectedConditions.elementToBeClickable(refresClick));
         secondElement.click();
 
+        System.out.println("Checking if the third element is displayed");
         if (case2.isDisplayed()) {
             TestUtils.sleep(2000);
             case2.click();
             System.out.println("Third element found. Exiting the loop.");
             break;
         }
+    } catch (org.openqa.selenium.NoSuchElementException e) {
+        // Handle the case where the second element is not found
+        System.out.println("Second element not found. Retrying...");
     } catch (Exception e) {
+        // Handle other exceptions
         System.out.println("Exception occurred: " + e.getMessage());
         e.printStackTrace();
     }
