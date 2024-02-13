@@ -1,27 +1,3 @@
-public static void uploadFile(String pathWithFile) {
-
-		Robot robot = null;
-
-		try {
-			robot = new Robot();
-		} catch (AWTException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		StringSelection ss = new StringSelection(getCurrDir() + pathWithFile);
-		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ss, null);
-		robot.delay(250);
-		// robot.keyPress(KeyEvent.VK_ENTER);
-		// robot.keyRelease(KeyEvent.VK_ENTER);
-		robot.keyPress(KeyEvent.VK_CONTROL);
-		robot.delay(1000);
-		robot.keyPress(KeyEvent.VK_V);
-		robot.delay(1000);
-		robot.keyRelease(KeyEvent.VK_V);
-		robot.keyRelease(KeyEvent.VK_CONTROL);
-		robot.delay(1000);
-		robot.keyPress(KeyEvent.VK_ENTER);
-		robot.keyRelease(KeyEvent.VK_ENTER);
-		robot.delay(2000);
+public WebElement uploadPSRDocs() {
+		return uploadLink.get(6);
 	}
