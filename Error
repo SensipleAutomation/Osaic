@@ -1,19 +1,7 @@
-public void uploadGDCDoc() {
-		TestUtils.sleep(3000);
-//		TestUtils.scrollDown(400);
-		// TestUtils.sleep(3000);
-//		TestUtils.jsExecutorClick(uploadGDCDocs());
-		if (uploadPriorYearGdcLink.isEnabled()) {
-			uploadPriorYearGdcLink.click();
+WebElement fileInput = driver.findElement(By.id("yourFileInputId")); // Replace with the actual ID of your file input field
 
-			String fileName = "AGlogo.png";
+        String fileName = "AGlogo.png";
         String sharedPath = "\\\\fsc2\\SHARED\\Rajasekar\\Upload\\";
         String filePath = sharedPath + fileName;
 
-        TestUtils.uploadFile(filePath);
-		} else {
-			System.out.println("Upload button non clickable");
-		}
-	}
-
-this works but i need to provide this path  \\fsc2\SHARED\Rajasekar\Upload\AGlogo.png
+        fileInput.sendKeys(filePath);
