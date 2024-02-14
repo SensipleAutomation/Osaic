@@ -7,9 +7,10 @@ public void uploadGDCDoc() {
 			uploadPriorYearGdcLink.click();
 
 			String fileName = "AGlogo.png";
-			String filePath = System.getProperty("user.dir") + File.separator + fileName;
+        String sharedPath = "\\\\fsc2\\SHARED\\Rajasekar\\Upload\\";
+        String filePath = sharedPath + fileName;
 
-			TestUtils.uploadFile(filePath);
+        TestUtils.uploadFile(filePath);
 		} else {
 			System.out.println("Upload button non clickable");
 		}
