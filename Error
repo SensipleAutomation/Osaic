@@ -1,7 +1,18 @@
-WebElement fileInput = driver.findElement(By.id("yourFileInputId")); // Replace with the actual ID of your file input field
+•	Created, maintained Automation Selenium Scripts for the User Stories in JIRA
+ 
+•	Maintaining the check-in and check-out the source code from GIT
+•	Preparing the Feature file, Step Definition, Hooks, POM, Utility class in CUCUMBER framework
+•	Execution of automated Test scripts through Maven Projects
+•	Performing Defect Tracking & Management in JIRA and generated automated daily reports using
+•	Creating regression test suites for the identified tests
+•	Rerun the failed test cases
+•	Execution of Smoke, Sanity and Regression suites during new releases and analyses the test failures
 
-        String fileName = "AGlogo.png";
-        String sharedPath = "\\\\fsc2\\SHARED\\Rajasekar\\Upload\\";
-        String filePath = sharedPath + fileName;
 
-        fileInput.sendKeys(filePath);
+•	Experience in the implementation of Testing process Cucumber, TestNG, JUnit and Data Driven frameworks in the Automation
+•	Knowledge in Page Object Model, Singleton design patterns
+•	Good experience of build tools like Maven to manage java automation projects
+•	Better experience of Defect/Test Management tools like JIRA
+•	Debugging developed scripts / Code Review to the Team member
+•	Prepared Test Case Estimations, forecast sheet for execution, Test summary report, Test closure report for each release
+•	Executed automation scripts on Parallel Execution and Cross Browsers, Environments and Reported Defects Results to the development team
