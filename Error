@@ -1,22 +1,35 @@
-•	Understanding the Business Requirement and Functional Specification documents
-•	Defining the Test Scope and Test Scenarios based on the Functional and Technical Documents
-•	Preparation of Effort estimation document well prior to project commencement and have had minimal or no changes to the effort estimated by me.
-•	Preparing Test Plan, Test Strategy, Test Scenarios, Complex Test Scripts & Data Guidelines documents based on project requirements.
-•	Involved in status calls and project update by directly interacting with Client PMO.
-•	Identifying project areas where it could be automated and provide efficient time saving plans.
-•	Handled Test plan walkthrough calls to clients. 
-•	Preparation of internal QA Check lists 
-•	Everyday peer review of Test results, Test documentation and Status emails
-•	Involved in complex defect analysis and root cause Analysis. 
-•	Handling Defect Calls in multivendor environments.
-•	Preparation of Project dashboards 
-•	Preparation of Test Summary Report
-•	Mentoring Trainees
-•	Showcase test results to the business stakeholders.
-•	Identifying problem areas and implementing techniques with help of other team members which resolves that problem areas.
-•	Co-ordinate with different teams for End-End testing
-•	PEGA testing with functional validation.
-•	Preparation of Training Materials
-•	Reviewing and validating the execution of batch loads (ETL) and source file to EDW
-•	Preparing automation test scripts using the Cucumber and Karate framework
-•	Experience with building automation framework for API testing
+Requirements Understanding: Analyzing Business Requirement and Functional Specification documents to comprehend project objectives.
+
+Test Scope Definition: Defining comprehensive Test Scope and Test Scenarios based on detailed Functional and Technical Documents.
+
+Effort Estimation: Preparation of precise Effort estimation documents well in advance of project commencement, ensuring minimal or no changes to the estimated effort.
+
+Test Planning: Creating Test Plans, Test Strategies, and Test Scenarios, along with developing Complex Test Scripts & Data Guidelines documents based on project requirements.
+
+Client Interaction: Actively participating in status calls and project updates, engaging directly with Client PMO for effective communication.
+
+Automation Identification: Identifying project areas suitable for automation to enhance efficiency and reduce testing time.
+
+Client Communication: Conducting Test plan walkthrough calls with clients to ensure alignment with project objectives.
+
+Quality Assurance: Developing internal QA checklists and conducting daily peer reviews of Test results, Test documentation, and Status emails.
+
+Defect Management: Leading complex defect analysis and root cause analysis, handling Defect Calls in multivendor environments.
+
+Project Reporting: Creating Project dashboards and preparing Test Summary Reports for effective project management.
+
+Mentorship: Mentoring Trainees to facilitate skill development and knowledge transfer within the team.
+
+Stakeholder Communication: Showcasing test results to business stakeholders, ensuring transparency in the testing process.
+
+Problem Resolution: Identifying problem areas and collaborating with team members to implement effective solutions.
+
+Cross-Team Coordination: Coordinating with different teams for End-to-End testing and ensuring seamless integration.
+
+PEGA Testing: Conducting PEGA testing with a focus on functional validation.
+
+Training Material Preparation: Creating Training Materials to support knowledge sharing and team development.
+
+Batch Load Validation: Reviewing and validating the execution of batch loads (ETL) and source file to EDW.
+
+Automation Scripting: Preparing automation test scripts using the Cucumber and Karate framework, including building automation frameworks for API testing.
