@@ -1,4 +1,1 @@
-JavascriptExecutor js = (JavascriptExecutor) driver;
-
-        // Scroll down by a specific pixel value (e.g., 500 pixels)
-        js.executeScript("window.scrollBy(0,500)");
+js.executeScript("arguments[0].scrollIntoView({block: 'center'});", elementToClick);
