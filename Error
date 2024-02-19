@@ -1,43 +1,4 @@
-public void uploadGDCDoc() {
-		TestUtils.sleep(3000);
-		TestUtils.scrollDown(300);
-		// TestUtils.sleep(3000);
-//		TestUtils.jsExecutorClick(uploadGDCDocs());
-		if (uploadPriorYearGdcLink.isEnabled()) {
-			uploadPriorYearGdcLink.click();
+JavascriptExecutor js = (JavascriptExecutor) driver;
 
-			TestUtils.uploadFile("\\resources\\Uploads\\AGlogo.png");
-		}
-
-		TestUtils.sleep(2000);
-
-		uploadYearToDateGdcLink.click();
-		TestUtils.sleep(3000);
-		TestUtils.uploadFile("\\resources\\Uploads\\AGlogo.png");
-		TestUtils.sleep(2000);
-
-		businesMixByPercentageLink.click();
-		TestUtils.sleep(3000);
-		TestUtils.uploadFile("\\resources\\Uploads\\AGlogo.png");
-		TestUtils.sleep(2000);
-
-		assetsUnderManagementTotalsLink.click();
-		TestUtils.sleep(2000);
-		TestUtils.uploadFile("\\resources\\Uploads\\AGlogo.png");
-		TestUtils.sleep(2000);
-
-		advisoryDirectBusinessLink.click();
-		TestUtils.sleep(2000);
-		TestUtils.uploadFile("\\resources\\Uploads\\AGlogo.png");
-		TestUtils.sleep(2000);
-
-		productNamesAndAumReportLink.click();
-		TestUtils.sleep(2000);
-		TestUtils.uploadFile("\\resources\\Uploads\\AGlogo.png");
-		TestUtils.sleep(2000);
-
-		productSponsorReportLink.click();
-		TestUtils.sleep(2000);
-		TestUtils.uploadFile("\\resources\\Uploads\\AGlogo.png");
-		TestUtils.sleep(2000);
-	}
+        // Scroll down by a specific pixel value (e.g., 500 pixels)
+        js.executeScript("window.scrollBy(0,500)");
