@@ -83,7 +83,7 @@ public class EO_CRM_NewProspectCreation {
 	@FindBy(xpath = "//input[@name='Date_of_Birth__c']")
 	private WebElement DOBInput;
 
-	@FindBy(xpath = "//span[text()='BUSINESS PROFILE']")
+	@FindBy(xpath = "(//span[text()='BUSINESS PROFILE'])[last()]")
 	private WebElement ScrollBusiness;
 
 	@FindBy(xpath = "//input[@name='Business_Name_DBA__c']")
@@ -155,8 +155,8 @@ public class EO_CRM_NewProspectCreation {
 	@FindBy(xpath = "//h2[text()='Your lead has been converted']")
 	private WebElement ConvertMessage;
 
-	@FindBy(xpath = "//a[text()='65432']")
-	private WebElement accOpen;
+//	@FindBy(xpath = "//a[text()='7654321']")
+//	private WebElement accOpen;
 //	@FindBy(xpath = "(//div[contains(@class, 'test-id__section-content ')])[2]")
 //	private WebElement printProfile;
 
@@ -165,13 +165,13 @@ public class EO_CRM_NewProspectCreation {
 
 	@FindBy(xpath = "(//ul[@class='slds-button-group-list']/li)[last()]")
 	private WebElement inviteButton;
-	
+
 	@FindBy(xpath = "//button[text()='Yes']")
 	private WebElement yesButton;
-	
+
 	@FindBy(xpath = "//p[text()='The invite to the Welcome Hub has been sent to your prospect.']")
 	private WebElement confirmationInvite;
-	
+
 	@FindBy(xpath = "//button[@title='Close this window']")
 	private WebElement invitedClose;
 
@@ -223,7 +223,7 @@ public class EO_CRM_NewProspectCreation {
 	@FindBy(xpath = "//a[text()='AutoDemoTest Deat']")
 	private WebElement contact;
 
-	@FindBy(xpath = "//a[text()='654321']")
+	@FindBy(xpath = "//a[text()='8654321']")
 	private WebElement oppourtunity;
 
 	@FindBy(xpath = "(//div[contains(@class, 'horizontal_small')]//span[text()='Contact'])[last()]")
@@ -294,6 +294,8 @@ public class EO_CRM_NewProspectCreation {
 
 	@FindBy(xpath = "(//div[@data-target-selection-name='sfdc:RecordField.Opportunity.External_Id__c']//following::lightning-formatted-text[@data-output-element-id='output-field'])[1]")
 	private WebElement extID;
+
+	
 
 	public synchronized EO_CRM_NewProspectCreation loginToCRM(String username, String password) {
 		Mail.sendKeys(username);
@@ -523,9 +525,9 @@ public class EO_CRM_NewProspectCreation {
 		TestUtils.sleep(2000);
 	}
 
-	public void openacc() {
-		accOpen.click();
-	}
+//	public void openacc() {
+//		accOpen.click();
+//	}
 
 	public void inviteBut() {
 		TestUtils.sleep(3000);
@@ -543,8 +545,6 @@ public class EO_CRM_NewProspectCreation {
 		TestUtils.explicit_locate(confirmationInvite);
 		TestUtils.sleep(1000);
 		invitedClose.click();
-		TestUtils.sleep(1000);
-		driver.navigate().refresh();
 		TestUtils.sleep(2000);
 		driver.navigate().refresh();
 		TestUtils.sleep(2000);
@@ -696,7 +696,7 @@ public class EO_CRM_NewProspectCreation {
 	public static String generateRandomMobileNumber() {
 		Random random = new Random();
 		// Generating a 10-digit random mobile number
-		StringBuilder mobileNumber = new StringBuilder("4");
+		StringBuilder mobileNumber = new StringBuilder("3");
 		for (int i = 0; i < 9; i++) {
 			mobileNumber.append(random.nextInt(10));
 		}
@@ -706,7 +706,7 @@ public class EO_CRM_NewProspectCreation {
 	public static String generateRandomEmailAddress() {
 		Random random = new Random();
 		// Generating a random email address with a random number and a common domain
-		String username = "tester" + random.nextInt(1000);
+		String username = "testautomation" + random.nextInt(1000);
 		String domain = "@tes.com";
 		return username + domain;
 	}
@@ -720,11 +720,31 @@ public class EO_CRM_NewProspectCreation {
 		if (extID.isDisplayed()) {
 			String text = extID.getText();
 			System.out.println("External Id:" + text);
-
 		} else {
-			
-			throw new RuntimeException("External ID is not generated. Stopping automation testing.");
+			// If not displayed, refresh the page
+			driver.navigate().refresh();
+			js.executeScript("window.scrollBy(0, 650);");
+			// Check again after refreshing
+			if (extID.isDisplayed()) {
+				String text = extID.getText();
+				System.out.println("External Id:" + text);
+			} else {
+				// If still not displayed, throw an exception
+				throw new RuntimeException("External ID is not generated. Stopping automation testing.");
+			}
 		}
+
+//		if (extID.isDisplayed()) {
+//			String text = extID.getText();
+//			System.out.println("External Id:" + text);
+//
+//		} else {
+//			driver.navigate().refresh();
+//			if (extID.isDisplayed()) {
+//				String text = extID.getText();
+//				System.out.println("External Id:" + text);
+//			throw new RuntimeException("External ID is not generated. Stopping automation testing.");
+//		}
 	}
 
 }
