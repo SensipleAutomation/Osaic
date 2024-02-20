@@ -1,7 +1,15 @@
 package webpages;
 
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.util.List;
 
+import org.openqa.selenium.ElementNotInteractableException;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -9,13 +17,14 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import java.awt.*;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
+import org.testng.annotations.Test;
 
 import com.codoid.products.exception.FilloException;
 
+import gherkin.lexer.Th;
 import utility.TestUtils;
 
 public class CasesApprovalAndClosing {
@@ -227,8 +236,214 @@ public class CasesApprovalAndClosing {
 	@FindBy(xpath = "//a[text()='Related']")
 	private WebElement relatedClick;
 
-	@FindBy(xpath = "(//span[text()='View All'])[1]")
+	@FindBy(xpath = "(//span[text()='Supervision Review Date'])[last()-1]")
+	private WebElement relat;
+
+	@FindBy(xpath = "(//span[@title='Cases'])[last()]")
 	private WebElement viewAll;
+
+	@FindBy(xpath = "//slot[text()='Create RegEd Credentials']//preceding::*[@data-label='Case Number'][last()]")
+	private WebElement createNum;
+
+	@FindBy(xpath = "//a[text()='Processing']")
+	private WebElement process;
+
+	@FindBy(xpath = "(//a[text()='Processing'])[last()]")
+	private WebElement prelimCaseProcess;
+
+	@FindBy(xpath = "//b[contains(text(),'preliminary ')]")
+	private WebElement scrPril;
+
+	@FindBy(xpath = "//b[contains(text(),'RegEd ')]")
+	private WebElement scrApr;
+
+	@FindBy(xpath = "(//a[@title='Create RegEd Credentials'])[last()]")
+	private WebElement case2;
+
+	@FindBy(xpath = "//button[@name='refreshButton']")
+	private WebElement refresh;
+
+	@FindBy(xpath = "//h1[@title='Cases']")
+	private WebElement refresClick;
+
+	@FindBy(xpath = "(//span[text()='New'])[last()]")
+	private WebElement statusDrop;
+
+	@FindBy(xpath = "(//span[text()='Closed'])[last()]")
+	private WebElement clsClick;
+
+	@FindBy(xpath = "//div[@class='slds-rich-text-area__content slds-grow slds-text-color-weak standin']")
+	private WebElement comment;
+
+	@FindBy(xpath = "(//span[text()='--None--'])[last()]")
+	private WebElement forApp;
+
+	@FindBy(xpath = "(//span[text()='Approved'])[last()]")
+	private WebElement forAppSelect;
+
+	@FindBy(xpath = "//button[text()='Save']")
+	private WebElement apSave;
+
+	@FindBy(xpath = "(//li[@role='presentation']//following::span[@title='Cases'])[1]")
+	private WebElement backTOcases;
+
+	@FindBy(xpath = "//label[text()='Status']")
+	private WebElement nonClick;
+
+	@FindBy(xpath = "(//a[@title='Create preliminary review and transition assistance summary'])[last()]")
+	private WebElement case3;
+
+	@FindBy(xpath = "(//div[@class='slds-rich-text-area__content slds-grow slds-text-color-weak standin'])[last()]")
+	private WebElement preText;
+
+	@FindBy(xpath = "(//div[@aria-label='Preliminary Transitions Summary']//following-sibling::div[contains(@class, 'slds-rich-text-editor')])[last()]")
+	private WebElement pretext1;
+
+	@FindBy(xpath = "//div[@aria-label='Preliminary Transitions Summary']//following::div[@role='textbox']")
+	private WebElement pretext1Send;
+
+	@FindBy(xpath = "(//button[@name='Status'])[last()]")
+	private WebElement case3status;
+
+	@FindBy(xpath = "(//button[@name='EO_Approval_Status__c'])[last()]")
+	private WebElement case3drop;
+
+	@FindBy(xpath = "(//button[text()='Save'])[last()]")
+	private WebElement case3Save;
+
+	@FindBy(xpath = "//tr[position()=2]/td[position()=5]")
+	private WebElement approvedCheck;
+
+	@FindBy(xpath = "(//web-icon[@aria-label='Action'])[1]")
+	private WebElement step3Edit;
+
+	@FindBy(xpath = "//span[text()='Ok']")
+	private WebElement okConfirm;
+
+	@FindBy(xpath = "//span[text()='Product Names and AUM Report']")
+	public WebElement scrConBut;
+
+	@FindBy(xpath = "(//a[text()='Upload File'])[1]")
+	public WebElement uploadPriorYearGdcLink;
+	@FindBy(xpath = "(//a[text()='Upload File'])[1]")
+	public WebElement uploadYearToDateGdcLink;
+	@FindBy(xpath = "(//a[text()='Upload File'])[1]")
+	public WebElement businesMixByPercentageLink;
+	@FindBy(xpath = "(//a[text()='Upload File'])[1]")
+	public WebElement assetsUnderManagementTotalsLink;
+	@FindBy(xpath = "(//a[text()='Upload File'])[1]")
+	public WebElement advisoryDirectBusinessLink;
+	@FindBy(xpath = "(//a[text()='Upload File'])[1]")
+	public WebElement productNamesAndAumReportLink;
+	@FindBy(xpath = "(//a[text()='Upload File'])[1]")
+	public WebElement productSponsorReportLink;
+
+	@FindBy(xpath = "(//*[@role='presentation'])[5]")
+	public WebElement uploadDocumentTab;
+
+	@FindBy(xpath = "//label[text()='Confirm']")
+	public WebElement upconfirmButton;
+
+	@FindBy(xpath = "(//div/span[text()='No'])[1]")
+	public WebElement firstQestion;
+
+	@FindBy(xpath = "(//div/span[text()='No'])[2]")
+	public WebElement secondQuestion;
+
+	@FindBy(xpath = "//p-checkbox//span")
+	public WebElement piiCheckbox;
+
+	@FindBy(xpath = "//web-button[@label='SAVE']//button")
+	public WebElement saveBtn;
+
+	@FindBy(xpath = "(//span[text()='Save'])[last()]")
+	public WebElement saveBtn2;
+
+//	add Contract Review
+
+	@FindBy(xpath = "//button/span[text()='CONTINUE']")
+	public WebElement continueBtn;
+
+	@FindBy(xpath = "(//a[@title='Schedule HOV Presentation and/or Demo with Prospect'])[last()]")
+	public WebElement scheduleCase;
+
+	@FindBy(xpath = "(//a[text()='Processing'])[last()]")
+	public WebElement schProcess;
+
+	@FindBy(xpath = "(//label[text()='Status']//following::button[@name='Status'])[last()]")
+	public WebElement schStatus;
+
+	@FindBy(xpath = "(//span[@title='Closed'])[last()]")
+	public WebElement schClosed;
+
+	@FindBy(xpath = "//button[@aria-label='EO Approval Status - Current Selection: --None--']")
+	public WebElement scEoStatus;
+
+	@FindBy(xpath = "(//span[@title='Approved'])[last()]")
+	public WebElement scEoApproved;
+
+	@FindBy(xpath = "(//button[@title='Save'])[last()]")
+	public WebElement schSave;
+
+	@FindBy(xpath = "(//a[@title='Schedule HOV Presentation Parent Case'])[last()]")
+	public WebElement sch2Case;
+
+	@FindBy(xpath = "(//a[@title='Review Book of Business Documents'])[last()]")
+	public WebElement bookCase;
+
+	@FindBy(xpath = "(//a[@title='Book of Business Review Parent Case'])[last()]")
+	public WebElement boBusCase;
+
+	@FindBy(xpath = "(//a[@title='Assessment of Book of Business'])[last()]")
+	public WebElement assesmentCase;
+
+	@FindBy(xpath = "(//a[@title='Validate Financial Information'])[last()]")
+	public WebElement validateCase;
+
+	@FindBy(xpath = "(//a[@title='Contract Review / Consultation'])[last()]")
+	public WebElement contractCase;
+
+	@FindBy(xpath = "(//a[@title='Review Contract'])[last()]")
+	public WebElement reviewCase;
+
+	@FindBy(xpath = "(//a[@title='FRM Preparation'])[last()]")
+	public WebElement frmCase;
+
+	@FindBy(xpath = "(//a[@title='Rate Setup Process'])[last()]")
+	public WebElement rateCase;
+
+	@FindBy(xpath = "(//a[@title='Set Meeting with prospect'])[last()]")
+	public WebElement setmeetCase;
+
+	@FindBy(xpath = "(//a[@title='Set Internal Product Review Meeting'])[last()]")
+	public WebElement setIntCase;
+
+	@FindBy(xpath = "(//a[@title='External recruiter FRM Approval'])[last()]")
+	public WebElement extrecCase;
+
+	@FindBy(xpath = "(//a[@title='Recruiting Finance FRM Validation'])[last()]")
+	public WebElement recfinCase;
+
+	@FindBy(xpath = "//web-selection-button//span[text()='No']")
+	public List<WebElement> backConsentnoBtn;
+
+	@FindBy(xpath = "(//web-button[@label='SAVE']//button)[1]")
+	public WebElement quesSaveBut;
+
+	@FindBy(xpath = "//*[@class='mob_fix' and text()='Fair Credit Reporting Act ']")
+	public WebElement fairCreditReportingActAccordionTab;
+
+	@FindBy(xpath = "(//*[contains(@class,'p-checkbox-box')])[1]")
+	public WebElement fairCreditReportingAcknowledgeCheckbox;
+
+	@FindBy(xpath = "(//*[contains(@class,'p-checkbox-box')])[3]")
+	public WebElement investigativeConsumerReportAcknowledgeCheckbox;
+
+	@FindBy(xpath = "(//label[text()=' Name: ']//following::input[@type='text'])[1]")
+	public WebElement name;
+
+	@FindBy(xpath = "//label[text()=' Signature: ']//following::img")
+	public WebElement signaTure;
 
 	public synchronized CasesApprovalAndClosing loginToEO(String password) {
 		Password.sendKeys(password);
@@ -292,6 +507,7 @@ public class CasesApprovalAndClosing {
 		js.executeScript("arguments[0].scrollIntoView();", saveScroll);
 		TestUtils.sleep(1000);
 		perSaveButton.click();
+		TestUtils.sleep(2000);
 		return this;
 
 	}
@@ -318,7 +534,7 @@ public class CasesApprovalAndClosing {
 		js.executeScript("arguments[0].scrollIntoView();", busiCity);
 		TestUtils.sleep(1000);
 		busSaveButton.click();
-		TestUtils.sleep(1000);
+		TestUtils.sleep(2000);
 		return this;
 
 	}
@@ -351,9 +567,10 @@ public class CasesApprovalAndClosing {
 		branchQueSel.click();
 		TestUtils.sleep(1000);
 		affSave.click();
+		js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
 		TestUtils.sleep(1000);
 		proInfCont.click();
-		TestUtils.sleep(1000);
+		TestUtils.sleep(2000);
 	}
 
 	public synchronized CasesApprovalAndClosing revenue(String Total, String Split) {
@@ -373,7 +590,7 @@ public class CasesApprovalAndClosing {
 		countClick.click();
 		TestUtils.sleep(1000);
 		perSaveButton.click();
-		TestUtils.sleep(1000);
+		TestUtils.sleep(2000);
 		return this;
 
 	}
@@ -411,15 +628,368 @@ public class CasesApprovalAndClosing {
 		affSave.click();
 		TestUtils.sleep(1000);
 		proInfCont.click();
+		TestUtils.sleep(2000);
+		okConfirm.click();
+		TestUtils.sleep(2000);
 
 	}
 
 	public void crmApprovals() {
+		WebElement element = relat;
 		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("window.scrollBy(0, 510);");
+		js.executeScript("arguments[0].scrollIntoView();", element);
 		TestUtils.sleep(1000);
 		relatedClick.click();
-		TestUtils.sleep(1000);
+		TestUtils.sleep(3000);
 		viewAll.click();
+		TestUtils.sleep(2000);
+//		driver.navigate().refresh();
+//		TestUtils.sleep(6000);
+//		refresh.click();
+//		TestUtils.sleep(2000);
+//		refresClick.click();
+//		TestUtils.sleep(4000);
+//		refresh.click();
+//		refresClick.click();
+//		TestUtils.sleep(4000);
+//		refresh.click();
+//		case2.click();
+//		TestUtils.sleep(2000);
+
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+
+		while (true) {
+			try {
+				System.out.println("Clicking on the first element");
+				WebElement firstElement = wait.until(ExpectedConditions.elementToBeClickable(refresh));
+				firstElement.click();
+
+				// Wait for one second (1000 milliseconds)
+				Thread.sleep(1000);
+
+				System.out.println("Clicking on the second element");
+				WebElement secondElement = wait.until(ExpectedConditions.elementToBeClickable(refresClick));
+				secondElement.click();
+
+				// Check if the third element is displayed and enabled
+				System.out.println("Checking if the third element is displayed and enabled");
+				WebElement thirdElement = case2;
+
+				if (thirdElement.isDisplayed() && thirdElement.isEnabled()) {
+					TestUtils.sleep(2000);
+					thirdElement.click();
+					System.out.println("Third element found. Exiting the loop.");
+					break;
+				}
+			} catch (org.openqa.selenium.NoSuchElementException e) {
+				// Handle the case where the second element is not found
+				System.out.println("Second element not found. Retrying...");
+			} catch (Exception e) {
+				// Handle other exceptions
+				System.out.println("Exception occurred: " + e.getMessage());
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+	public synchronized CasesApprovalAndClosing processing(String value) {
+		process.click();
+
+		WebElement element = scrApr;
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].scrollIntoView();", element);
+		TestUtils.sleep(1000);
+
+		statusDrop.click();
+		clsClick.click();
+//		comment.click();
+		TestUtils.sleep(1000);
+
+//		js.executeScript("arguments[0].value = 'Okay';", comment);
+//		TestUtils.sleep(1000);
+
+		forApp.click();
+		forAppSelect.click();
+
+		WebElement element1 = scrApr;
+		js.executeScript("arguments[0].scrollIntoView();", element1);
+		TestUtils.sleep(1000);
+
+		apSave.click();
+		TestUtils.sleep(2000);
+
+		backTOcases.click();
+		TestUtils.sleep(2000);
+
+//		refresh.click();
+//		TestUtils.sleep(1000);
+
+		case3.click();
+		TestUtils.sleep(2000);
+
+		prelimCaseProcess.click();
+		js.executeScript("arguments[0].scrollIntoView();", scrPril);
+		TestUtils.sleep(1000);
+
+		pretext1.click();
+		TestUtils.sleep(1000);
+
+		pretext1Send.sendKeys(value);
+//		preText.click();
+//		TestUtils.sleep(1000);
+//
+//		js.executeScript("arguments[0].value = 'Okay';", preText);
+		TestUtils.sleep(1000);
+
+		case3status.click();
+		clsClick.click();
+		case3drop.click();
+		forAppSelect.click();
+
+		js.executeScript("arguments[0].scrollIntoView();", case3status);
+
+		case3Save.click();
+		TestUtils.sleep(1000);
+
+		backTOcases.click();
+		TestUtils.sleep(1000);
+
+		if (approvedCheck.isDisplayed()) {
+			String actualText = approvedCheck.getText();
+			String expectedText = "Approved";
+
+			if (actualText.equals(expectedText)) {
+				System.out.println("Learn Step 3 cases Approved");
+			} else {
+				throw new RuntimeException(
+						"Cases Not Approved. Actual text: " + actualText + ". Stopping automation testing.");
+			}
+		} else {
+			throw new RuntimeException("Cases Not Approved. Element not displayed. Stopping automation testing.");
+		}
+		return this;
+	}
+
+	public void preliminary() {
+		TestUtils.sleep(3000);
+		step3Edit.click();
+		TestUtils.sleep(3000);
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].scrollIntoView();", proInfCont);
+		TestUtils.sleep(1000);
+		proInfCont.click();
+		TestUtils.sleep(2000);
+		js.executeScript("arguments[0].scrollIntoView();", proInfCont);
+		TestUtils.sleep(1000);
+		proInfCont.click();
+		js.executeScript("arguments[0].scrollIntoView();", proInfCont);
+		TestUtils.sleep(1000);
+		proInfCont.click();
+
+	}
+
+	public void uploadGDCDoc() {
+		TestUtils.sleep(2000);
+
+		if (uploadPriorYearGdcLink.isEnabled()) {
+			uploadPriorYearGdcLink.click();
+
+			TestUtils.uploadFile("\\resources\\Uploads\\Prior Year GDC.pdf");
+		}
+
+		TestUtils.sleep(1000);
+
+		uploadYearToDateGdcLink.click();
+		TestUtils.sleep(1000);
+		TestUtils.uploadFile("\\resources\\Uploads\\Year-to-date GDC.pdf");
+		TestUtils.sleep(1000);
+
+		businesMixByPercentageLink.click();
+		TestUtils.sleep(1000);
+		TestUtils.uploadFile("\\resources\\Uploads\\Business Mix by Percentage.pdf");
+		TestUtils.sleep(1000);
+
+		assetsUnderManagementTotalsLink.click();
+		TestUtils.sleep(1000);
+		TestUtils.uploadFile("\\resources\\Uploads\\Assets Under Management Totals.pdf");
+		TestUtils.sleep(1000);
+
+		productNamesAndAumReportLink.click();
+		TestUtils.sleep(1000);
+		TestUtils.uploadFile("\\resources\\Uploads\\Product Names and AUM Report.pdf");
+		TestUtils.sleep(1000);
+
+		productSponsorReportLink.click();
+		TestUtils.sleep(1000);
+		TestUtils.uploadFile("\\resources\\Uploads\\Product Sponsor Reports.pdf");
+		TestUtils.sleep(1000);
+
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].scrollIntoView();", scrConBut);
+		TestUtils.sleep(1000);
+		upconfirmButton.click();
+		TestUtils.sleep(1000);
+		saveBtn.click();
+		TestUtils.sleep(1000);
+		js.executeScript("arguments[0].scrollIntoView();", saveBtn);
+		firstQestion.click();
+		TestUtils.sleep(1000);
+		secondQuestion.click();
+		TestUtils.sleep(2000);
+		saveBtn2.click();
+		TestUtils.sleep(3000);
+		continueBtn.click();
+
+	}
+
+	public void scheduleFind() throws InterruptedException {
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+
+		while (true) {
+			try {
+				System.out.println("Clicking on the first element");
+				WebElement firstElement = wait.until(ExpectedConditions.elementToBeClickable(refresh));
+				firstElement.click();
+
+				// Wait for one second (1000 milliseconds)
+				Thread.sleep(1000);
+
+				System.out.println("Clicking on the second element");
+				WebElement secondElement = wait.until(ExpectedConditions.elementToBeClickable(refresClick));
+				secondElement.click();
+
+				// Check if the fourth element is displayed and enabled
+				System.out.println("Checking if the fourth element is displayed and enabled");
+				WebElement thirdElement = scheduleCase;
+
+				if (thirdElement.isDisplayed() && thirdElement.isEnabled()) {
+					TestUtils.sleep(2000);
+					thirdElement.click();
+					System.out.println("Third element found. Exiting the loop.");
+					break;
+				}
+			} catch (org.openqa.selenium.NoSuchElementException e) {
+
+				System.out.println("Second element not found. Retrying...");
+			} catch (Exception e) {
+
+				System.out.println("Exception occurred: " + e.getMessage());
+				e.printStackTrace();
+			}
+		}
+		reactions();
+		backTOcases.click();
+		Thread.sleep(1000);
+		sch2Case.click();
+		reactions();
+		backTOcases.click();
+		Thread.sleep(1000);
+		bookCase.click();
+		reactions();
+		backTOcases.click();
+		Thread.sleep(1000);
+		boBusCase.click();
+		reactions();
+		backTOcases.click();
+		Thread.sleep(2000);
+		refresh.click();
+		Thread.sleep(2000);
+		refresClick.click();
+		Thread.sleep(1000);
+		refresh.click();
+		Thread.sleep(1000);
+		assesmentCase.click();
+		reactions();
+		backTOcases.click();
+		Thread.sleep(1000);
+		validateCase.click();
+		reactions();
+		backTOcases.click();
+		Thread.sleep(1000);
+		contractCase.click();
+		reactions();
+		backTOcases.click();
+		refreshCase();
+	}
+
+	public void reactions() throws InterruptedException {
+		Thread.sleep(2000);
+		schProcess.click();
+		Thread.sleep(1000);
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].scrollIntoView({block: 'center'});", schStatus);
+		Thread.sleep(1000);
+		schStatus.click();
+		Thread.sleep(1000);
+		schClosed.click();
+		Thread.sleep(1000);
+		js.executeScript("arguments[0].scrollIntoView({block: 'center'});", scEoStatus);
+		Thread.sleep(1000);
+		scEoStatus.click();
+		Thread.sleep(1000);
+		scEoApproved.click();
+		Thread.sleep(1000);
+		js.executeScript("arguments[0].scrollIntoView({block: 'center'});", schSave);
+		Thread.sleep(1000);
+		schSave.click();
+		Thread.sleep(2000);
+	}
+
+	public void refreshCase() throws InterruptedException {
+		Thread.sleep(1000);
+		refresh.click();
+		Thread.sleep(2000);
+		refresClick.click();
+		Thread.sleep(1000);
+		refresh.click();
+	}
+
+	public void reviewCases() throws InterruptedException {
+		reviewCase.click();
+		reactions();
+		backTOcases.click();
+		Thread.sleep(1000);
+		frmCase.click();
+		reactions();
+		backTOcases.click();
+		Thread.sleep(1000);
+		rateCase.click();
+		reactions();
+		backTOcases.click();
+		Thread.sleep(1000);
+		setmeetCase.click();
+		reactions();
+		backTOcases.click();
+		Thread.sleep(1000);
+		setIntCase.click();
+		reactions();
+		Thread.sleep(2000);
+		backTOcases.click();
+		refreshCase();
+		extrecCase.click();
+		reactions();
+		Thread.sleep(2000);
+		backTOcases.click();
+		refreshCase();
+		recfinCase.click();
+		reactions();
+		Thread.sleep(2000);
+		backTOcases.click();
+		Thread.sleep(1000);
+
+	}
+
+	public void clickNobutton() {
+		for (int i = 0; i < 26; i++) {
+
+			WebElement noButton = backConsentnoBtn.get(i);
+
+			((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", noButton);
+
+			noButton.click();
+		}
+		TestUtils.sleep(1000);
+		quesSaveBut.click();
 	}
 }
