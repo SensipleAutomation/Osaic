@@ -2,16 +2,13 @@ package seleniumgluecode;
 
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.testng.Assert;
 
 import cucumberutils.Driverselector;
 import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
 import utility.TestUtils;
 import webpages.CasesApprovalAndClosing;
 import webpages.EO_CRM_NewProspectCreation;
-import webpages.homepage;
+import webpages.EO_UploadDocumentsPage;
 import webpages.loginpage;
 
 public class SD_CRMNewProspectCreation {
@@ -20,7 +17,9 @@ public class SD_CRMNewProspectCreation {
 	loginpage lpage = new loginpage(driver);
 	EO_CRM_NewProspectCreation crm = new EO_CRM_NewProspectCreation(driver);
 	CasesApprovalAndClosing cac = new CasesApprovalAndClosing(driver);
+	EO_UploadDocumentsPage upl = new EO_UploadDocumentsPage(driver);
 	String originalWindowHandle = driver.getWindowHandle();
+
 	@Given("^user login the CRM Application with credentials \"([^\"]*)\" and \"([^\"]*)\"$")
 	public void user_login_the_CRM_Application_with_credentials_and(String user, String password) throws Throwable {
 		lpage.loginToCRM();
@@ -68,7 +67,7 @@ public class SD_CRMNewProspectCreation {
 
 	@Given("^User Validate the BusinessProfile is present$")
 	public void user_Validate_the_BusinessProfile_is_present() throws Throwable {
-		crm.BusinessProfile();
+//		crm.BusinessProfile();
 	}
 
 	@Given("^user enters \"([^\"]*)\" value in Business Name\\(DBA\\) field and \"([^\"]*)\" value in Branch Name field$")
@@ -79,7 +78,7 @@ public class SD_CRMNewProspectCreation {
 
 	@Given("^User validate \"([^\"]*)\" is present$")
 	public void user_validate_is_present(String arg1) throws Throwable {
-		crm.Assigne();
+//		crm.Assigne();
 	}
 
 	@Given("^user assign External Recruiter Name$")
@@ -172,7 +171,7 @@ public class SD_CRMNewProspectCreation {
 
 	@Given("^User open new window and login with newly created prospect$")
 	public void user_open_new_window_and_login_with_newly_created_prospect() throws Throwable {
-		
+
 		((JavascriptExecutor) driver).executeScript("window.open()");
 		for (String handle : driver.getWindowHandles()) {
 			driver.switchTo().window(handle);
@@ -230,9 +229,25 @@ public class SD_CRMNewProspectCreation {
 		cac.revenue(Total, Split);
 		cac.AssestsAccounts(Tot, Spl);
 		cac.topProducts();
-		TestUtils.sleep(3000);
+		TestUtils.sleep(4000);
 		driver.switchTo().window(originalWindowHandle);
-		TestUtils.sleep(1500);
+		TestUtils.sleep(2000);
 		cac.crmApprovals();
+
+	}
+
+	@Given("^user closed the cases and comment as \"([^\"]*)\"$")
+	public void user_closed_the_cases_and_comment_as(String value) throws Throwable {
+		cac.processing(value);
+		driver.switchTo().window((String) driver.getWindowHandles().toArray()[1]);
+		driver.navigate().refresh();
+		cac.preliminary();
+		cac.uploadGDCDoc();
+		TestUtils.sleep(2000);
+		cac.clickNobutton();
+//		driver.switchTo().window((String) driver.getWindowHandles().toArray()[0]);
+//		TestUtils.sleep(2000);
+//		cac.scheduleFind();
+//		cac.reviewCases();
 	}
 }
