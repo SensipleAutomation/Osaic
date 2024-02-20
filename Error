@@ -1,1 +1,11 @@
-Additionally, even after completing all the required actions and proceeding to the next step, the status of the previous step does not change to green. For instance, if a user completes Step 4 and moves on to Step 5, Step 4 should turn green to indicate successful completion. However, this visual feedback is not currently being reflected in the interface.
+rpuliendran@pw1etsquas037av MINGW64 ~/git/web/apps/eo-bdd (CRM-Prospect)
+$ git checkout master
+error: Your local changes to the following files would be overwritten by checkout:
+        apps/eo-bdd/reports/cucumber.json
+        apps/eo-bdd/src/main/java/webpages/CasesApprovalAndClosing.java
+        apps/eo-bdd/src/main/java/webpages/EO_CRM_NewProspectCreation.java
+        apps/eo-bdd/src/main/java/webpages/EO_UploadDocumentsPage.java
+        apps/eo-bdd/src/test/java/seleniumgluecode/SD_CRMNewProspectCreation.java
+        apps/eo-bdd/src/test/resources/UI_Features/CRM_NewProspectCreation.feature
+Please commit your changes or stash them before you switch branches.
+Aborting
