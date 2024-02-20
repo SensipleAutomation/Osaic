@@ -1,18 +1,119 @@
-Thread.sleep(2000);
-		schProcess.click();
-		Thread.sleep(1000);
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("arguments[0].scrollIntoView({block: 'center'});", schStatus);
-		Thread.sleep(1000);
-		schStatus.click();
-		Thread.sleep(1000);
-		schClosed.click();
-		Thread.sleep(1000);
-		js.executeScript("arguments[0].scrollIntoView({block: 'center'});", scEoStatus);
-		Thread.sleep(1000);
-		scEoStatus.click();
-		Thread.sleep(1000);
-		scEoApproved.click();
-		Thread.sleep(1000);
-		schSave.click();
-		Thread.sleep(2000);
+@FindBy(xpath="//web-selection-button//span[text()='No']")
+	public List<WebElement> noBtn;
+
+	@FindBy(xpath="//web-selection-button//span[text()='Yes']")
+	public List<WebElement> yesBtn;
+
+public WebElement clickBCQuestion1No() {
+		return noBtn.get(0);
+	}
+
+	public WebElement clickBCQuestion2No() {
+		return noBtn.get(1);
+	}
+
+	public WebElement clickBCQuestion3No() {
+		return noBtn.get(2);
+	}
+
+	public WebElement clickBCQuestion4No() {
+		return noBtn.get(3);
+	}
+
+	public WebElement clickBCQuestion5No() {
+		return noBtn.get(4);
+	}
+
+	public WebElement clickBCQuestion6AYes() {
+		return yesBtn.get(6);
+	}
+
+	public WebElement clickBCQuestion6BYes() {
+		return yesBtn.get(7);
+	}
+
+	public WebElement clickBCQuestion7No() {
+		return noBtn.get(7);
+	}
+
+	public WebElement clickBCQuestion8No() {
+		return noBtn.get(8);
+	}
+
+	public WebElement clickBCQuestion9No() {
+		return noBtn.get(9);
+	}
+
+	public WebElement clickBCQuestion10No() {
+		return noBtn.get(10);
+	}
+
+	public WebElement clickBCQuestion11No() {
+		return noBtn.get(11);
+	}
+
+	public WebElement clickBCQuestion12No() {
+		return noBtn.get(12);
+	}
+
+	public WebElement clickBCQuestion13No() {
+		return noBtn.get(13);
+	}
+
+	public WebElement clickBCQuestion14No() {
+		return noBtn.get(12);
+	}
+
+	public WebElement clickBCQuestion15No() {
+		return noBtn.get(15);
+	}
+
+	public WebElement clickBCQuestion16No() {
+		return noBtn.get(16);
+	}
+
+	public WebElement clickBCQuestion17No() {
+		return noBtn.get(17);
+	}
+
+	public WebElement clickBCQuestion18No() {
+		return noBtn.get(18);
+	}
+
+	public WebElement clickBCQuestion19No() {
+		return noBtn.get(19);
+	}
+
+	public WebElement clickBCQuestion20No() {
+		return noBtn.get(20);
+	}
+
+	public WebElement clickBCQuestion21No() {
+		return noBtn.get(21);
+	}
+
+	public void clickBCQuestionSNoButtons() {
+		int count = 23;
+		for(int i=0; i<count; i++){
+		noBtn.get(i).click();
+		}
+		TestUtils.sleep(2000);
+	}
+
+	public void clickBCQuestionSNoButtons(String count) {
+		int num = Integer.parseInt(count)-1;
+		for(int i=0; i<num; i++){
+		noBtn.get(i).click();
+		}
+		TestUtils.sleep(2000);
+	}
+
+	public void clickBCQuestionSNoButtonsStartingFromTillEnd(String count) {
+		int num = Integer.parseInt(count)+1;
+		int endNum = noBtn.size()-1;
+		for(int i=num; i==endNum; i++){
+		noBtn.get(i).click();
+		}
+		subjectToHeightenedSupervisionLabel.click();
+		TestUtils.sleep(2000);
+	}
