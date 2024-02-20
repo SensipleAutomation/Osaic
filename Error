@@ -38,7 +38,7 @@ js.executeScript("arguments[0].scrollIntoView({block: 'center'});", schSave);
 	public WebElement clickBCQuestion7No() {
 		return noBtn.get(7);
 	}
-
+js.executeScript("arguments[0].scrollIntoView({block: 'center'});", schSave);
 	public WebElement clickBCQuestion8No() {
 		return noBtn.get(8);
 	}
