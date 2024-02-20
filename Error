@@ -24,6 +24,9 @@ public WebElement clickBCQuestion1No() {
 		return noBtn.get(4);
 	}
 
+
+
+js.executeScript("arguments[0].scrollIntoView({block: 'center'});", schSave);
 	public WebElement clickBCQuestion6AYes() {
 		return yesBtn.get(6);
 	}
