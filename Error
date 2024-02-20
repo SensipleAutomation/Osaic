@@ -1,2 +1,24 @@
-in step 4 upload documents on learn page, after uploading all the necessery documents, user click on confirm checkbox and click save, now after click save the checkbox have to be disable, but its not disable, bcz of this issue even the user complete the entire six steps in learn module, before entering to join module, on learn it shows user completed 3 out of 6, also some of the cases are not generating in CRM side
+Title: Checkbox Not Disabled After Saving Uploaded Documents in Learn Module
 
+Description:
+In the Learn module, specifically in Step 4 where users are required to upload necessary documents, there is a functional issue. After successfully uploading all the required documents, when the user checks the confirmation checkbox and clicks the "Save" button, the checkbox is expected to be disabled to prevent further edits. However, the checkbox remains active even after the save operation is performed.
+
+Steps to Reproduce:
+
+Navigate to the Learn module.
+Proceed to Step 4 - Upload Documents.
+Upload all necessary documents as required.
+Check the confirmation checkbox.
+Click the "Save" button.
+Expected Result:
+After clicking the "Save" button, the confirmation checkbox should be disabled, indicating that the operation has been successfully completed. Subsequent attempts to edit the checkbox should be prevented.
+
+Actual Result:
+The confirmation checkbox remains enabled even after clicking the "Save" button, allowing the user to make further edits.
+
+Impact:
+
+User Interface: The UI incorrectly shows that the user has not completed the step even though the documents have been successfully uploaded and saved.
+CRM Data: Some cases are not generating on the CRM side, possibly due to the incomplete status of the Learn module.
+Additional Information:
+This issue may lead to confusion for users who believe they have not completed the Learn module, and it may affect the generation of cases on the CRM side. Further investigation is needed to identify the root cause and implement the necessary fix to ensure the correct behavior.
