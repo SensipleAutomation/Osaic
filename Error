@@ -58,29 +58,33 @@ public void DeleteProspect() {
 
 public void Select() {
     TestUtils.sleep(4000);
-    searchBar.click();
-    TestUtils.sleep(2000);
-    Actions act = new Actions(driver);
-    act.sendKeys(searchBar, "Deat").perform();
-    TestUtils.sleep(2000);
     
-    if (isElementPresent(searchSelect) && isElementPresent(downClick) && isElementPresent(delBut)
-            && isElementPresent(deleteFinal) && isElementPresent(finaToast) && isElementPresent(LogIm) && isElementPresent(logout)) {
-        searchSelect.click();
-        TestUtils.sleep(3000);
-        downClick.click();
-        TestUtils.sleep(1000);
-        delBut.click();
+    if (isElementPresent(searchBar)) {
+        searchBar.click();
         TestUtils.sleep(2000);
-        deleteFinal.click();
-        TestUtils.sleep(2000);
-        
-        if (isElementPresent(finaToast)) {
-            Assert.assertTrue(finaToast.isDisplayed(), "Delete Toaster is not present");
+
+        if (isElementPresent(searchSelect) && isElementPresent(downClick) && isElementPresent(delBut)
+                && isElementPresent(deleteFinal) && isElementPresent(finaToast) && isElementPresent(LogIm) && isElementPresent(logout)) {
+            Actions act = new Actions(driver);
+            act.sendKeys(searchBar, "Deat").perform();
             TestUtils.sleep(2000);
-            LogIm.click();
+
+            searchSelect.click();
+            TestUtils.sleep(3000);
+            downClick.click();
+            TestUtils.sleep(1000);
+            delBut.click();
             TestUtils.sleep(2000);
-            logout.click();
+            deleteFinal.click();
+            TestUtils.sleep(2000);
+
+            if (isElementPresent(finaToast)) {
+                Assert.assertTrue(finaToast.isDisplayed(), "Delete Toaster is not present");
+                TestUtils.sleep(2000);
+                LogIm.click();
+                TestUtils.sleep(2000);
+                logout.click();
+            }
         }
     }
 }
