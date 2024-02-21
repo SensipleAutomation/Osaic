@@ -1,43 +1,70 @@
-public void toaster() {
-    TestUtils.explicit_locate(NewLeadToast);
-    if (isElementPresent(NewLeadToast)) {
-        Assert.assertTrue(NewLeadToast.isDisplayed(), "Assign is not present");
-    }
-}
+public void inviteBut() {
+		TestUtils.sleep(3000);
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("window.scrollTo(0, 0);");
+		TestUtils.sleep(2000);
+		Assert.assertTrue(inviteButton.isDisplayed(), "inviteButton is not present");
+	}
 
-public void leadPageHead() {
-    TestUtils.sleep(2000);
-    if (isElementPresent(ConveLeButton)) {
-        Assert.assertTrue(ConveLeButton.isDisplayed(), "LeadHeader is not present");
-    }
-}
+	public void invite() {
+		inviteButton.click();
+		TestUtils.sleep(3000);
+		Actions actions = new Actions(driver);
+		actions.sendKeys(Keys.ENTER).perform();
+		TestUtils.sleep(1000);
+		TestUtils.explicit_locate(confirmationInvite);
+		TestUtils.sleep(1000);
+		invitedClose.click();
+		TestUtils.sleep(2000);
+		driver.navigate().refresh();
+		TestUtils.sleep(2000);
+	}
 
-public void ClickLead() {
-    TestUtils.sleep(4000);
-    if (isElementPresent(ConveLeButton)) {
-        ConveLeButton.click();
-    }
-}
+	public void confirmation() {
+		TestUtils.sleep(2000);
+		Assert.assertTrue(confirmToaster.isDisplayed(), "confirmButt is not present");
+	}
 
-public void convertHead() {
-    TestUtils.sleep(4000);
-    if (isElementPresent(convertHeader)) {
-        Assert.assertTrue(convertHeader.isDisplayed(), "convertHeader is not present");
-    }
-}
+	public void close() {
+		TestUtils.explicit_locate(close);
+		close.click();
+	}
 
-public void finaConvert() {
-    TestUtils.sleep(4000);
-    if (isElementPresent(finalConvert)) {
-        finalConvert.click();
-    }
-}
+	public void DeleteProspect() {
+		TestUtils.sleep(3000);
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("window.scrollTo(0, 0);");
+		TestUtils.sleep(1000);
+		DeleteButton.click();
+		TestUtils.sleep(2000);
+		Assert.assertTrue(deleteConfirmHeader.isDisplayed(), "Delete Confirmation is not present");
+		TestUtils.sleep(2000);
+		deletFin.click();
+		TestUtils.sleep(2000);
+//		Assert.assertTrue(DeleteToast.isDisplayed(), "Delete Toaster is not present");
+		TestUtils.sleep(2000);
 
-public void FinalHeader() {
-    TestUtils.explicit_locate(ConvertMessage);
-    TestUtils.sleep(2000);
-    if (isElementPresent(ConvertMessage)) {
-        Assert.assertTrue(ConvertMessage.isDisplayed(), "convertMessage is not present");
-        TestUtils.sleep(2000);
-    }
-}
+	}
+
+	public void Select() {
+		TestUtils.sleep(4000);
+		searchBar.click();
+		TestUtils.sleep(2000);
+		Actions act = new Actions(driver);
+		act.sendKeys(searchBar, "Deat").perform();
+		TestUtils.sleep(2000);
+		searchSelect.click();
+		TestUtils.sleep(3000);
+		downClick.click();
+		TestUtils.sleep(1000);
+		delBut.click();
+		TestUtils.sleep(2000);
+		deleteFinal.click();
+		TestUtils.sleep(2000);
+		Assert.assertTrue(finaToast.isDisplayed(), "Delete Toaster is not present");
+		TestUtils.sleep(2000);
+		LogIm.click();
+		TestUtils.sleep(2000);
+		logout.click();
+
+	}
