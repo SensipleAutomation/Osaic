@@ -1,51 +1,34 @@
-// Add validation for reviewCase
-Assert.assertTrue(isElementPresent(reviewCase), "Review Case button is not present");
-reviewCase.click();
-reactions();
-backTOcases.click();
-Thread.sleep(1000);
+public void reviewCases() throws InterruptedException {
+		reviewCase.click();
+		reactions();
+		backTOcases.click();
+		Thread.sleep(1000);
+		frmCase.click();
+		reactions();
+		backTOcases.click();
+		Thread.sleep(1000);
+		rateCase.click();
+		reactions();
+		backTOcases.click();
+		Thread.sleep(1000);
+		setmeetCase.click();
+		reactions();
+		backTOcases.click();
+		Thread.sleep(1000);
+		setIntCase.click();
+		reactions();
+		Thread.sleep(2000);
+		backTOcases.click();
+		refreshCase();
+		extrecCase.click();
+		reactions();
+		Thread.sleep(2000);
+		backTOcases.click();
+		refreshCase();
+		recfinCase.click();
+		reactions();
+		Thread.sleep(2000);
+		backTOcases.click();
+		Thread.sleep(1000);
 
-// Add validation for frmCase
-Assert.assertTrue(isElementPresent(frmCase), "Frm Case button is not present");
-frmCase.click();
-reactions();
-backTOcases.click();
-Thread.sleep(1000);
-
-// Add validation for rateCase
-Assert.assertTrue(isElementPresent(rateCase), "Rate Case button is not present");
-rateCase.click();
-reactions();
-backTOcases.click();
-Thread.sleep(1000);
-
-// Add validation for setmeetCase
-Assert.assertTrue(isElementPresent(setmeetCase), "Setmeet Case button is not present");
-setmeetCase.click();
-reactions();
-backTOcases.click();
-Thread.sleep(1000);
-
-// Add validation for setIntCase
-Assert.assertTrue(isElementPresent(setIntCase), "SetInt Case button is not present");
-setIntCase.click();
-reactions();
-Thread.sleep(2000);
-backTOcases.click();
-refreshCase();
-
-// Add validation for extrecCase
-Assert.assertTrue(isElementPresent(extrecCase), "Extrec Case button is not present");
-extrecCase.click();
-reactions();
-Thread.sleep(2000);
-backTOcases.click();
-refreshCase();
-
-// Add validation for recfinCase
-Assert.assertTrue(isElementPresent(recfinCase), "Recfin Case button is not present");
-recfinCase.click();
-reactions();
-Thread.sleep(2000);
-backTOcases.click();
-Thread.sleep(1000);
+	}
