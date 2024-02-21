@@ -1,33 +1,49 @@
 public synchronized EO_CRM_NewProspectCreation loginToCRM(String username, String password) {
-		Mail.sendKeys(username);
-		Password.sendKeys(password);
-		LogButton.click();
-		return this;
-	}
+    if (isElementPresent(Mail) && isElementPresent(Password) && isElementPresent(LogButton)) {
+        Mail.sendKeys(username);
+        Password.sendKeys(password);
+        LogButton.click();
+    }
+    return this;
+}
 
-	public synchronized EO_CRM_NewProspectCreation firstLast(String Firstnam, String lastname) {
-		TestUtils.sleep(2000);
-		Firstname.sendKeys(Firstnam);
-		Lastname.sendKeys(lastname);
-		return this;
-	}
+public synchronized EO_CRM_NewProspectCreation firstLast(String Firstnam, String lastname) {
+    TestUtils.sleep(2000);
+    if (isElementPresent(Firstname) && isElementPresent(Lastname)) {
+        Firstname.sendKeys(Firstnam);
+        Lastname.sendKeys(lastname);
+    }
+    return this;
+}
 
-	public synchronized EO_CRM_NewProspectCreation finra(String Finra) {
-		TestUtils.sleep(2000);
-		FINRACRD.sendKeys(Finra);
+public synchronized EO_CRM_NewProspectCreation finra(String Finra) {
+    TestUtils.sleep(2000);
+    if (isElementPresent(FINRACRD)) {
+        FINRACRD.sendKeys(Finra);
+    }
+    return this;
+}
 
-		return this;
-	}
+public synchronized EO_CRM_NewProspectCreation BusiNB(String Name, String Branch) {
+    if (isElementPresent(BusinessName) && isElementPresent(BranchName)) {
+        BusinessName.sendKeys(Name);
+        BranchName.sendKeys(Branch);
+    }
+    return this;
+}
 
-	public synchronized EO_CRM_NewProspectCreation BusiNB(String Name, String Branch) {
+public synchronized EO_CRM_NewProspectCreation dob(String dob) {
+    TestUtils.sleep(2000);
+    if (isElementPresent(DOBInput)) {
+        DOBInput.sendKeys(dob);
+    }
+    return this;
+}
 
-		BusinessName.sendKeys(Name);
-		BranchName.sendKeys(Branch);
-		return this;
-	}
-
-	public synchronized EO_CRM_NewProspectCreation dob(String dob) {
-		TestUtils.sleep(2000);
-		DOBInput.sendKeys(dob);
-		return this;
-	}
+private boolean isElementPresent(WebElement element) {
+    try {
+        return element.isDisplayed();
+    } catch (NoSuchElementException e) {
+        return false;
+    }
+}
