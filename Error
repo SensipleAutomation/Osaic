@@ -1,15 +1,1 @@
-public void invite() {
-		if (isElementPresent(inviteButton)) {
-			inviteButton.click();
-			TestUtils.sleep(3000);
-			Actions actions = new Actions(driver);
-			actions.sendKeys(Keys.ENTER).perform();
-			TestUtils.sleep(2000);
-			TestUtils.explicit_locate(confirmationInvite);
-			TestUtils.sleep(2000);
-			invitedClose.click();
-			TestUtils.sleep(2000);
-			driver.navigate().refresh();
-			TestUtils.sleep(2000);
-		}
-	}
+Assert.assertTrue(isElementPresent(confirmationInvite), "confirmationInvite is not present");
