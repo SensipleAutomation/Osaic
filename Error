@@ -1,21 +1,59 @@
 public synchronized CasesApprovalAndClosing revenue(String Total, String Split) {
-		WebElement element = scrRevenue;
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("arguments[0].scrollIntoView();", element);
-		totTrail.sendKeys(Total);
-		platform.sendKeys(Split);
-		money.sendKeys(Split);
-		trail.sendKeys(Split);
-		Schwab.sendKeys(Split);
-		Annuities.sendKeys(Split);
-		Insurance.sendKeys(Split);
-		Mutual.sendKeys(Split);
-		General.sendKeys(Split);
-		Alternatives.sendKeys(Split);
-		countClick.click();
-		TestUtils.sleep(1000);
-		perSaveButton.click();
-		TestUtils.sleep(2000);
-		return this;
+    WebElement element = scrRevenue;
+    JavascriptExecutor js = (JavascriptExecutor) driver;
+    js.executeScript("arguments[0].scrollIntoView();", element);
 
-	}
+    // Assert that totTrail is displayed before interacting with it
+    Assert.assertTrue(isElementPresent(totTrail), "Total Trail field is not present");
+    totTrail.sendKeys(Total);
+
+    // Assert that platform is displayed before interacting with it
+    Assert.assertTrue(isElementPresent(platform), "Platform field is not present");
+    platform.sendKeys(Split);
+
+    // Assert that money is displayed before interacting with it
+    Assert.assertTrue(isElementPresent(money), "Money field is not present");
+    money.sendKeys(Split);
+
+    // Assert that trail is displayed before interacting with it
+    Assert.assertTrue(isElementPresent(trail), "Trail field is not present");
+    trail.sendKeys(Split);
+
+    // Assert that Schwab is displayed before interacting with it
+    Assert.assertTrue(isElementPresent(Schwab), "Schwab field is not present");
+    Schwab.sendKeys(Split);
+
+    // Assert that Annuities is displayed before interacting with it
+    Assert.assertTrue(isElementPresent(Annuities), "Annuities field is not present");
+    Annuities.sendKeys(Split);
+
+    // Assert that Insurance is displayed before interacting with it
+    Assert.assertTrue(isElementPresent(Insurance), "Insurance field is not present");
+    Insurance.sendKeys(Split);
+
+    // Assert that Mutual is displayed before interacting with it
+    Assert.assertTrue(isElementPresent(Mutual), "Mutual field is not present");
+    Mutual.sendKeys(Split);
+
+    // Assert that General is displayed before interacting with it
+    Assert.assertTrue(isElementPresent(General), "General field is not present");
+    General.sendKeys(Split);
+
+    // Assert that Alternatives is displayed before interacting with it
+    Assert.assertTrue(isElementPresent(Alternatives), "Alternatives field is not present");
+    Alternatives.sendKeys(Split);
+
+    // Assert that countClick is displayed before interacting with it
+    Assert.assertTrue(isElementPresent(countClick), "Count Click field is not present");
+    countClick.click();
+
+    TestUtils.sleep(1000);
+
+    // Assert that perSaveButton is displayed before interacting with it
+    Assert.assertTrue(isElementPresent(perSaveButton), "Save Button is not present");
+    perSaveButton.click();
+
+    TestUtils.sleep(2000);
+
+    return this;
+}
