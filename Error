@@ -1,76 +1,12 @@
-public void oppTab() {
-    TestUtils.explicit_locate(oppourtunity);
-
-    if (isElementPresent(oppourtunity)) {
-        TestUtils.sleep(2000);
-        oppourtunity.click();
-    }
-}
-
 public void contactEdit() {
-    TestUtils.sleep(5000);
-    WebElement element = scrollContact;
-    JavascriptExecutor js = (JavascriptExecutor) driver;
-    js.executeScript("arguments[0].scrollIntoView();", element);
-
-    if (isElementPresent(editContact) && isElementPresent(contactSearch) && isElementPresent(selectContact)) {
-        Actions act = new Actions(driver);
-        act.doubleClick(editContact).perform();
-        TestUtils.sleep(1000);
-        contactSearch.click();
-        TestUtils.sleep(1000);
-        selectContact.click();
-    }
-}
-
-public void channel() {
-    TestUtils.sleep(2000);
-    WebElement element = scrDis;
-    JavascriptExecutor js = (JavascriptExecutor) driver;
-    js.executeScript("arguments[0].scrollIntoView();", element);
-
-    if (isElementPresent(channeldrop) && isElementPresent(chaSel)) {
-        channeldrop.click();
-        TestUtils.sleep(1000);
-        chaSel.click();
-    }
-}
-
-public void homeSelect() {
-    WebElement element1 = ScrolThome;
-    JavascriptExecutor js = (JavascriptExecutor) driver;
-    js.executeScript("arguments[0].scrollIntoView();", element1);
-
-    if (isElementPresent(dsDrop) && isElementPresent(dsSelect) && isElementPresent(NFS) && isElementPresent(push) && isElementPresent(saveforInvite)) {
-        dsDrop.click();
-        dsSelect.click();
-        TestUtils.sleep(1000);
-        NFS.click();
-        push.click();
-        saveforInvite.click();
-        TestUtils.sleep(2000);
-    }
-}
-
-public void cases() {
-    TestUtils.sleep(3000);
-    
-    if (isElementPresent(BusinessSelect) && isElementPresent(BusiSearch) && isElementPresent(deatCase) 
-            && isElementPresent(delDown) && isElementPresent(caseDelete) && isElementPresent(deleteFinal)) {
-        BusinessSelect.click();
-        BusiSearch.sendKeys("cases");
-        TestUtils.sleep(1000);
-        Actions actions = new Actions(driver);
-        actions.sendKeys(Keys.ENTER).perform();
-        TestUtils.sleep(1000);
-        actions.sendKeys(Keys.ESCAPE).perform();
-        TestUtils.sleep(1000);
-        deatCase.click();
-        TestUtils.sleep(3000);
-        delDown.click();
-        caseDelete.click();
-        TestUtils.sleep(2000);
-        deleteFinal.click();
-        TestUtils.sleep(3000);
-    }
-}
+		TestUtils.sleep(5000);
+		WebElement element = scrollContact;
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].scrollIntoView();", element);
+		Actions act = new Actions(driver);
+		act.doubleClick(editContact).perform();
+		TestUtils.sleep(1000);
+		contactSearch.click();
+		TestUtils.sleep(1000);
+		selectContact.click();
+	}
