@@ -1,12 +1,10 @@
-public void contactEdit() {
-		TestUtils.sleep(5000);
-		WebElement element = scrollContact;
+public void channel() {
+		TestUtils.sleep(2000);
+		WebElement element = scrDis;
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("arguments[0].scrollIntoView();", element);
-		Actions act = new Actions(driver);
-		act.doubleClick(editContact).perform();
+		channeldrop.click();
 		TestUtils.sleep(1000);
-		contactSearch.click();
-		TestUtils.sleep(1000);
-		selectContact.click();
+		chaSel.click();
+
 	}
