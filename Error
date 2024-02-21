@@ -1,53 +1,17 @@
-public void uploadGDCDoc() {
-		TestUtils.sleep(2000);
+Assert.assertTrue(uploadPriorYearGdcLink.isEnabled(), "Upload Prior Year GDC Link is not enabled");
+    uploadPriorYearGdcLink.click();
+    TestUtils.uploadFile("\\resources\\Uploads\\Prior Year GDC.pdf");
+    TestUtils.sleep(1000);
 
-		if (uploadPriorYearGdcLink.isEnabled()) {
-			uploadPriorYearGdcLink.click();
+    // Assert that uploadYearToDateGdcLink is displayed before clicking on it
+    Assert.assertTrue(uploadYearToDateGdcLink.isDisplayed(), "Upload Year-to-date GDC Link is not displayed");
+    uploadYearToDateGdcLink.click();
+    TestUtils.uploadFile("\\resources\\Uploads\\Year-to-date GDC.pdf");
+    TestUtils.sleep(1000);
 
-			TestUtils.uploadFile("\\resources\\Uploads\\Prior Year GDC.pdf");
-		}
-
-		TestUtils.sleep(1000);
-
-		uploadYearToDateGdcLink.click();
-		TestUtils.sleep(1000);
-		TestUtils.uploadFile("\\resources\\Uploads\\Year-to-date GDC.pdf");
-		TestUtils.sleep(1000);
-
-		businesMixByPercentageLink.click();
-		TestUtils.sleep(1000);
-		TestUtils.uploadFile("\\resources\\Uploads\\Business Mix by Percentage.pdf");
-		TestUtils.sleep(1000);
-
-		assetsUnderManagementTotalsLink.click();
-		TestUtils.sleep(1000);
-		TestUtils.uploadFile("\\resources\\Uploads\\Assets Under Management Totals.pdf");
-		TestUtils.sleep(1000);
-
-		productNamesAndAumReportLink.click();
-		TestUtils.sleep(1000);
-		TestUtils.uploadFile("\\resources\\Uploads\\Product Names and AUM Report.pdf");
-		TestUtils.sleep(1000);
-
-		productSponsorReportLink.click();
-		TestUtils.sleep(1000);
-		TestUtils.uploadFile("\\resources\\Uploads\\Product Sponsor Reports.pdf");
-		TestUtils.sleep(1000);
-
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("arguments[0].scrollIntoView();", scrConBut);
-		TestUtils.sleep(1000);
-		upconfirmButton.click();
-		TestUtils.sleep(1000);
-		saveBtn.click();
-		TestUtils.sleep(1000);
-		js.executeScript("arguments[0].scrollIntoView();", saveBtn);
-		firstQestion.click();
-		TestUtils.sleep(1000);
-		secondQuestion.click();
-		TestUtils.sleep(2000);
-		saveBtn2.click();
-		TestUtils.sleep(3000);
-		continueBtn.click();
-
-	}
+    // Assert that businesMixByPercentageLink is displayed before clicking on it
+    Assert.assertTrue(businesMixByPercentageLink.isDisplayed(), "Business Mix by Percentage Link is not displayed");
+    businesMixByPercentageLink.click();
+    TestUtils.sleep(1000);
+    TestUtils.uploadFile("\\resources\\Uploads\\Business Mix by Percentage.pdf");
+    TestUtils.sleep(1000);
