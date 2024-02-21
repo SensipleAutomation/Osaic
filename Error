@@ -1,34 +1,50 @@
-public void reviewCases() throws InterruptedException {
-		reviewCase.click();
-		reactions();
-		backTOcases.click();
-		Thread.sleep(1000);
-		frmCase.click();
-		reactions();
-		backTOcases.click();
-		Thread.sleep(1000);
-		rateCase.click();
-		reactions();
-		backTOcases.click();
-		Thread.sleep(1000);
-		setmeetCase.click();
-		reactions();
-		backTOcases.click();
-		Thread.sleep(1000);
-		setIntCase.click();
-		reactions();
-		Thread.sleep(2000);
-		backTOcases.click();
-		refreshCase();
-		extrecCase.click();
-		reactions();
-		Thread.sleep(2000);
-		backTOcases.click();
-		refreshCase();
-		recfinCase.click();
-		reactions();
-		Thread.sleep(2000);
-		backTOcases.click();
-		Thread.sleep(1000);
+ Assert.assertTrue(isElementPresent(reviewCase), "reviewCase is not present");
+    reviewCase.click();
+    reactions();
+    backTOcases.click();
+    Thread.sleep(1000);
 
-	}
+    // Validate frmCase
+    Assert.assertTrue(isElementPresent(frmCase), "frmCase is not present");
+    frmCase.click();
+    reactions();
+    backTOcases.click();
+    Thread.sleep(1000);
+
+    // Validate rateCase
+    Assert.assertTrue(isElementPresent(rateCase), "rateCase is not present");
+    rateCase.click();
+    reactions();
+    backTOcases.click();
+    Thread.sleep(1000);
+
+    // Validate setmeetCase
+    Assert.assertTrue(isElementPresent(setmeetCase), "setmeetCase is not present");
+    setmeetCase.click();
+    reactions();
+    backTOcases.click();
+    Thread.sleep(1000);
+
+    // Validate setIntCase
+    Assert.assertTrue(isElementPresent(setIntCase), "setIntCase is not present");
+    setIntCase.click();
+    reactions();
+    Thread.sleep(2000);
+    backTOcases.click();
+    refreshCase();
+
+    // Validate extrecCase
+    Assert.assertTrue(isElementPresent(extrecCase), "extrecCase is not present");
+    extrecCase.click();
+    reactions();
+    Thread.sleep(2000);
+    backTOcases.click();
+    refreshCase();
+
+    // Validate recfinCase
+    Assert.assertTrue(isElementPresent(recfinCase), "recfinCase is not present");
+    recfinCase.click();
+    reactions();
+    Thread.sleep(2000);
+    backTOcases.click();
+    Thread.sleep(1000);
