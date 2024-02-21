@@ -1,43 +1,9 @@
- // Assert that AUA is displayed before interacting with it
-    Assert.assertTrue(isElementPresent(AUA), "AUA field is not present");
-    AUA.sendKeys(Tot);
-
-    // Assert that platform2 is displayed before interacting with it
-    Assert.assertTrue(isElementPresent(platform2), "Platform field is not present");
-    platform2.sendKeys(Spl);
-
-    // Assert that Money2 is displayed before interacting with it
-    Assert.assertTrue(isElementPresent(Money2), "Money field is not present");
-    Money2.sendKeys(Spl);
-
-    // Assert that Fidelity is displayed before interacting with it
-    Assert.assertTrue(isElementPresent(Fidelity), "Fidelity field is not present");
-    Fidelity.sendKeys(Spl);
-
-    // Assert that Variable is displayed before interacting with it
-    Assert.assertTrue(isElementPresent(Variable), "Variable field is not present");
-    Variable.sendKeys(Spl);
-
-    // Assert that Brokerage is displayed before interacting with it
-    Assert.assertTrue(isElementPresent(Brokerage), "Brokerage field is not present");
-    Brokerage.sendKeys(Spl);
-
-    // Assert that Direct is displayed before interacting with it
-    Assert.assertTrue(isElementPresent(Direct), "Direct field is not present");
-    Direct.sendKeys(Spl);
-
-    // Assert that clickBrok is displayed before interacting with it
-    Assert.assertTrue(isElementPresent(clickBrok), "Click Brokerage field is not present");
-    clickBrok.click();
-
-    TestUtils.sleep(1000);
-
-    // Assert that noOfAcc is displayed before interacting with it
-    Assert.assertTrue(isElementPresent(noOfAcc), "Number of Accounts field is not present");
-    noOfAcc.sendKeys(Spl);
-
-    TestUtils.sleep(1000);
-
-    // Assert that busSaveButton is displayed before interacting with it
-    Assert.assertTrue(isElementPresent(busSaveButton), "Save Button is not present");
-    busSaveButton.click();
+notApp1.click();
+		notApp2.click();
+		notApp3.click();
+		TestUtils.sleep(1000);
+		affSave.click();
+		TestUtils.sleep(1000);
+		proInfCont.click();
+		TestUtils.sleep(2000);
+		okConfirm.click();
