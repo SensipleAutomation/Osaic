@@ -1,17 +1,26 @@
-Assert.assertTrue(uploadPriorYearGdcLink.isEnabled(), "Upload Prior Year GDC Link is not enabled");
-    uploadPriorYearGdcLink.click();
-    TestUtils.uploadFile("\\resources\\Uploads\\Prior Year GDC.pdf");
+Assert.assertTrue(isElementPresent(saveBtn), "Save Button is not present");
+    saveBtn.click();
+    TestUtils.sleep(1000);
+    js.executeScript("arguments[0].scrollIntoView();", saveBtn);
+
+    // Assert that firstQestion is present before clicking on it
+    Assert.assertTrue(isElementPresent(firstQestion), "First Question is not present");
+    firstQestion.click();
     TestUtils.sleep(1000);
 
-    // Assert that uploadYearToDateGdcLink is displayed before clicking on it
-    Assert.assertTrue(uploadYearToDateGdcLink.isDisplayed(), "Upload Year-to-date GDC Link is not displayed");
-    uploadYearToDateGdcLink.click();
-    TestUtils.uploadFile("\\resources\\Uploads\\Year-to-date GDC.pdf");
-    TestUtils.sleep(1000);
+    // Assert that secondQuestion is present before clicking on it
+    Assert.assertTrue(isElementPresent(secondQuestion), "Second Question is not present");
+    secondQuestion.click();
+    TestUtils.sleep(2000);
 
-    // Assert that businesMixByPercentageLink is displayed before clicking on it
-    Assert.assertTrue(businesMixByPercentageLink.isDisplayed(), "Business Mix by Percentage Link is not displayed");
-    businesMixByPercentageLink.click();
-    TestUtils.sleep(1000);
-    TestUtils.uploadFile("\\resources\\Uploads\\Business Mix by Percentage.pdf");
-    TestUtils.sleep(1000);
+    // Assert that saveBtn2 is present before clicking on it
+    Assert.assertTrue(isElementPresent(saveBtn2), "Save Button 2 is not present");
+    saveBtn2.click();
+    TestUtils.sleep(3000);
+
+    // Assert that continueBtn is present before clicking on it
+    Assert.assertTrue(isElementPresent(continueBtn), "Continue Button is not present");
+    continueBtn.click();
+
+    // Optional: Add a final sleep if needed
+    TestUtils.sleep(2000);
