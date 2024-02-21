@@ -1,78 +1,76 @@
-	public void oppTab() throws AWTException {
-//		Actions act = new Actions(driver);
-//		act.contextClick(oppourtunity).perform();
-//		TestUtils.sleep(2000);
-//
-//		Robot r = new Robot();
-//		r.keyPress(KeyEvent.VK_DOWN);
-//		r.keyRelease(KeyEvent.VK_DOWN);
-//		TestUtils.sleep(1000);
-//		r.keyPress(KeyEvent.VK_ENTER);
-//		r.keyRelease(KeyEvent.VK_ENTER);
-//		TestUtils.sleep(1000);
-//		for (String handle : driver.getWindowHandles()) {
-//			driver.switchTo().window(handle);
-//		}
-		TestUtils.explicit_locate(oppourtunity);
-		TestUtils.sleep(2000);
-		oppourtunity.click();
+public void oppTab() {
+    TestUtils.explicit_locate(oppourtunity);
 
-	}
+    if (isElementPresent(oppourtunity)) {
+        TestUtils.sleep(2000);
+        oppourtunity.click();
+    }
+}
 
-	public void contactEdit() {
-		TestUtils.sleep(5000);
-		WebElement element = scrollContact;
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("arguments[0].scrollIntoView();", element);
-		Actions act = new Actions(driver);
-		act.doubleClick(editContact).perform();
-		TestUtils.sleep(1000);
-		contactSearch.click();
-		TestUtils.sleep(1000);
-		selectContact.click();
-	}
+public void contactEdit() {
+    TestUtils.sleep(5000);
+    WebElement element = scrollContact;
+    JavascriptExecutor js = (JavascriptExecutor) driver;
+    js.executeScript("arguments[0].scrollIntoView();", element);
 
-	public void channel() {
-		TestUtils.sleep(2000);
-		WebElement element = scrDis;
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("arguments[0].scrollIntoView();", element);
-		channeldrop.click();
-		TestUtils.sleep(1000);
-		chaSel.click();
+    if (isElementPresent(editContact) && isElementPresent(contactSearch) && isElementPresent(selectContact)) {
+        Actions act = new Actions(driver);
+        act.doubleClick(editContact).perform();
+        TestUtils.sleep(1000);
+        contactSearch.click();
+        TestUtils.sleep(1000);
+        selectContact.click();
+    }
+}
 
-	}
+public void channel() {
+    TestUtils.sleep(2000);
+    WebElement element = scrDis;
+    JavascriptExecutor js = (JavascriptExecutor) driver;
+    js.executeScript("arguments[0].scrollIntoView();", element);
 
-	public void homeSelect() {
-		WebElement element1 = ScrolThome;
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("arguments[0].scrollIntoView();", element1);
-		dsDrop.click();
-		dsSelect.click();
-		TestUtils.sleep(1000);
-		NFS.click();
-		push.click();
-		saveforInvite.click();
-		TestUtils.sleep(2000);
+    if (isElementPresent(channeldrop) && isElementPresent(chaSel)) {
+        channeldrop.click();
+        TestUtils.sleep(1000);
+        chaSel.click();
+    }
+}
 
-	}
+public void homeSelect() {
+    WebElement element1 = ScrolThome;
+    JavascriptExecutor js = (JavascriptExecutor) driver;
+    js.executeScript("arguments[0].scrollIntoView();", element1);
 
-	public void cases() {
-		TestUtils.sleep(3000);
-		BusinessSelect.click();
-		BusiSearch.sendKeys("cases");
-		TestUtils.sleep(1000);
-		Actions actions = new Actions(driver);
-		actions.sendKeys(Keys.ENTER).perform();
-		TestUtils.sleep(1000);
-		actions.sendKeys(Keys.ESCAPE).perform();
-		TestUtils.sleep(1000);
-		deatCase.click();
-		TestUtils.sleep(3000);
-		delDown.click();
-		caseDelete.click();
-		TestUtils.sleep(2000);
-		deleteFinal.click();
-		TestUtils.sleep(3000);
+    if (isElementPresent(dsDrop) && isElementPresent(dsSelect) && isElementPresent(NFS) && isElementPresent(push) && isElementPresent(saveforInvite)) {
+        dsDrop.click();
+        dsSelect.click();
+        TestUtils.sleep(1000);
+        NFS.click();
+        push.click();
+        saveforInvite.click();
+        TestUtils.sleep(2000);
+    }
+}
 
-	}
+public void cases() {
+    TestUtils.sleep(3000);
+    
+    if (isElementPresent(BusinessSelect) && isElementPresent(BusiSearch) && isElementPresent(deatCase) 
+            && isElementPresent(delDown) && isElementPresent(caseDelete) && isElementPresent(deleteFinal)) {
+        BusinessSelect.click();
+        BusiSearch.sendKeys("cases");
+        TestUtils.sleep(1000);
+        Actions actions = new Actions(driver);
+        actions.sendKeys(Keys.ENTER).perform();
+        TestUtils.sleep(1000);
+        actions.sendKeys(Keys.ESCAPE).perform();
+        TestUtils.sleep(1000);
+        deatCase.click();
+        TestUtils.sleep(3000);
+        delDown.click();
+        caseDelete.click();
+        TestUtils.sleep(2000);
+        deleteFinal.click();
+        TestUtils.sleep(3000);
+    }
+}
