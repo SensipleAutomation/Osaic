@@ -1,83 +1,21 @@
-WebElement element = scrAffi;
-JavascriptExecutor js = (JavascriptExecutor) driver;
-js.executeScript("arguments[0].scrollIntoView();", element);
-TestUtils.sleep(1000);
+public synchronized CasesApprovalAndClosing revenue(String Total, String Split) {
+		WebElement element = scrRevenue;
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].scrollIntoView();", element);
+		totTrail.sendKeys(Total);
+		platform.sendKeys(Split);
+		money.sendKeys(Split);
+		trail.sendKeys(Split);
+		Schwab.sendKeys(Split);
+		Annuities.sendKeys(Split);
+		Insurance.sendKeys(Split);
+		Mutual.sendKeys(Split);
+		General.sendKeys(Split);
+		Alternatives.sendKeys(Split);
+		countClick.click();
+		TestUtils.sleep(1000);
+		perSaveButton.click();
+		TestUtils.sleep(2000);
+		return this;
 
-// Assert that affTodayques is displayed before interacting with it
-Assert.assertTrue(isElementPresent(affTodayques), "Affiliation Today's Questions field is not present");
-affTodayques.click();
-
-TestUtils.sleep(1000);
-
-// Assert that affTodquesSelect is displayed before interacting with it
-Assert.assertTrue(isElementPresent(affTodquesSelect), "Affiliation Today's Questions Select field is not present");
-affTodquesSelect.click();
-
-TestUtils.sleep(1000);
-
-// Assert that joiningQues is displayed before interacting with it
-Assert.assertTrue(isElementPresent(joiningQues), "Joining Questions field is not present");
-joiningQues.click();
-
-TestUtils.sleep(1000);
-
-// Assert that joiningQuesSelect is displayed before interacting with it
-Assert.assertTrue(isElementPresent(joiningQuesSelect), "Joining Questions Select field is not present");
-joiningQuesSelect.click();
-
-TestUtils.sleep(2000);
-
-// Assert that registered is displayed before interacting with it
-Assert.assertTrue(isElementPresent(registered), "Registered field is not present");
-registered.click();
-
-TestUtils.sleep(1000);
-
-// Assert that dateBox is displayed before interacting with it
-Assert.assertTrue(isElementPresent(dateBox), "Date Box field is not present");
-dateBox.click();
-
-TestUtils.sleep(1000);
-
-// Assert that datToday is displayed before interacting with it
-Assert.assertTrue(isElementPresent(datToday), "Today's Date field is not present");
-datToday.click();
-
-TestUtils.sleep(1000);
-
-// Assert that affiQues is displayed before interacting with it
-Assert.assertTrue(isElementPresent(affiQues), "Affiliation Questions field is not present");
-affiQues.click();
-
-TestUtils.sleep(1000);
-
-// Assert that affiQueSel is displayed before interacting with it
-Assert.assertTrue(isElementPresent(affiQueSel), "Affiliation Questions Select field is not present");
-affiQueSel.click();
-
-TestUtils.sleep(1000);
-
-// Assert that branchQue is displayed before interacting with it
-Assert.assertTrue(isElementPresent(branchQue), "Branch Questions field is not present");
-branchQue.click();
-
-TestUtils.sleep(1000);
-
-// Assert that branchQueSel is displayed before interacting with it
-Assert.assertTrue(isElementPresent(branchQueSel), "Branch Questions Select field is not present");
-branchQueSel.click();
-
-TestUtils.sleep(1000);
-
-// Assert that affSave is displayed before interacting with it
-Assert.assertTrue(isElementPresent(affSave), "Affiliation Save Button is not present");
-affSave.click();
-
-js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
-TestUtils.sleep(1000);
-
-// Assert that proInfCont is displayed before interacting with it
-Assert.assertTrue(isElementPresent(proInfCont), "Professional Information Continue Button is not present");
-proInfCont.click();
-
-TestUtils.sleep(2000);
+	}
