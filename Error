@@ -1,26 +1,46 @@
-public synchronized CasesApprovalAndClosing BusinessInformation(String current, String address, String city,
-			String zipc, String phone) {
-		WebElement element = scrBusi;
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("arguments[0].scrollIntoView();", element);
-		TestUtils.sleep(1000);
-		curBD.sendKeys(current);
-		TestUtils.sleep(1000);
-		busiAddress.click();
-		busiAddress.sendKeys(address);
-		busiCity.sendKeys(city);
-		TestUtils.sleep(1000);
-		busiStateDrop.click();
-		TestUtils.sleep(1000);
-		busSelectState.click();
-		TestUtils.sleep(1000);
-		busZip.sendKeys(zipc);
-		TestUtils.sleep(1000);
-		busPhone.sendKeys(phone);
-		js.executeScript("arguments[0].scrollIntoView();", busiCity);
-		TestUtils.sleep(1000);
-		busSaveButton.click();
-		TestUtils.sleep(2000);
-		return this;
+ WebElement element = scrBusi;
+    JavascriptExecutor js = (JavascriptExecutor) driver;
+    js.executeScript("arguments[0].scrollIntoView();", element);
+    TestUtils.sleep(1000);
 
-	}
+    // Assert that curBD is displayed before interacting with it
+    Assert.assertTrue(isElementPresent(curBD), "Current Business Description field is not present");
+    curBD.sendKeys(current);
+
+    TestUtils.sleep(1000);
+
+    // Assert that busiAddress is displayed before interacting with it
+    Assert.assertTrue(isElementPresent(busiAddress), "Business Address field is not present");
+    busiAddress.click();
+    busiAddress.sendKeys(address);
+
+    // Assert that busiCity is displayed before interacting with it
+    Assert.assertTrue(isElementPresent(busiCity), "Business City field is not present");
+    busiCity.sendKeys(city);
+
+    TestUtils.sleep(1000);
+
+    // Assert that busiStateDrop and busSelectState are displayed before interacting with them
+    Assert.assertTrue(isElementPresent(busiStateDrop), "Business State Drop-down is not present");
+    Assert.assertTrue(isElementPresent(busSelectState), "Business Select State option is not present");
+    busiStateDrop.click();
+    TestUtils.sleep(1000);
+    busSelectState.click();
+
+    // Assert that busZip is displayed before interacting with it
+    Assert.assertTrue(isElementPresent(busZip), "Business Zip Code field is not present");
+    busZip.sendKeys(zipc);
+
+    // Assert that busPhone is displayed before interacting with it
+    Assert.assertTrue(isElementPresent(busPhone), "Business Phone field is not present");
+    busPhone.sendKeys(phone);
+
+    js.executeScript("arguments[0].scrollIntoView();", busiCity);
+    TestUtils.sleep(1000);
+
+    // Assert that busSaveButton is displayed before interacting with it
+    Assert.assertTrue(isElementPresent(busSaveButton), "Business Save Button is not present");
+    busSaveButton.click();
+
+    TestUtils.sleep(2000);
+    return this;
