@@ -1,26 +1,53 @@
-Assert.assertTrue(isElementPresent(step3Edit), "Step 3 Edit Button is not present");
-step3Edit.click();
+public void uploadGDCDoc() {
+		TestUtils.sleep(2000);
 
-TestUtils.sleep(3000);
+		if (uploadPriorYearGdcLink.isEnabled()) {
+			uploadPriorYearGdcLink.click();
 
-JavascriptExecutor js = (JavascriptExecutor) driver;
+			TestUtils.uploadFile("\\resources\\Uploads\\Prior Year GDC.pdf");
+		}
 
-// Assert that proInfCont is displayed before scrolling and clicking on it
-Assert.assertTrue(isElementPresent(proInfCont), "Professional Information Continue Button is not present");
+		TestUtils.sleep(1000);
 
-// Scroll and click on proInfCont multiple times
-for (int i = 0; i < 3; i++) {
-    js.executeScript("arguments[0].scrollIntoView();", proInfCont);
-    TestUtils.sleep(1000);
+		uploadYearToDateGdcLink.click();
+		TestUtils.sleep(1000);
+		TestUtils.uploadFile("\\resources\\Uploads\\Year-to-date GDC.pdf");
+		TestUtils.sleep(1000);
 
-    // Assert that proInfCont is displayed before clicking on it
-    Assert.assertTrue(isElementPresent(proInfCont), "Professional Information Continue Button is not present");
-    proInfCont.click();
-    TestUtils.sleep(2000);
-}
+		businesMixByPercentageLink.click();
+		TestUtils.sleep(1000);
+		TestUtils.uploadFile("\\resources\\Uploads\\Business Mix by Percentage.pdf");
+		TestUtils.sleep(1000);
 
-// Optional: Add a final sleep if needed
-TestUtils.sleep(2000);
+		assetsUnderManagementTotalsLink.click();
+		TestUtils.sleep(1000);
+		TestUtils.uploadFile("\\resources\\Uploads\\Assets Under Management Totals.pdf");
+		TestUtils.sleep(1000);
 
-// Optional: Assert that proInfCont is still displayed after the interactions
-Assert.assertTrue(isElementPresent(proInfCont), "Professional Information Continue Button is not present");
+		productNamesAndAumReportLink.click();
+		TestUtils.sleep(1000);
+		TestUtils.uploadFile("\\resources\\Uploads\\Product Names and AUM Report.pdf");
+		TestUtils.sleep(1000);
+
+		productSponsorReportLink.click();
+		TestUtils.sleep(1000);
+		TestUtils.uploadFile("\\resources\\Uploads\\Product Sponsor Reports.pdf");
+		TestUtils.sleep(1000);
+
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].scrollIntoView();", scrConBut);
+		TestUtils.sleep(1000);
+		upconfirmButton.click();
+		TestUtils.sleep(1000);
+		saveBtn.click();
+		TestUtils.sleep(1000);
+		js.executeScript("arguments[0].scrollIntoView();", saveBtn);
+		firstQestion.click();
+		TestUtils.sleep(1000);
+		secondQuestion.click();
+		TestUtils.sleep(2000);
+		saveBtn2.click();
+		TestUtils.sleep(3000);
+		continueBtn.click();
+
+	}
