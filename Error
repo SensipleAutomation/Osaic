@@ -1,14 +1,26 @@
+Assert.assertTrue(isElementPresent(step3Edit), "Step 3 Edit Button is not present");
+step3Edit.click();
+
 TestUtils.sleep(3000);
-		step3Edit.click();
-		TestUtils.sleep(3000);
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("arguments[0].scrollIntoView();", proInfCont);
-		TestUtils.sleep(1000);
-		proInfCont.click();
-		TestUtils.sleep(2000);
-		js.executeScript("arguments[0].scrollIntoView();", proInfCont);
-		TestUtils.sleep(1000);
-		proInfCont.click();
-		js.executeScript("arguments[0].scrollIntoView();", proInfCont);
-		TestUtils.sleep(1000);
-		proInfCont.click();
+
+JavascriptExecutor js = (JavascriptExecutor) driver;
+
+// Assert that proInfCont is displayed before scrolling and clicking on it
+Assert.assertTrue(isElementPresent(proInfCont), "Professional Information Continue Button is not present");
+
+// Scroll and click on proInfCont multiple times
+for (int i = 0; i < 3; i++) {
+    js.executeScript("arguments[0].scrollIntoView();", proInfCont);
+    TestUtils.sleep(1000);
+
+    // Assert that proInfCont is displayed before clicking on it
+    Assert.assertTrue(isElementPresent(proInfCont), "Professional Information Continue Button is not present");
+    proInfCont.click();
+    TestUtils.sleep(2000);
+}
+
+// Optional: Add a final sleep if needed
+TestUtils.sleep(2000);
+
+// Optional: Assert that proInfCont is still displayed after the interactions
+Assert.assertTrue(isElementPresent(proInfCont), "Professional Information Continue Button is not present");
