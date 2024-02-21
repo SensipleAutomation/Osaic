@@ -1,77 +1,88 @@
-public synchronized CasesApprovalAndClosing processing(String value) {
-		process.click();
+ Assert.assertTrue(isElementPresent(process), "Process Button is not present");
+    process.click();
 
-		WebElement element = scrApr;
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("arguments[0].scrollIntoView();", element);
-		TestUtils.sleep(1000);
+    WebElement element = scrApr;
+    JavascriptExecutor js = (JavascriptExecutor) driver;
+    js.executeScript("arguments[0].scrollIntoView();", element);
+    TestUtils.sleep(1000);
 
-		statusDrop.click();
-		clsClick.click();
-//		comment.click();
-		TestUtils.sleep(1000);
+    // Assert that statusDrop is displayed before interacting with it
+    Assert.assertTrue(isElementPresent(statusDrop), "Status Drop Button is not present");
+    statusDrop.click();
 
-//		js.executeScript("arguments[0].value = 'Okay';", comment);
-//		TestUtils.sleep(1000);
+    // Assert that clsClick is displayed before interacting with it
+    Assert.assertTrue(isElementPresent(clsClick), "CLS Click Button is not present");
+    clsClick.click();
 
-		forApp.click();
-		forAppSelect.click();
+    TestUtils.sleep(1000);
 
-		WebElement element1 = scrApr;
-		js.executeScript("arguments[0].scrollIntoView();", element1);
-		TestUtils.sleep(1000);
+    // Assert that forApp is displayed before interacting with it
+    Assert.assertTrue(isElementPresent(forApp), "For App Button is not present");
+    forApp.click();
 
-		apSave.click();
-		TestUtils.sleep(2000);
+    // Assert that forAppSelect is displayed before interacting with it
+    Assert.assertTrue(isElementPresent(forAppSelect), "For App Select Button is not present");
+    forAppSelect.click();
 
-		backTOcases.click();
-		TestUtils.sleep(2000);
+    WebElement element1 = scrApr;
+    js.executeScript("arguments[0].scrollIntoView();", element1);
+    TestUtils.sleep(1000);
 
-//		refresh.click();
-//		TestUtils.sleep(1000);
+    // Assert that apSave is displayed before interacting with it
+    Assert.assertTrue(isElementPresent(apSave), "AP Save Button is not present");
+    apSave.click();
+    TestUtils.sleep(2000);
 
-		case3.click();
-		TestUtils.sleep(2000);
+    // Assert that backTOcases is displayed before interacting with it
+    Assert.assertTrue(isElementPresent(backTOcases), "Back to Cases Button is not present");
+    backTOcases.click();
+    TestUtils.sleep(2000);
 
-		prelimCaseProcess.click();
-		js.executeScript("arguments[0].scrollIntoView();", scrPril);
-		TestUtils.sleep(1000);
+    // Assert that case3 is displayed before interacting with it
+    Assert.assertTrue(isElementPresent(case3), "Case 3 Button is not present");
+    case3.click();
+    TestUtils.sleep(2000);
 
-		pretext1.click();
-		TestUtils.sleep(1000);
+    // Assert that prelimCaseProcess is displayed before interacting with it
+    Assert.assertTrue(isElementPresent(prelimCaseProcess), "Prelim Case Process Button is not present");
+    prelimCaseProcess.click();
+    js.executeScript("arguments[0].scrollIntoView();", scrPril);
+    TestUtils.sleep(1000);
 
-		pretext1Send.sendKeys(value);
-//		preText.click();
-//		TestUtils.sleep(1000);
-//
-//		js.executeScript("arguments[0].value = 'Okay';", preText);
-		TestUtils.sleep(1000);
+    // Assert that pretext1 is displayed before interacting with it
+    Assert.assertTrue(isElementPresent(pretext1), "Pretext 1 Button is not present");
+    pretext1.click();
+    TestUtils.sleep(1000);
 
-		case3status.click();
-		clsClick.click();
-		case3drop.click();
-		forAppSelect.click();
+    // Assert that pretext1Send is displayed before interacting with it
+    Assert.assertTrue(isElementPresent(pretext1Send), "Pretext 1 Send Field is not present");
+    pretext1Send.sendKeys(value);
+    TestUtils.sleep(1000);
 
-		js.executeScript("arguments[0].scrollIntoView();", case3status);
+    // Assert that case3status is displayed before interacting with it
+    Assert.assertTrue(isElementPresent(case3status), "Case 3 Status Button is not present");
+    case3status.click();
+    clsClick.click();
+    case3drop.click();
+    forAppSelect.click();
 
-		case3Save.click();
-		TestUtils.sleep(1000);
+    js.executeScript("arguments[0].scrollIntoView();", case3status);
 
-		backTOcases.click();
-		TestUtils.sleep(1000);
+    // Assert that case3Save is displayed before interacting with it
+    Assert.assertTrue(isElementPresent(case3Save), "Case 3 Save Button is not present");
+    case3Save.click();
+    TestUtils.sleep(1000);
 
-		if (approvedCheck.isDisplayed()) {
-			String actualText = approvedCheck.getText();
-			String expectedText = "Approved";
+    // Assert that backTOcases is displayed before interacting with it
+    Assert.assertTrue(isElementPresent(backTOcases), "Back to Cases Button is not present");
+    backTOcases.click();
+    TestUtils.sleep(1000);
 
-			if (actualText.equals(expectedText)) {
-				System.out.println("Learn Step 3 cases Approved");
-			} else {
-				throw new RuntimeException(
-						"Cases Not Approved. Actual text: " + actualText + ". Stopping automation testing.");
-			}
-		} else {
-			throw new RuntimeException("Cases Not Approved. Element not displayed. Stopping automation testing.");
-		}
-		return this;
-	}
+
+Assert.assertTrue(isElementPresent(approvedCheck), "Approved Check Element is not present");
+
+    String actualText = approvedCheck.getText();
+    String expectedText = "Approved";
+
+    // Assert that the actual text matches the expected text
+    Assert.assertEquals(actualText, expectedText, "Learn Step 3 cases are not Approved");
