@@ -1,88 +1,32 @@
-public void newButton() {
-    TestUtils.sleep(3000);
-    if (isElementPresent(NewButton)) {
-        Assert.assertTrue(NewButton.isDisplayed(), "New button is not present");
-        NewButton.click();
-    }
-}
+public void toaster() {
+		TestUtils.explicit_locate(NewLeadToast);
+		Assert.assertTrue(NewLeadToast.isDisplayed(), "Assign is not present");
 
-public void NewHead() {
-    TestUtils.sleep(2000);
-    if (isElementPresent(NewLeadHeader)) {
-        Assert.assertTrue(NewLeadHeader.isDisplayed(), "New Header is not present");
-        TestUtils.sleep(1000);
-    }
-}
+	}
 
-public void BusinessProfile() {
-    WebElement element = ScrollBusiness;
-    JavascriptExecutor js = (JavascriptExecutor) driver;
-    js.executeScript("arguments[0].scrollIntoView();", element);
-    if (isElementPresent(ScrollBusiness)) {
-        Assert.assertTrue(ScrollBusiness.isDisplayed(), "Business Profile Header is not present");
-    }
-}
+	public void leadPageHead() {
+		TestUtils.sleep(2000);
+		Assert.assertTrue(ConveLeButton.isDisplayed(), "LeadHeader is not present");
+	}
 
-public void Assigne() {
-    WebElement element = scrollAssign;
-    JavascriptExecutor js = (JavascriptExecutor) driver;
-    js.executeScript("arguments[0].scrollIntoView();", element);
-    if (isElementPresent(scrollAssign)) {
-        Assert.assertTrue(scrollAssign.isDisplayed(), "Assign is not present");
-    }
-}
+	public void ClickLead() {
+		TestUtils.sleep(4000);
+		ConveLeButton.click();
+	}
 
-public void External() {
-    WebElement element = scrollAssign;
-    JavascriptExecutor js = (JavascriptExecutor) driver;
-    js.executeScript("arguments[0].scrollIntoView();", element);
-    if (isElementPresent(ExtRecNam)) {
-        ExtRecNam.click();
-        ExtRecNamSel.click();
-        TestUtils.sleep(1000);
-    }
-}
+	public void convertHead() {
+		TestUtils.sleep(4000);
+		Assert.assertTrue(convertHeader.isDisplayed(), "convertHeader is not present");
+	}
 
-public void Internal() {
-    if (isElementPresent(IntRecNam)) {
-        IntRecNam.click();
-        IntRecNamSel.click();
-        TestUtils.sleep(1000);
-    }
-}
+	public void finaConvert() {
+		TestUtils.sleep(4000);
+		finalConvert.click();
+	}
 
-public void wealth() {
-    if (isElementPresent(AWMFirmDrop)) {
-        AWMFirmDrop.click();
-        dropOsaic.click();
-        TestUtils.sleep(1000);
-    }
-}
-
-public void recLead() {
-    WebElement element = RecleSource;
-    JavascriptExecutor js = (JavascriptExecutor) driver;
-    js.executeScript("arguments[0].scrollIntoView();", element);
-    if (isElementPresent(RecleSource)) {
-        RecleSource.click();
-        LeadMarket.click();
-        TestUtils.sleep(1000);
-    }
-}
-
-public void curPrac() {
-    WebElement element = CurPraDrop;
-    JavascriptExecutor js = (JavascriptExecutor) driver;
-    js.executeScript("arguments[0].scrollIntoView();", element);
-    if (isElementPresent(CurPraDrop)) {
-        CurPraDrop.click();
-        SoloSel.click();
-        TestUtils.sleep(1000);
-    }
-}
-
-public void finSave() {
-    if (isElementPresent(saveButton)) {
-        saveButton.click();
-    }
-}
+	public void FinalHeader() {
+		TestUtils.explicit_locate(ConvertMessage);
+		TestUtils.sleep(2000);
+		Assert.assertTrue(ConvertMessage.isDisplayed(), "convertMessage is not present");
+		TestUtils.sleep(2000);
+	}
