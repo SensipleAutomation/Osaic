@@ -1,50 +1,15 @@
- Assert.assertTrue(isElementPresent(reviewCase), "reviewCase is not present");
-    reviewCase.click();
-    reactions();
-    backTOcases.click();
-    Thread.sleep(1000);
-
-    // Validate frmCase
-    Assert.assertTrue(isElementPresent(frmCase), "frmCase is not present");
-    frmCase.click();
-    reactions();
-    backTOcases.click();
-    Thread.sleep(1000);
-
-    // Validate rateCase
-    Assert.assertTrue(isElementPresent(rateCase), "rateCase is not present");
-    rateCase.click();
-    reactions();
-    backTOcases.click();
-    Thread.sleep(1000);
-
-    // Validate setmeetCase
-    Assert.assertTrue(isElementPresent(setmeetCase), "setmeetCase is not present");
-    setmeetCase.click();
-    reactions();
-    backTOcases.click();
-    Thread.sleep(1000);
-
-    // Validate setIntCase
-    Assert.assertTrue(isElementPresent(setIntCase), "setIntCase is not present");
-    setIntCase.click();
-    reactions();
-    Thread.sleep(2000);
-    backTOcases.click();
-    refreshCase();
-
-    // Validate extrecCase
-    Assert.assertTrue(isElementPresent(extrecCase), "extrecCase is not present");
-    extrecCase.click();
-    reactions();
-    Thread.sleep(2000);
-    backTOcases.click();
-    refreshCase();
-
-    // Validate recfinCase
-    Assert.assertTrue(isElementPresent(recfinCase), "recfinCase is not present");
-    recfinCase.click();
-    reactions();
-    Thread.sleep(2000);
-    backTOcases.click();
-    Thread.sleep(1000);
+public void invite() {
+		if (isElementPresent(inviteButton)) {
+			inviteButton.click();
+			TestUtils.sleep(3000);
+			Actions actions = new Actions(driver);
+			actions.sendKeys(Keys.ENTER).perform();
+			TestUtils.sleep(2000);
+			TestUtils.explicit_locate(confirmationInvite);
+			TestUtils.sleep(2000);
+			invitedClose.click();
+			TestUtils.sleep(2000);
+			driver.navigate().refresh();
+			TestUtils.sleep(2000);
+		}
+	}
