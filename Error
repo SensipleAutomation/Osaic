@@ -1,24 +1,44 @@
-public synchronized CasesApprovalAndClosing personalInformation(String ssn, String Address, String city,
-			String zipco) {
-		TestUtils.sleep(1000);
-		WebElement element = scrollSSn;
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("arguments[0].scrollIntoView();", element);
-		TestUtils.sleep(1000);
-		ssnNumber.sendKeys(ssn);
-		TestUtils.sleep(1000);
-		homAddress.click();
-		homAddress.sendKeys(Address);
-		cityText.sendKeys(city);
-		TestUtils.sleep(1000);
-		stateDrop.click();
-		TestUtils.sleep(1000);
-		selectState.click();
-		zip.sendKeys(zipco);
-		js.executeScript("arguments[0].scrollIntoView();", saveScroll);
-		TestUtils.sleep(1000);
-		perSaveButton.click();
-		TestUtils.sleep(2000);
-		return this;
+ TestUtils.sleep(1000);
+    WebElement element = scrollSSn;
+    JavascriptExecutor js = (JavascriptExecutor) driver;
+    js.executeScript("arguments[0].scrollIntoView();", element);
+    TestUtils.sleep(1000);
 
-	}
+    // Assert that ssnNumber is displayed before interacting with it
+    Assert.assertTrue(isElementPresent(ssnNumber), "SSN Number field is not present");
+    ssnNumber.sendKeys(ssn);
+
+    TestUtils.sleep(1000);
+
+    // Assert that homAddress is displayed before interacting with it
+    Assert.assertTrue(isElementPresent(homAddress), "Home Address field is not present");
+    homAddress.click();
+    homAddress.sendKeys(Address);
+
+    // Assert that cityText is displayed before interacting with it
+    Assert.assertTrue(isElementPresent(cityText), "City field is not present");
+    cityText.sendKeys(city);
+
+    TestUtils.sleep(1000);
+
+    // Assert that stateDrop and selectState are displayed before interacting with them
+    Assert.assertTrue(isElementPresent(stateDrop), "State Drop-down is not present");
+    Assert.assertTrue(isElementPresent(selectState), "Select State option is not present");
+    stateDrop.click();
+    TestUtils.sleep(1000);
+    selectState.click();
+
+    // Assert that zip is displayed before interacting with it
+    Assert.assertTrue(isElementPresent(zip), "Zip Code field is not present");
+    zip.sendKeys(zipco);
+
+    js.executeScript("arguments[0].scrollIntoView();", saveScroll);
+    TestUtils.sleep(1000);
+
+    // Assert that perSaveButton is displayed before interacting with it
+    Assert.assertTrue(isElementPresent(perSaveButton), "Save Button is not present");
+    perSaveButton.click();
+
+    TestUtils.sleep(2000);
+    return this;
+}
