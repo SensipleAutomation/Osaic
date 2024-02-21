@@ -1,46 +1,14 @@
- WebElement element = scrBusi;
-    JavascriptExecutor js = (JavascriptExecutor) driver;
-    js.executeScript("arguments[0].scrollIntoView();", element);
-    TestUtils.sleep(1000);
+Bug Summary:
+After creating a prospect in Salesforce with a generated external ID, the corresponding values are not reflecting in the application upon login.
 
-    // Assert that curBD is displayed before interacting with it
-    Assert.assertTrue(isElementPresent(curBD), "Current Business Description field is not present");
-    curBD.sendKeys(current);
+Steps to Reproduce:
 
-    TestUtils.sleep(1000);
+Create a new prospect in Salesforce.
+Verify that an external ID is generated for the prospect.
+Log in to the application using the created prospect's credentials.
+Expected Behavior:
 
-    // Assert that busiAddress is displayed before interacting with it
-    Assert.assertTrue(isElementPresent(busiAddress), "Business Address field is not present");
-    busiAddress.click();
-    busiAddress.sendKeys(address);
+The application should display the values associated with the prospect created in Salesforce.
+Actual Behavior:
 
-    // Assert that busiCity is displayed before interacting with it
-    Assert.assertTrue(isElementPresent(busiCity), "Business City field is not present");
-    busiCity.sendKeys(city);
-
-    TestUtils.sleep(1000);
-
-    // Assert that busiStateDrop and busSelectState are displayed before interacting with them
-    Assert.assertTrue(isElementPresent(busiStateDrop), "Business State Drop-down is not present");
-    Assert.assertTrue(isElementPresent(busSelectState), "Business Select State option is not present");
-    busiStateDrop.click();
-    TestUtils.sleep(1000);
-    busSelectState.click();
-
-    // Assert that busZip is displayed before interacting with it
-    Assert.assertTrue(isElementPresent(busZip), "Business Zip Code field is not present");
-    busZip.sendKeys(zipc);
-
-    // Assert that busPhone is displayed before interacting with it
-    Assert.assertTrue(isElementPresent(busPhone), "Business Phone field is not present");
-    busPhone.sendKeys(phone);
-
-    js.executeScript("arguments[0].scrollIntoView();", busiCity);
-    TestUtils.sleep(1000);
-
-    // Assert that busSaveButton is displayed before interacting with it
-    Assert.assertTrue(isElementPresent(busSaveButton), "Business Save Button is not present");
-    busSaveButton.click();
-
-    TestUtils.sleep(2000);
-    return this;
+The application does not reflect the values of the prospect even though an external ID is generated in Salesforce.
