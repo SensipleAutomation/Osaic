@@ -1,83 +1,34 @@
- reactions();
-    // Add validation for backTOcases
-    Assert.assertTrue(isElementPresent(backTOcases), "Back to Cases button is not present");
-    backTOcases.click();
-    Thread.sleep(1000);
+public void reviewCases() throws InterruptedException {
+		reviewCase.click();
+		reactions();
+		backTOcases.click();
+		Thread.sleep(1000);
+		frmCase.click();
+		reactions();
+		backTOcases.click();
+		Thread.sleep(1000);
+		rateCase.click();
+		reactions();
+		backTOcases.click();
+		Thread.sleep(1000);
+		setmeetCase.click();
+		reactions();
+		backTOcases.click();
+		Thread.sleep(1000);
+		setIntCase.click();
+		reactions();
+		Thread.sleep(2000);
+		backTOcases.click();
+		refreshCase();
+		extrecCase.click();
+		reactions();
+		Thread.sleep(2000);
+		backTOcases.click();
+		refreshCase();
+		recfinCase.click();
+		reactions();
+		Thread.sleep(2000);
+		backTOcases.click();
+		Thread.sleep(1000);
 
-    // Add validation for sch2Case
-    Assert.assertTrue(isElementPresent(sch2Case), "Sch2 Case button is not present");
-    sch2Case.click();
-    reactions();
-
-    // Add validation for backTOcases
-    Assert.assertTrue(isElementPresent(backTOcases), "Back to Cases button is not present");
-    backTOcases.click();
-    Thread.sleep(1000);
-
-Assert.assertTrue(isElementPresent(bookCase), "Book Case button is not present");
-bookCase.click();
-reactions();
-
-// Add validation for backTOcases
-Assert.assertTrue(isElementPresent(backTOcases), "Back to Cases button is not present");
-backTOcases.click();
-Thread.sleep(1000);
-
-// Add validation for boBusCase
-Assert.assertTrue(isElementPresent(boBusCase), "Bo Bus Case button is not present");
-boBusCase.click();
-reactions();
-
-// Add validation for backTOcases
-Assert.assertTrue(isElementPresent(backTOcases), "Back to Cases button is not present");
-backTOcases.click();
-Thread.sleep(2000);
-
-// Add validation for refresh
-Assert.assertTrue(isElementPresent(refresh), "Refresh button is not present");
-refresh.click();
-Thread.sleep(2000);
-
-// Add validation for refresClick
-Assert.assertTrue(isElementPresent(refresClick), "Refres Click button is not present");
-refresClick.click();
-Thread.sleep(1000);
-
-// Add validation for refresh
-Assert.assertTrue(isElementPresent(refresh), "Refresh button is not present");
-refresh.click();
-Thread.sleep(1000);
-
-// Add validation for assesmentCase
-Assert.assertTrue(isElementPresent(assesmentCase), "Assessment Case button is not present");
-assesmentCase.click();
-reactions();
-
-// Add validation for backTOcases
-Assert.assertTrue(isElementPresent(backTOcases), "Back to Cases button is not present");
-backTOcases.click();
-Thread.sleep(1000);
-
-// Add validation for validateCase
-Assert.assertTrue(isElementPresent(validateCase), "Validate Case button is not present");
-validateCase.click();
-reactions();
-
-// Add validation for backTOcases
-Assert.assertTrue(isElementPresent(backTOcases), "Back to Cases button is not present");
-backTOcases.click();
-Thread.sleep(1000);
-
-// Add validation for contractCase
-Assert.assertTrue(isElementPresent(contractCase), "Contract Case button is not present");
-contractCase.click();
-reactions();
-
-// Add validation for backTOcases
-Assert.assertTrue(isElementPresent(backTOcases), "Back to Cases button is not present");
-backTOcases.click();
-Thread.sleep(1000);
-
-// Add validation for refreshCase
-Assert.assertTrue(isElementPresent(refreshCase), "Refresh Case button is not present");
-refreshCase();
+	}
