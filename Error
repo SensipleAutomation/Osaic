@@ -1,88 +1,14 @@
- Assert.assertTrue(isElementPresent(process), "Process Button is not present");
-    process.click();
-
-    WebElement element = scrApr;
-    JavascriptExecutor js = (JavascriptExecutor) driver;
-    js.executeScript("arguments[0].scrollIntoView();", element);
-    TestUtils.sleep(1000);
-
-    // Assert that statusDrop is displayed before interacting with it
-    Assert.assertTrue(isElementPresent(statusDrop), "Status Drop Button is not present");
-    statusDrop.click();
-
-    // Assert that clsClick is displayed before interacting with it
-    Assert.assertTrue(isElementPresent(clsClick), "CLS Click Button is not present");
-    clsClick.click();
-
-    TestUtils.sleep(1000);
-
-    // Assert that forApp is displayed before interacting with it
-    Assert.assertTrue(isElementPresent(forApp), "For App Button is not present");
-    forApp.click();
-
-    // Assert that forAppSelect is displayed before interacting with it
-    Assert.assertTrue(isElementPresent(forAppSelect), "For App Select Button is not present");
-    forAppSelect.click();
-
-    WebElement element1 = scrApr;
-    js.executeScript("arguments[0].scrollIntoView();", element1);
-    TestUtils.sleep(1000);
-
-    // Assert that apSave is displayed before interacting with it
-    Assert.assertTrue(isElementPresent(apSave), "AP Save Button is not present");
-    apSave.click();
-    TestUtils.sleep(2000);
-
-    // Assert that backTOcases is displayed before interacting with it
-    Assert.assertTrue(isElementPresent(backTOcases), "Back to Cases Button is not present");
-    backTOcases.click();
-    TestUtils.sleep(2000);
-
-    // Assert that case3 is displayed before interacting with it
-    Assert.assertTrue(isElementPresent(case3), "Case 3 Button is not present");
-    case3.click();
-    TestUtils.sleep(2000);
-
-    // Assert that prelimCaseProcess is displayed before interacting with it
-    Assert.assertTrue(isElementPresent(prelimCaseProcess), "Prelim Case Process Button is not present");
-    prelimCaseProcess.click();
-    js.executeScript("arguments[0].scrollIntoView();", scrPril);
-    TestUtils.sleep(1000);
-
-    // Assert that pretext1 is displayed before interacting with it
-    Assert.assertTrue(isElementPresent(pretext1), "Pretext 1 Button is not present");
-    pretext1.click();
-    TestUtils.sleep(1000);
-
-    // Assert that pretext1Send is displayed before interacting with it
-    Assert.assertTrue(isElementPresent(pretext1Send), "Pretext 1 Send Field is not present");
-    pretext1Send.sendKeys(value);
-    TestUtils.sleep(1000);
-
-    // Assert that case3status is displayed before interacting with it
-    Assert.assertTrue(isElementPresent(case3status), "Case 3 Status Button is not present");
-    case3status.click();
-    clsClick.click();
-    case3drop.click();
-    forAppSelect.click();
-
-    js.executeScript("arguments[0].scrollIntoView();", case3status);
-
-    // Assert that case3Save is displayed before interacting with it
-    Assert.assertTrue(isElementPresent(case3Save), "Case 3 Save Button is not present");
-    case3Save.click();
-    TestUtils.sleep(1000);
-
-    // Assert that backTOcases is displayed before interacting with it
-    Assert.assertTrue(isElementPresent(backTOcases), "Back to Cases Button is not present");
-    backTOcases.click();
-    TestUtils.sleep(1000);
-
-
-Assert.assertTrue(isElementPresent(approvedCheck), "Approved Check Element is not present");
-
-    String actualText = approvedCheck.getText();
-    String expectedText = "Approved";
-
-    // Assert that the actual text matches the expected text
-    Assert.assertEquals(actualText, expectedText, "Learn Step 3 cases are not Approved");
+TestUtils.sleep(3000);
+		step3Edit.click();
+		TestUtils.sleep(3000);
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].scrollIntoView();", proInfCont);
+		TestUtils.sleep(1000);
+		proInfCont.click();
+		TestUtils.sleep(2000);
+		js.executeScript("arguments[0].scrollIntoView();", proInfCont);
+		TestUtils.sleep(1000);
+		proInfCont.click();
+		js.executeScript("arguments[0].scrollIntoView();", proInfCont);
+		TestUtils.sleep(1000);
+		proInfCont.click();
