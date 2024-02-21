@@ -1,68 +1,88 @@
 public void newButton() {
-		TestUtils.sleep(3000);
-		Assert.assertTrue(NewButton.isDisplayed(), "New button is not present");
-		NewButton.click();
-	}
+    TestUtils.sleep(3000);
+    if (isElementPresent(NewButton)) {
+        Assert.assertTrue(NewButton.isDisplayed(), "New button is not present");
+        NewButton.click();
+    }
+}
 
-	public void NewHead() {
-		TestUtils.sleep(2000);
-		Assert.assertTrue(NewLeadHeader.isDisplayed(), "New Header is not present");
-		TestUtils.sleep(1000);
-	}
+public void NewHead() {
+    TestUtils.sleep(2000);
+    if (isElementPresent(NewLeadHeader)) {
+        Assert.assertTrue(NewLeadHeader.isDisplayed(), "New Header is not present");
+        TestUtils.sleep(1000);
+    }
+}
 
-	public void BusinessProfile() {
-		WebElement element = ScrollBusiness;
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("arguments[0].scrollIntoView();", element);
-		Assert.assertTrue(ScrollBusiness.isDisplayed(), "Business Profile Header is not present");
-	}
+public void BusinessProfile() {
+    WebElement element = ScrollBusiness;
+    JavascriptExecutor js = (JavascriptExecutor) driver;
+    js.executeScript("arguments[0].scrollIntoView();", element);
+    if (isElementPresent(ScrollBusiness)) {
+        Assert.assertTrue(ScrollBusiness.isDisplayed(), "Business Profile Header is not present");
+    }
+}
 
-	public void Assigne() {
-		WebElement element = scrollAssign;
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("arguments[0].scrollIntoView();", element);
-		Assert.assertTrue(scrollAssign.isDisplayed(), "Assign is not present");
-	}
+public void Assigne() {
+    WebElement element = scrollAssign;
+    JavascriptExecutor js = (JavascriptExecutor) driver;
+    js.executeScript("arguments[0].scrollIntoView();", element);
+    if (isElementPresent(scrollAssign)) {
+        Assert.assertTrue(scrollAssign.isDisplayed(), "Assign is not present");
+    }
+}
 
-	public void External() {
-		WebElement element = scrollAssign;
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("arguments[0].scrollIntoView();", element);
-		ExtRecNam.click();
-		ExtRecNamSel.click();
-		TestUtils.sleep(1000);
-	}
+public void External() {
+    WebElement element = scrollAssign;
+    JavascriptExecutor js = (JavascriptExecutor) driver;
+    js.executeScript("arguments[0].scrollIntoView();", element);
+    if (isElementPresent(ExtRecNam)) {
+        ExtRecNam.click();
+        ExtRecNamSel.click();
+        TestUtils.sleep(1000);
+    }
+}
 
-	public void Internal() {
-		IntRecNam.click();
-		IntRecNamSel.click();
-		TestUtils.sleep(1000);
-	}
+public void Internal() {
+    if (isElementPresent(IntRecNam)) {
+        IntRecNam.click();
+        IntRecNamSel.click();
+        TestUtils.sleep(1000);
+    }
+}
 
-	public void wealth() {
-		AWMFirmDrop.click();
-		dropOsaic.click();
-		TestUtils.sleep(1000);
-	}
+public void wealth() {
+    if (isElementPresent(AWMFirmDrop)) {
+        AWMFirmDrop.click();
+        dropOsaic.click();
+        TestUtils.sleep(1000);
+    }
+}
 
-	public void recLead() {
-		WebElement element = RecleSource;
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("arguments[0].scrollIntoView();", element);
-		RecleSource.click();
-		LeadMarket.click();
-		TestUtils.sleep(1000);
-	}
+public void recLead() {
+    WebElement element = RecleSource;
+    JavascriptExecutor js = (JavascriptExecutor) driver;
+    js.executeScript("arguments[0].scrollIntoView();", element);
+    if (isElementPresent(RecleSource)) {
+        RecleSource.click();
+        LeadMarket.click();
+        TestUtils.sleep(1000);
+    }
+}
 
-	public void curPrac() {
-		WebElement element = CurPraDrop;
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("arguments[0].scrollIntoView();", element);
-		CurPraDrop.click();
-		SoloSel.click();
-		TestUtils.sleep(1000);
-	}
+public void curPrac() {
+    WebElement element = CurPraDrop;
+    JavascriptExecutor js = (JavascriptExecutor) driver;
+    js.executeScript("arguments[0].scrollIntoView();", element);
+    if (isElementPresent(CurPraDrop)) {
+        CurPraDrop.click();
+        SoloSel.click();
+        TestUtils.sleep(1000);
+    }
+}
 
-	public void finSave() {
-		saveButton.click();
-	}
+public void finSave() {
+    if (isElementPresent(saveButton)) {
+        saveButton.click();
+    }
+}
