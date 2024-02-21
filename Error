@@ -1,29 +1,67 @@
-Assert.assertTrue(isElementPresent(upconfirmButton), "Upconfirm Button is not present");
-    upconfirmButton.click();
-    TestUtils.sleep(1000);
+public void scheduleFind() throws InterruptedException {
+		WebDriverWait wait = new WebDriverWait(driver, 10);
 
-    // Assert that saveBtn is present before clicking on it
-    Assert.assertTrue(isElementPresent(saveBtn), "Save Button is not present");
-    saveBtn.click();
-    TestUtils.sleep(1000);
+		while (true) {
+			try {
+				System.out.println("Clicking on the first element");
+				WebElement firstElement = wait.until(ExpectedConditions.elementToBeClickable(refresh));
+				firstElement.click();
 
-    js.executeScript("arguments[0].scrollIntoView();", saveBtn);
+				Thread.sleep(1000);
 
-    // Assert that firstQestion is present before clicking on it
-    Assert.assertTrue(isElementPresent(firstQestion), "First Question is not present");
-    firstQestion.click();
-    TestUtils.sleep(1000);
+				System.out.println("Clicking on the second element");
+				WebElement secondElement = wait.until(ExpectedConditions.elementToBeClickable(refresClick));
+				secondElement.click();
 
-    // Assert that secondQuestion is present before clicking on it
-    Assert.assertTrue(isElementPresent(secondQuestion), "Second Question is not present");
-    secondQuestion.click();
-    TestUtils.sleep(2000);
+				System.out.println("Checking if the fourth element is displayed and enabled");
+				WebElement thirdElement = scheduleCase;
 
-    // Assert that saveBtn2 is present before clicking on it
-    Assert.assertTrue(isElementPresent(saveBtn2), "Save Button 2 is not present");
-    saveBtn2.click();
-    TestUtils.sleep(3000);
+				if (thirdElement.isDisplayed() && thirdElement.isEnabled()) {
+					TestUtils.sleep(2000);
+					thirdElement.click();
+					System.out.println("Third element found. Exiting the loop.");
+					break;
+				}
+			} catch (org.openqa.selenium.NoSuchElementException e) {
 
-    // Assert that continueBtn is present before clicking on it
-    Assert.assertTrue(isElementPresent(continueBtn), "Continue Button is not present");
-    continueBtn.click();
+				System.out.println("Second element not found. Retrying...");
+			} catch (Exception e) {
+
+				System.out.println("Exception occurred: " + e.getMessage());
+				e.printStackTrace();
+			}
+		}
+		reactions();
+		backTOcases.click();
+		Thread.sleep(1000);
+		sch2Case.click();
+		reactions();
+		backTOcases.click();
+		Thread.sleep(1000);
+		bookCase.click();
+		reactions();
+		backTOcases.click();
+		Thread.sleep(1000);
+		boBusCase.click();
+		reactions();
+		backTOcases.click();
+		Thread.sleep(2000);
+		refresh.click();
+		Thread.sleep(2000);
+		refresClick.click();
+		Thread.sleep(1000);
+		refresh.click();
+		Thread.sleep(1000);
+		assesmentCase.click();
+		reactions();
+		backTOcases.click();
+		Thread.sleep(1000);
+		validateCase.click();
+		reactions();
+		backTOcases.click();
+		Thread.sleep(1000);
+		contractCase.click();
+		reactions();
+		backTOcases.click();
+		refreshCase();
+	}
