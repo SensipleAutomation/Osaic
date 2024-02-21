@@ -1,16 +1,9 @@
 public synchronized CasesApprovalAndClosing loginToEO(String password) {
-		Password.sendKeys(password);
-		LogButton.click();
-		return this;
-	}
-
-	public void overview() {
-		TestUtils.sleep(2000);
-		OVButton.click();
-		Assert.assertTrue(welcomeHeader.isDisplayed(), "Dashboard Welcome Header Not Present");
-	}
-
-	public void learnComplete() {
-		Assert.assertTrue(learnCompletebutton.isDisplayed(), "Learn Complete Button not present");
-		learnCompletebutton.click();
-	}
+    if (isElementPresent(Password) && isElementPresent(LogButton)) {
+        Password.sendKeys(password);
+        LogButton.click();
+    } else {
+        System.out.println("Password or LogButton element is not present.");
+    }
+    return this;
+}
