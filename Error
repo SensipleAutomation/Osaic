@@ -1,49 +1,28 @@
-public synchronized EO_CRM_NewProspectCreation loginToCRM(String username, String password) {
-    if (isElementPresent(Mail) && isElementPresent(Password) && isElementPresent(LogButton)) {
-        Mail.sendKeys(username);
-        Password.sendKeys(password);
-        LogButton.click();
-    }
-    return this;
-}
+public synchronized EO_CRM_NewProspectCreation mobEmail() {
+		TestUtils.sleep(1000);
 
-public synchronized EO_CRM_NewProspectCreation firstLast(String Firstnam, String lastname) {
-    TestUtils.sleep(2000);
-    if (isElementPresent(Firstname) && isElementPresent(Lastname)) {
-        Firstname.sendKeys(Firstnam);
-        Lastname.sendKeys(lastname);
-    }
-    return this;
-}
+		WebElement mobileNumberInput = PerMobNum;
+		mobileNumberInput.sendKeys(generateRandomMobileNumber());
 
-public synchronized EO_CRM_NewProspectCreation finra(String Finra) {
-    TestUtils.sleep(2000);
-    if (isElementPresent(FINRACRD)) {
-        FINRACRD.sendKeys(Finra);
-    }
-    return this;
-}
+		WebElement emailInput = PerEmail;
+		emailInput.sendKeys(generateRandomEmailAddress());
 
-public synchronized EO_CRM_NewProspectCreation BusiNB(String Name, String Branch) {
-    if (isElementPresent(BusinessName) && isElementPresent(BranchName)) {
-        BusinessName.sendKeys(Name);
-        BranchName.sendKeys(Branch);
-    }
-    return this;
-}
+		return this;
+	}
 
-public synchronized EO_CRM_NewProspectCreation dob(String dob) {
-    TestUtils.sleep(2000);
-    if (isElementPresent(DOBInput)) {
-        DOBInput.sendKeys(dob);
-    }
-    return this;
-}
+	public synchronized EO_CRM_NewProspectCreation last(String lastname) {
+		TestUtils.sleep(2000);
+		searchBar.sendKeys(lastname);
 
-private boolean isElementPresent(WebElement element) {
-    try {
-        return element.isDisplayed();
-    } catch (NoSuchElementException e) {
-        return false;
-    }
-}
+		return this;
+	}
+
+	public synchronized EO_CRM_NewProspectCreation values(String value) {
+		TestUtils.sleep(1000);
+		NBO.sendKeys(value);
+		TestUtils.sleep(1000);
+		NPS.sendKeys(value);
+		TestUtils.sleep(1000);
+		NNP.sendKeys(value);
+		return this;
+	}
