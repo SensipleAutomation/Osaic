@@ -1,10 +1,41 @@
-public void channel() {
-		TestUtils.sleep(2000);
-		WebElement element = scrDis;
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("arguments[0].scrollIntoView();", element);
-		channeldrop.click();
-		TestUtils.sleep(1000);
-		chaSel.click();
+public void BusinessDevolpment() {
+		WebElement BusiHead = BusinessHeader;
 
+		String BusiHeadText = BusiHead.getText();
+
+		String expectedText = "Business Development";
+
+		if (BusiHeadText.equals(expectedText)) {
+
+			System.out.println("Element text is as expected: " + BusiHeadText);
+		} else {
+
+			TestUtils.sleep(3000);
+			BusinessSelect.click();
+			BusiSearch.sendKeys("Business");
+			Actions actions = new Actions(driver);
+			actions.sendKeys(Keys.ENTER).perform();
+			System.out.println("Element text Selected : Business Development");
+			TestUtils.sleep(2000);
+		}
+	}
+
+	public void Lead() {
+		WebElement LeadHead = LeadsHead;
+
+		String expectedLead = LeadHead.getText();
+
+		String expectedHead = "Leads";
+
+		if (expectedLead.equals(expectedHead)) {
+			LeadHead.click();
+			System.out.println("Element text is as expected: " + expectedLead);
+		} else {
+			TestUtils.sleep(1000);
+			LeadArrow.click();
+			TestUtils.sleep(1000);
+			LeadSelect.click();
+			System.out.println("Element text Selected : Leads");
+
+		}
 	}
