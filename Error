@@ -1,26 +1,12 @@
-Assert.assertTrue(isElementPresent(saveBtn), "Save Button is not present");
-    saveBtn.click();
-    TestUtils.sleep(1000);
-    js.executeScript("arguments[0].scrollIntoView();", saveBtn);
-
-    // Assert that firstQestion is present before clicking on it
-    Assert.assertTrue(isElementPresent(firstQestion), "First Question is not present");
-    firstQestion.click();
-    TestUtils.sleep(1000);
-
-    // Assert that secondQuestion is present before clicking on it
-    Assert.assertTrue(isElementPresent(secondQuestion), "Second Question is not present");
-    secondQuestion.click();
-    TestUtils.sleep(2000);
-
-    // Assert that saveBtn2 is present before clicking on it
-    Assert.assertTrue(isElementPresent(saveBtn2), "Save Button 2 is not present");
-    saveBtn2.click();
-    TestUtils.sleep(3000);
-
-    // Assert that continueBtn is present before clicking on it
-    Assert.assertTrue(isElementPresent(continueBtn), "Continue Button is not present");
-    continueBtn.click();
-
-    // Optional: Add a final sleep if needed
-    TestUtils.sleep(2000);
+upconfirmButton.click();
+		TestUtils.sleep(1000);
+		saveBtn.click();
+		TestUtils.sleep(1000);
+		js.executeScript("arguments[0].scrollIntoView();", saveBtn);
+		firstQestion.click();
+		TestUtils.sleep(1000);
+		secondQuestion.click();
+		TestUtils.sleep(2000);
+		saveBtn2.click();
+		TestUtils.sleep(3000);
+		continueBtn.click();
