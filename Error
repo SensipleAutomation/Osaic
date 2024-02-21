@@ -1,9 +1,24 @@
-public synchronized CasesApprovalAndClosing loginToEO(String password) {
-    if (isElementPresent(Password) && isElementPresent(LogButton)) {
-        Password.sendKeys(password);
-        LogButton.click();
-    } else {
-        System.out.println("Password or LogButton element is not present.");
-    }
-    return this;
-}
+public synchronized CasesApprovalAndClosing personalInformation(String ssn, String Address, String city,
+			String zipco) {
+		TestUtils.sleep(1000);
+		WebElement element = scrollSSn;
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].scrollIntoView();", element);
+		TestUtils.sleep(1000);
+		ssnNumber.sendKeys(ssn);
+		TestUtils.sleep(1000);
+		homAddress.click();
+		homAddress.sendKeys(Address);
+		cityText.sendKeys(city);
+		TestUtils.sleep(1000);
+		stateDrop.click();
+		TestUtils.sleep(1000);
+		selectState.click();
+		zip.sendKeys(zipco);
+		js.executeScript("arguments[0].scrollIntoView();", saveScroll);
+		TestUtils.sleep(1000);
+		perSaveButton.click();
+		TestUtils.sleep(2000);
+		return this;
+
+	}
