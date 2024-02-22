@@ -1,2 +1,4 @@
-When the user enters "<FirstName>", "<LastName>", "<FINRACD>", "<DOB>", "<BusinessName>", "<BranchName>", "<AssigningSpace>"
-    And clicks on the Save Button
+public void toaster() {
+		TestUtils.explicit_locate(NewLeadToast);
+		Assert.assertTrue(isElementPresent(NewLeadToast), "Toaster is not present");
+	}
