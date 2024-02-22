@@ -1,1 +1,1 @@
-this.wait = new WebDriverWait(driver, 10);
+wait cannot be resolved or is not a field
