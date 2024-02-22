@@ -1,7 +1,1 @@
-private boolean isElementPresent(WebElement element) {
-		try {
-			return element.isDisplayed();
-		} catch (NoSuchElementException e) {
-			return false;
-		}
-	}
+this.wait = new WebDriverWait(driver, 10);
