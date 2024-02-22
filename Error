@@ -1,60 +1,47 @@
-public synchronized EO_CRM_NewProspectCreation loginToCRM(String username, String password) {
-        // Assert elements are present before interacting with them
-        Assert.assertTrue(isElementPresent(Mail), "Mail field is not present");
-        Assert.assertTrue(isElementPresent(Password), "Password field is not present");
-        Assert.assertTrue(isElementPresent(LogButton), "Login button is not present");
 
-        // Perform actions if elements are present
-        Mail.sendKeys(username);
-        Password.sendKeys(password);
-        LogButton.click();
-
-        return this;
-    }
-
-    public synchronized EO_CRM_NewProspectCreation firstLast(String Firstnam, String lastname) {
+    public synchronized EO_CRM_NewProspectCreation mobEmail() {
         TestUtils.sleep(1000);
+
         // Assert elements are present before interacting with them
-        Assert.assertTrue(isElementPresent(Firstname), "First name field is not present");
-        Assert.assertTrue(isElementPresent(Lastname), "Last name field is not present");
+        Assert.assertTrue(isElementPresent(PerMobNum), "Personal Mobile Number field is not present");
+        Assert.assertTrue(isElementPresent(PerEmail), "Personal Email field is not present");
 
         // Perform actions if elements are present
-        Firstname.sendKeys(Firstnam);
-        Lastname.sendKeys(lastname);
+        WebElement mobileNumberInput = PerMobNum;
+        mobileNumberInput.sendKeys(generateRandomMobileNumber());
+
+        WebElement emailInput = PerEmail;
+        emailInput.sendKeys(generateRandomEmailAddress());
 
         return this;
     }
 
-    public synchronized EO_CRM_NewProspectCreation finra(String Finra) {
+    public synchronized EO_CRM_NewProspectCreation last(String lastname) {
         TestUtils.sleep(1000);
+
         // Assert elements are present before interacting with them
-        Assert.assertTrue(isElementPresent(FINRACRD), "Finra field is not present");
+        Assert.assertTrue(isElementPresent(searchBar), "Search bar field is not present");
 
         // Perform actions if elements are present
-        FINRACRD.sendKeys(Finra);
+        searchBar.sendKeys(lastname);
 
         return this;
     }
 
-    public synchronized EO_CRM_NewProspectCreation BusiNB(String Name, String Branch) {
-        // Assert elements are present before interacting with them
-        Assert.assertTrue(isElementPresent(BusinessName), "Business name field is not present");
-        Assert.assertTrue(isElementPresent(BranchName), "Branch name field is not present");
-
-        // Perform actions if elements are present
-        BusinessName.sendKeys(Name);
-        BranchName.sendKeys(Branch);
-
-        return this;
-    }
-
-    public synchronized EO_CRM_NewProspectCreation dob(String dob) {
+    public synchronized EO_CRM_NewProspectCreation values(String value) {
         TestUtils.sleep(1000);
+
         // Assert elements are present before interacting with them
-        Assert.assertTrue(isElementPresent(DOBInput), "DOB field is not present");
+        Assert.assertTrue(isElementPresent(NBO), "NBO field is not present");
+        Assert.assertTrue(isElementPresent(NPS), "NPS field is not present");
+        Assert.assertTrue(isElementPresent(NNP), "NNP field is not present");
 
         // Perform actions if elements are present
-        DOBInput.sendKeys(dob);
+        NBO.sendKeys(value);
+        TestUtils.sleep(1000);
+        NPS.sendKeys(value);
+        TestUtils.sleep(1000);
+        NNP.sendKeys(value);
 
         return this;
     }
