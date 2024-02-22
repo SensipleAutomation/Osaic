@@ -1,1 +1,7 @@
-Assert.assertTrue(isElementPresent(confirmationInvite), "confirmationInvite is not present");
+private boolean isElementPresent(WebElement element) {
+		try {
+			return element.isDisplayed();
+		} catch (NoSuchElementException e) {
+			return false;
+		}
+	}
