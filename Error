@@ -1,1 +1,1 @@
- Assert.assertTrue(isElementPresent(TestUtils.explicit_locate(NewLeadToast)), "Toaster is not present");
+The method isElementPresent(WebElement) in the type EO_CRM_NewProspectCreation is not applicable for the arguments (void)
