@@ -1,8 +1,1 @@
-public synchronized EO_CRM_NewProspectCreation firstLast(String Firstnam, String lastname) {
-		TestUtils.sleep(1000);
-		if (isElementPresent(Firstname) && isElementPresent(Lastname)) {
-			waitForElement(Firstname).sendKeys(Firstnam);
-			waitForElement(Lastname).sendKeys(lastname);
-		}
-		return this;
-	}
+Assert.assertTrue(isElementPresent(ssnNumber), "SSN Number field is not present");
