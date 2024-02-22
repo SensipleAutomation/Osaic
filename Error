@@ -1,19 +1,2 @@
-And user enters "<FirstName>" value in FirstName field and "<LastName>" value in LastName field
-	And user enters the "<FINRACD>" values in FINRACD
-	And user enters the "<DOB>" values in DOB Field 
-	And User Validate the BusinessProfile is present
-	And user enters "<BusinessName>" value in Business Name(DBA) field and "<BranchName>" value in Branch Name field
-	And User validate "<AssigningSpace>" is present
-	And user assign External Recruiter Name 
-	And user assign Internal Recruiter Name 
-	And User assign wealth management firm 
-	And User enters value in personal mobile Number field and value in personal email field 
-	And User selcts the recruiting lead source 
-	And user selects Solo from the Current Type of Practice dropdown from Contacting section 
-	And user click on Save Button
-
-
-Examples: 
-		| username             | password       | FirstName | LastName | FINRACD      | DOB        | BusinessName  | BranchName | value | EoPassword |  ssn             | Address       | city | zipcode |
-		| mounika.golla@advisorgroup.com.crm2.qafull       | $aLesforcE1234  | AutoDemoTest   | Deat      | 8654321   | 04/04/1994 | TesAuto | ABC Test | 1 | P@55w0rd$321 | 223344556  | 72 Suite 187   | Alaska | 99550 |
-		
+When the user enters "<FirstName>", "<LastName>", "<FINRACD>", "<DOB>", "<BusinessName>", "<BranchName>", "<AssigningSpace>"
+    And clicks on the Save Button
