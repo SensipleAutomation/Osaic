@@ -1,1 +1,1 @@
-wait.until(ExpectedConditions.visibilityOf(element));
+jsExecutor.executeScript("window.scrollTo(0, 0);");
