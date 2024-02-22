@@ -1,1 +1,4 @@
-web-input-text//div//input
+((JavascriptExecutor) driver).executeScript("window.open()");
+		for (String handle : driver.getWindowHandles()) {
+			driver.switchTo().window(handle);
+		}
