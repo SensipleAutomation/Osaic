@@ -1,25 +1,8 @@
-private WebElement waitForElement(WebElement element) {
-        return wait.until(ExpectedConditions.visibilityOf(element));
-    }
-
 public synchronized EO_CRM_NewProspectCreation firstLast(String Firstnam, String lastname) {
-        waitForElement(Firstname).sendKeys(Firstnam);
-        waitForElement(Lastname).sendKeys(lastname);
-        return this;
-    }
-
-    public synchronized EO_CRM_NewProspectCreation finra(String Finra) {
-        waitForElement(FINRACRD).sendKeys(Finra);
-        return this;
-    }
-
-    public synchronized EO_CRM_NewProspectCreation BusiNB(String Name, String Branch) {
-        waitForElement(BusinessName).sendKeys(Name);
-        waitForElement(BranchName).sendKeys(Branch);
-        return this;
-    }
-
-    public synchronized EO_CRM_NewProspectCreation dob(String dob) {
-        waitForElement(DOBInput).sendKeys(dob);
-        return this;
-    }
+		TestUtils.sleep(1000);
+		if (isElementPresent(Firstname) && isElementPresent(Lastname)) {
+			waitForElement(Firstname).sendKeys(Firstnam);
+			waitForElement(Lastname).sendKeys(lastname);
+		}
+		return this;
+	}
