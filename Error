@@ -1,9 +1,1 @@
-WebDriver driver;
-	WebDriverWait wait;
-
-	public EO_CRM_NewProspectCreation(WebDriver driver) {
-		this.driver = driver;
-		this.wait= WebDriverWait(driver, 10);
-		PageFactory.initElements(driver, this);
-
-	}
+wait.until(ExpectedConditions.visibilityOf(element));
