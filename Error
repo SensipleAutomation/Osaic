@@ -1,12 +1,14 @@
-public synchronized CasesApprovalAndClosing uploadGDCDoc(String value, String path) {
+public synchronized CasesApprovalAndClosing uploadGDCDoc(String path) {
 		TestUtils.sleep(2000);
 
 		Assert.assertTrue(uploadPriorYearGdcLink.isEnabled(), "Upload Prior Year GDC Link is not enabled");
-//		uploadPriorYearGdcLink.click();
-//		TestUtils.uploadFile("\\resources\\Uploads\\Prior Year GDC.pdf");
-		TestUtils.sleep(1000);
-
-		WebElement fileInput = uploadPriorYearGdcLink;
+		uploadPriorYearGdcLink.click();
+////		TestUtils.uploadFile("\\resources\\Uploads\\Prior Year GDC.pdf");
+//		TestUtils.sleep(1000);
+//
+//		WebElement fileInput = uploadPriorYearGdcLink;
 
 		// Use sendKeys to set the file path in the file input field
-		fileInput.sendKeys(path);
+		uploadPriorYearGdcLink.sendKeys(path);
+		Actions actions = new Actions(driver);
+		actions.sendKeys(Keys.ENTER).perform();
