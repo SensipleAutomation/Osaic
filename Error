@@ -1,4 +1,5 @@
-((JavascriptExecutor) driver).executeScript("window.open()");
-		for (String handle : driver.getWindowHandles()) {
-			driver.switchTo().window(handle);
-		}
+<li role="tab" ptooltip="" class="p-element p-steps-item p-highlight p-steps-current ng-star-inserted completed-step" aria-selected="true" aria-expanded="true" data-pc-section="menuitem"><a role="presentation" class="p-menuitem-link ng-star-inserted" target="undefined" id="1" tabindex="-1"><span class="p-steps-number">1</span><span class="p-steps-title ng-star-inserted">Profile 
+ Information</span><!----><!----></a><!----><!----></li>
+<::before></::before>
+<a role="presentation" class="p-menuitem-link ng-star-inserted" target="undefined" id="1" tabindex="-1"><span class="p-steps-number">1</span><span class="p-steps-title ng-star-inserted">Profile 
+ Information</span><!----><!----></a>
