@@ -1,4 +1,6 @@
-String filePath = "path/to/your/file.txt";
-
-        // Use sendKeys to set the file path in the file input field
-        fileInput.sendKeys(filePath);
+And user complete the learn module with name "Automation"                                                               # seleniumgluecode.SD_CRMNewProspectCreation.user_complete_the_learn_module_with_name(java.lang.String)
+      org.openqa.selenium.ElementNotInteractableException: element not interactable
+  (Session info: chrome=121.0.6167.185)
+Build info: version: '3.10.0', revision: '176b4a9', time: '2018-03-02T19:03:16.397Z'
+System info: host: 'PW1ETSQUAS024AV', ip: '10.128.16.250', os.name: 'Windows 10', os.arch: 'amd64', os.version: '10.0', java.version: '17.0.10'
+Driver info: org.openqa.selenium.remote.RemoteWebDriver
