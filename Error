@@ -1,9 +1,13 @@
-WebElement elementToValidate = driver.findElement(By.id("1"));
+ WebElement elementToValidate = driver.findElement(By.id("1"));
 
-        
+        // Wait for the Angular application to stabilize
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".p-steps-item.completed-step")));
+
+        // Get the color attribute of the element
         String actualColor = elementToValidate.getCssValue("color");
 
-       
+        // Assuming the color is represented in RGB format as "rgb(0, 128, 0)"
         String expectedColor = "rgb(0, 128, 0)";
 
         if (actualColor.equals(expectedColor)) {
