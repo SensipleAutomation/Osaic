@@ -1,14 +1,51 @@
-public synchronized CasesApprovalAndClosing uploadGDCDoc(String path) {
-		TestUtils.sleep(2000);
+@BeforeTest
+		  public void beforeTest() throws FilloException, IOException {
+	    	System.out.println("--------------------------BT--------------------------------------------");
+	   	 Driverselector.initializeservericebrowser();
+	    }
+	    @BeforeMethod
+		  public void beforeMethod() throws FilloException {
+	    	System.out.println("--------------------------BM--------------------------------------------");
+	    }
 
-		Assert.assertTrue(uploadPriorYearGdcLink.isEnabled(), "Upload Prior Year GDC Link is not enabled");
-		uploadPriorYearGdcLink.click();
-////		TestUtils.uploadFile("\\resources\\Uploads\\Prior Year GDC.pdf");
-//		TestUtils.sleep(1000);
-//
-//		WebElement fileInput = uploadPriorYearGdcLink;
+	   @Test(groups = "cucumber", description = "Runs Cucumber Scenarios", dataProvider = "scenarios")
+	    public void scenario(PickleWrapper pickleEvent, FeatureWrapper cucumberFeature) throws Throwable {
 
-		// Use sendKeys to set the file path in the file input field
-		uploadPriorYearGdcLink.sendKeys(path);
-		Actions actions = new Actions(driver);
-		actions.sendKeys(Keys.ENTER).perform();
+	    	System.out.println(cucumberFeature);
+
+
+
+	    	System.out.println("--------------------------T--------------------------------------------");
+	    	System.out.println(pickleEvent.getPickle().getScenarioLine());
+
+	        testNGCucumberRunner.runScenario(pickleEvent.getPickle());
+	        System.out.println("--------------------------T2--------------------------------------------");
+	    }
+
+
+	    @AfterMethod
+		  public void afterMethod() throws FilloException {
+
+
+	    	System.out.println("--------------------------AM--------------------------------------------");
+	    }
+
+	    @DataProvider
+	    public Object[][] scenarios() {
+	        return testNGCucumberRunner.provideScenarios();
+	    }
+
+	    @AfterClass(alwaysRun = true)
+	    public void tearDownClass() {
+	    	System.out.println("--------------------------AC--------------------------------------------");
+	        testNGCucumberRunner.finish();
+
+	    }
+	    @AfterTest
+
+		  public void setUptear() throws IOException {
+			System.out.println("after test");
+			int closebrowser =Integer.parseInt(System.getProperty("closebrowser"));
+			if(closebrowser==1) {
+			 Driverselector.service.stop();
+			}
