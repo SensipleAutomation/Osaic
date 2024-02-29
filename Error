@@ -1,1 +1,34 @@
-https://googlechromelabs.github.io/chrome-for-testing/
+
+java.lang.NullPointerException: Cannot invoke "org.openqa.selenium.JavascriptExecutor.executeScript(String, Object[])" because "this.js" is null
+	at webpages.EO_CRM_NewProspectCreation.External(EO_CRM_NewProspectCreation.java:498)
+
+
+
+
+public class EO_CRM_NewProspectCreation {
+
+	WebDriver driver;
+	WebDriverWait wait;
+
+	public EO_CRM_NewProspectCreation(WebDriver driver) {
+		this.driver = driver;
+		this.wait = new WebDriverWait(driver, 10);
+		PageFactory.initElements(driver, this);
+
+	}
+
+	JavascriptExecutor js = (JavascriptExecutor) driver;
+
+	public void BusinessProfile() {
+		WebElement element = ScrollBusiness;
+
+		js.executeScript("arguments[0].scrollIntoView();", element);
+		Assert.assertTrue(isElementPresent(ScrollBusiness), "Business Profile Header is not present");
+	}
+
+	public void Assigne() {
+		WebElement element = scrollAssign;
+
+		js.executeScript("arguments[0].scrollIntoView();", element);
+		Assert.assertTrue(isElementPresent(scrollAssign), "Assign is not present");
+	}
