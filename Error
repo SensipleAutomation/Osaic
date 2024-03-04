@@ -1,3 +1,1 @@
-Assert.assertTrue(isElementPresent(Mail), "Mail field is not present");
-		Assert.assertTrue(isElementPresent(Password), "Password field is not present");
-		Assert.assertTrue(isElementPresent(LogButton), "Login button is not present");
+Assert.assertTrue(isElementPresent(Mail) && isElementPresent(Password) && isElementPresent(LogButton), "One or more required fields are not present");
