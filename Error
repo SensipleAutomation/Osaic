@@ -1,1 +1,1 @@
-Assert.assertTrue(isElementPresent(Mail) && isElementPresent(Password) && isElementPresent(LogButton), "One or more required fields are not present");
+Does any deployment happened with qafull, lot of changes in UI..
