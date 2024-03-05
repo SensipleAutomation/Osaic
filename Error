@@ -1,1 +1,17 @@
-Thank you for the feedback! I appreciate your suggestion regarding the "New_configuration (1).launch" filenames. However, those files are not part of my changes and belong to another framework in the repository. I recommend reaching out to the owner or contributor of that specific framework to address the naming convention. My changes follow the project's naming conventions. Please let me know if there's anything specific within my changes that requires attention.
+public synchronized CasesApprovalAndClosing clickNobutton(String Value) {
+		for (int i = 0; i < 5; i++) {
+
+			WebElement noButton = backConsentnoBtn.get(i);
+
+			((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", noButton);
+
+			noButton.click();
+		}
+		TestUtils.sleep(1000);
+		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});",
+				questionNo6YesButton);
+		questionNo6YesButton.click();
+		TestUtils.explicit_locate(questionValue);
+		Assert.assertTrue(isElementPresent(questionValue), "Value Field is not present");
+		questionValue.sendKeys(Value);
+		TestUtils.sleep(2000);
