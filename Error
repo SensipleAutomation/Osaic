@@ -1,17 +1,13 @@
-public synchronized CasesApprovalAndClosing clickNobutton(String Value) {
-		for (int i = 0; i < 5; i++) {
+Hi ⁠
 
-			WebElement noButton = backConsentnoBtn.get(i);
+Mathis,
 
-			((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", noButton);
+ 
 
-			noButton.click();
-		}
-		TestUtils.sleep(1000);
-		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});",
-				questionNo6YesButton);
-		questionNo6YesButton.click();
-		TestUtils.explicit_locate(questionValue);
-		Assert.assertTrue(isElementPresent(questionValue), "Value Field is not present");
-		questionValue.sendKeys(Value);
-		TestUtils.sleep(2000);
+Brian
+
+, Good Morning, for the PR which is raised under https://pw1appdvop01.ibddomain.net/AdvisorGroup/Applications/_git/web/pullrequest/4311,  Regarding the "New_configuration (1).launch" filenames are not part of my changes and belong to another framework in the repository. My changes follow the project's naming conventions. 
+
+
+
+As of this my PR is not merged, requesting for close the comment for merge..
