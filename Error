@@ -1,1 +1,1 @@
-WebElement textBox = TestUtils.explicit_locate(backConsentTextbox).get(i);
+List<WebElement> textBoxes = TestUtils.explicit_locate(backConsentTextbox);
