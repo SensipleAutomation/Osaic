@@ -13,6 +13,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import utility.TestUtils;
@@ -20,11 +22,17 @@ import utility.TestUtils;
 public class EO_CRM_NewProspectCreation {
 
 	WebDriver driver;
+	WebDriverWait wait;
+	JavascriptExecutor js;
+	Actions act;
 
 	public EO_CRM_NewProspectCreation(WebDriver driver) {
 		this.driver = driver;
+		this.wait = new WebDriverWait(driver, 10);
 		PageFactory.initElements(driver, this);
 
+		js = (JavascriptExecutor) driver;
+		act = new Actions(driver);
 	}
 
 	@FindBy(xpath = "//input[@name='username']")
@@ -93,13 +101,13 @@ public class EO_CRM_NewProspectCreation {
 	@FindBy(xpath = "//input[@name='Company']")
 	private WebElement BranchName;
 
-	@FindBy(xpath = "//span[text()='ASSIGNED TO']")
-	private WebElement scrollAssign;
+	@FindBy(xpath = "//span[text()='Recruiting Team']")
+	private WebElement recrutingTeam;
 
-	@FindBy(xpath = "(//input)[last()-45]")
+	@FindBy(xpath = "(//input)[last()-46]")
 	private WebElement ExtRecNam;
 
-	@FindBy(xpath = "(//input)[last()-43]")
+	@FindBy(xpath = "(//input)[last()-42]")
 	private WebElement IntRecNam;
 
 	@FindBy(xpath = "//label[text()='Assigned Internal Recruiter Name']//following::ul//following::span[text()='Mounika Golla BO']")
@@ -107,6 +115,12 @@ public class EO_CRM_NewProspectCreation {
 
 	@FindBy(xpath = "(//label[text()='Assigned External Recruiter Name']//following::ul//following::span[text()='Mounika Golla BO'])[1]")
 	private WebElement ExtRecNamSel;
+
+	@FindBy(xpath = "//span[text()='Assigned Wealth Management Firm']")
+	private WebElement wealthManagementTap;
+
+	@FindBy(xpath = "(//label[text()='Assigned Wealth Management Firm'])//following::button[1]")
+	private WebElement wealthDropdown;
 
 	@FindBy(xpath = "//label[text()='Assigned Wealth Management Firm']//following-sibling::div")
 	private WebElement AWMFirmDrop;
@@ -138,16 +152,22 @@ public class EO_CRM_NewProspectCreation {
 	@FindBy(xpath = "//button[text()='Save']")
 	private WebElement saveButton;
 
+	@FindBy(xpath = "//span[text()='Account Name']")
+	private WebElement beforeConvert;
+
 	@FindBy(xpath = "//button[text()='Convert Lead']")
 	private WebElement ConveLeButton;
 
-	@FindBy(xpath = "//div[@role='alertdialog']")
+	@FindBy(xpath = "(//div[@role='alertdialog'])[last()]")
 	private WebElement NewLeadToast;
+
+	@FindBy(xpath = "//span[text()='Lead Converted']")
+	private WebElement leadConvertToast;
 
 	@FindBy(xpath = "//slot[contains(@class,'slds-page-header__title slds')]")
 	private WebElement LeadHeader;
 
-	@FindBy(xpath = "//h2[contains(@class, 'slds-p-top_large slds-p-horizontal_medium')]")
+	@FindBy(xpath = "(//h2[contains(@class, 'slds-p-top_large slds-p-horizontal_medium')])[last()]")
 	private WebElement convertHeader;
 
 	@FindBy(xpath = "//button[text()='Convert']")
@@ -167,8 +187,8 @@ public class EO_CRM_NewProspectCreation {
 	@FindBy(xpath = "(//ul[@class='slds-button-group-list']/li)[last()]")
 	private WebElement inviteButton;
 
-	@FindBy(xpath = "//button[text()='Yes']")
-	private WebElement yesButton;
+	@FindBy(xpath = "//span[contains(text(), 'The WelcomeHub Invitation Email will')]")
+	private WebElement yesButtonHeader;
 
 	@FindBy(xpath = "//p[text()='The invite to the Welcome Hub has been sent to your prospect.']")
 	private WebElement confirmationInvite;
@@ -227,7 +247,7 @@ public class EO_CRM_NewProspectCreation {
 	@FindBy(xpath = "//a[text()='8654321']")
 	private WebElement oppourtunity;
 
-	@FindBy(xpath = "(//div[contains(@class, 'horizontal_small')]//span[text()='Contact'])[last()]")
+	@FindBy(xpath = "(//label[text()='Contact'])//following::input[1]")
 	private WebElement editContact;
 
 	@FindBy(xpath = "(//input[@placeholder='Search Contacts...'])[2]")
@@ -297,44 +317,61 @@ public class EO_CRM_NewProspectCreation {
 	private WebElement extID;
 
 	public synchronized EO_CRM_NewProspectCreation loginToCRM(String username, String password) {
-		if (isElementPresent(Mail) && isElementPresent(Password) && isElementPresent(LogButton)) {
-			Mail.sendKeys(username);
-			Password.sendKeys(password);
-			LogButton.click();
-		}
+
+		Assert.assertTrue(isElementPresent(Mail) && isElementPresent(Password) && isElementPresent(LogButton),
+				"One or more required fields are not present");
+
+		Mail.sendKeys(username);
+		Password.sendKeys(password);
+		LogButton.click();
+
 		return this;
 	}
 
 	public synchronized EO_CRM_NewProspectCreation firstLast(String Firstnam, String lastname) {
-		TestUtils.sleep(1000);
-		if (isElementPresent(Firstname) && isElementPresent(Lastname)) {
-			Firstname.sendKeys(Firstnam);
-			Lastname.sendKeys(lastname);
-		}
+
+		Assert.assertTrue(isElementPresent(Firstname), "First name field is not present");
+		Assert.assertTrue(isElementPresent(Lastname), "Last name field is not present");
+
+		Firstname.sendKeys(Firstnam);
+		Lastname.sendKeys(lastname);
+
 		return this;
 	}
 
 	public synchronized EO_CRM_NewProspectCreation finra(String Finra) {
-		TestUtils.sleep(1000);
-		if (isElementPresent(FINRACRD)) {
-			FINRACRD.sendKeys(Finra);
-		}
+
+		Assert.assertTrue(isElementPresent(FINRACRD), "Finra field is not present");
+
+		FINRACRD.sendKeys(Finra);
+
 		return this;
 	}
 
-	public synchronized EO_CRM_NewProspectCreation BusiNB(String Name, String Branch) {
-		if (isElementPresent(BusinessName) && isElementPresent(BranchName)) {
-			BusinessName.sendKeys(Name);
-			BranchName.sendKeys(Branch);
-		}
+	public synchronized EO_CRM_NewProspectCreation businessNameDBA(String Name) {
+		js.executeScript("arguments[0].scrollIntoView({block: 'center'});", BusinessName);
+		Assert.assertTrue(isElementPresent(BusinessName), "Business name field is not present");
+
+		BusinessName.sendKeys(Name);
+
+		return this;
+	}
+
+	public synchronized EO_CRM_NewProspectCreation businessBranchName(String Branch) {
+		js.executeScript("arguments[0].scrollIntoView({block: 'center'});", BranchName);
+		Assert.assertTrue(isElementPresent(BranchName), "Branch name field is not present");
+
+		BranchName.sendKeys(Branch);
+
 		return this;
 	}
 
 	public synchronized EO_CRM_NewProspectCreation dob(String dob) {
-		TestUtils.sleep(1000);
-		if (isElementPresent(DOBInput)) {
-			DOBInput.sendKeys(dob);
-		}
+
+		Assert.assertTrue(isElementPresent(DOBInput), "DOB field is not present");
+
+		DOBInput.sendKeys(dob);
+
 		return this;
 	}
 
@@ -349,45 +386,43 @@ public class EO_CRM_NewProspectCreation {
 	public synchronized EO_CRM_NewProspectCreation mobEmail() {
 		TestUtils.sleep(1000);
 
-		if (isElementPresent(PerMobNum) && isElementPresent(PerEmail)) {
-			WebElement mobileNumberInput = PerMobNum;
-			mobileNumberInput.sendKeys(generateRandomMobileNumber());
+		Assert.assertTrue(isElementPresent(PerMobNum), "Personal Mobile Number field is not present");
+		Assert.assertTrue(isElementPresent(PerEmail), "Personal Email field is not present");
 
-			WebElement emailInput = PerEmail;
-			emailInput.sendKeys(generateRandomEmailAddress());
-		}
+		WebElement mobileNumberInput = PerMobNum;
+		mobileNumberInput.sendKeys(generateRandomMobileNumber());
+
+		WebElement emailInput = PerEmail;
+		emailInput.sendKeys(generateRandomEmailAddress());
+
 		return this;
 	}
 
 	public synchronized EO_CRM_NewProspectCreation last(String lastname) {
 		TestUtils.sleep(1000);
 
-		if (isElementPresent(searchBar)) {
-			searchBar.sendKeys(lastname);
-		}
+		Assert.assertTrue(isElementPresent(searchBar), "Search bar field is not present");
+
+		searchBar.sendKeys(lastname);
+
 		return this;
 	}
 
 	public synchronized EO_CRM_NewProspectCreation values(String value) {
 		TestUtils.sleep(1000);
 
-		if (isElementPresent(NBO) && isElementPresent(NPS) && isElementPresent(NNP)) {
-			NBO.sendKeys(value);
-			TestUtils.sleep(1000);
-			NPS.sendKeys(value);
-			TestUtils.sleep(1000);
-			NNP.sendKeys(value);
-		}
+		Assert.assertTrue(isElementPresent(NBO), "NBO field is not present");
+		Assert.assertTrue(isElementPresent(NPS), "NPS field is not present");
+		Assert.assertTrue(isElementPresent(NNP), "NNP field is not present");
+
+		NBO.sendKeys(value);
+		TestUtils.sleep(1000);
+		NPS.sendKeys(value);
+		TestUtils.sleep(1000);
+		NNP.sendKeys(value);
+
 		return this;
 	}
-
-//	public void Negative() {
-//		if (Lastname.isDisplayed()) {
-//			Lastname.click();
-//			TestUtils.sleep(1000);
-//		}
-//
-//	}
 
 	public void dashboard() {
 		TestUtils.sleep(1000);
@@ -414,8 +449,7 @@ public class EO_CRM_NewProspectCreation {
 			TestUtils.sleep(3000);
 			BusinessSelect.click();
 			BusiSearch.sendKeys("Business");
-			Actions actions = new Actions(driver);
-			actions.sendKeys(Keys.ENTER).perform();
+			act.sendKeys(Keys.ENTER).perform();
 			System.out.println("Element text Selected : Business Development");
 			TestUtils.sleep(2000);
 		}
@@ -443,135 +477,102 @@ public class EO_CRM_NewProspectCreation {
 
 	public void newButton() {
 		TestUtils.sleep(2000);
-		if (isElementPresent(NewButton)) {
-			Assert.assertTrue(NewButton.isDisplayed(), "New button is not present");
-			NewButton.click();
-		}
+		Assert.assertTrue(isElementPresent(NewButton), "New button is not present");
+		NewButton.click();
 	}
 
 	public void NewHead() {
 		TestUtils.sleep(1000);
-		if (isElementPresent(NewLeadHeader)) {
-			Assert.assertTrue(NewLeadHeader.isDisplayed(), "New Header is not present");
-			TestUtils.sleep(1000);
-		}
+		Assert.assertTrue(isElementPresent(NewLeadHeader), "New Header is not present");
 	}
 
 	public void BusinessProfile() {
 		WebElement element = ScrollBusiness;
-		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("arguments[0].scrollIntoView();", element);
-		if (isElementPresent(ScrollBusiness)) {
-			Assert.assertTrue(ScrollBusiness.isDisplayed(), "Business Profile Header is not present");
-		}
+		Assert.assertTrue(isElementPresent(ScrollBusiness), "Business Profile Header is not present");
 	}
 
 	public void Assigne() {
-		WebElement element = scrollAssign;
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("arguments[0].scrollIntoView();", element);
-		if (isElementPresent(scrollAssign)) {
-			Assert.assertTrue(scrollAssign.isDisplayed(), "Assign is not present");
-		}
+		js.executeScript("arguments[0].scrollIntoView({block: 'center'});", recrutingTeam);
+		Assert.assertTrue(isElementPresent(recrutingTeam), "Assign is not present");
 	}
 
 	public void External() {
-		WebElement element = scrollAssign;
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("arguments[0].scrollIntoView();", element);
-		if (isElementPresent(ExtRecNam)) {
-			ExtRecNam.click();
-			ExtRecNamSel.click();
-			TestUtils.sleep(1000);
-		}
+		js.executeScript("arguments[0].scrollIntoView({block: 'center'});", ExtRecNam);
+		ExtRecNam.click();
+		ExtRecNamSel.click();
+		TestUtils.sleep(1000);
 	}
 
 	public void Internal() {
-		if (isElementPresent(IntRecNam)) {
-			IntRecNam.click();
-			IntRecNamSel.click();
-			TestUtils.sleep(1000);
-		}
+		Assert.assertTrue(isElementPresent(IntRecNam), "Internal Receiver Name is not present");
+		IntRecNam.click();
+		IntRecNamSel.click();
+		TestUtils.sleep(1000);
 	}
 
-	public void wealth() {
-		if (isElementPresent(AWMFirmDrop)) {
-			AWMFirmDrop.click();
-			dropOsaic.click();
-			TestUtils.sleep(1000);
-		}
-	}
+//	public void wealth() {
+//		wea
+//		AWMFirmDrop.click();
+//		dropOsaic.click();
+//		TestUtils.sleep(1000);
+//	}
 
 	public void recLead() {
 		WebElement element = RecleSource;
-		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("arguments[0].scrollIntoView();", element);
-		if (isElementPresent(RecleSource)) {
-			RecleSource.click();
-			LeadMarket.click();
-			TestUtils.sleep(1000);
-		}
+		RecleSource.click();
+		LeadMarket.click();
+		TestUtils.sleep(1000);
 	}
 
 	public void curPrac() {
-		WebElement element = CurPraDrop;
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("arguments[0].scrollIntoView();", element);
-		if (isElementPresent(CurPraDrop)) {
-			CurPraDrop.click();
-			SoloSel.click();
-			TestUtils.sleep(1000);
-		}
+		js.executeScript("arguments[0].scrollIntoView({block: 'center'});", CurPraDrop);
+		Assert.assertTrue(isElementPresent(CurPraDrop), "Current Practise is not present");
+		CurPraDrop.click();
+		SoloSel.click();
+		TestUtils.sleep(1000);
 	}
 
 	public void finSave() {
-		if (isElementPresent(saveButton)) {
-			saveButton.click();
-		}
+		saveButton.click();
 	}
 
 	public void toaster() {
-		TestUtils.explicit_locate(NewLeadToast);
-		if (isElementPresent(NewLeadToast)) {
-			Assert.assertTrue(NewLeadToast.isDisplayed(), "Assign is not present");
-		}
+		wait.until(ExpectedConditions.visibilityOf(NewLeadToast));
+		Assert.assertTrue(isElementPresent(NewLeadToast), "Toaster is not present");
 	}
 
-	public void leadPageHead() {
-		TestUtils.sleep(2000);
-		if (isElementPresent(ConveLeButton)) {
-			Assert.assertTrue(ConveLeButton.isDisplayed(), "LeadHeader is not present");
-		}
+	public void leadToaster() {
+		wait.until(ExpectedConditions.visibilityOf(leadConvertToast));
+		Assert.assertTrue(isElementPresent(leadConvertToast), "Toaster is not present");
 	}
 
 	public void ClickLead() {
-		TestUtils.sleep(4000);
-		if (isElementPresent(ConveLeButton)) {
-			ConveLeButton.click();
-		}
+		wait.until(ExpectedConditions.visibilityOf(ConveLeButton));
+		TestUtils.sleep(1000);
+		Assert.assertTrue(isElementPresent(ConveLeButton), "ConveLeButton is not present");
+		ConveLeButton.click();
 	}
 
 	public void convertHead() {
-		TestUtils.sleep(4000);
-		if (isElementPresent(convertHeader)) {
-			Assert.assertTrue(convertHeader.isDisplayed(), "convertHeader is not present");
-		}
+		wait.until(ExpectedConditions.visibilityOf(convertHeader));
+		Assert.assertTrue(isElementPresent(convertHeader), "Convert Header is not present");
 	}
 
 	public void finaConvert() {
-		TestUtils.sleep(4000);
-		if (isElementPresent(finalConvert)) {
-			finalConvert.click();
-		}
+		wait.until(ExpectedConditions.visibilityOf(beforeConvert));
+		Assert.assertTrue(isElementPresent(beforeConvert), "beforeConvert is not present");
+		TestUtils.sleep(1000);
+		Assert.assertTrue(isElementPresent(finalConvert), "ConveLeButton is not present");
+		finalConvert.click();
 	}
 
 	public void FinalHeader() {
 		TestUtils.explicit_locate(ConvertMessage);
 		TestUtils.sleep(2000);
-		if (isElementPresent(ConvertMessage)) {
-			Assert.assertTrue(ConvertMessage.isDisplayed(), "convertMessage is not present");
-			TestUtils.sleep(2000);
-		}
+		Assert.assertTrue(isElementPresent(ConvertMessage), "Convert Message is not present");
+		TestUtils.sleep(2000);
 	}
 
 //	public void openacc() {
@@ -580,50 +581,40 @@ public class EO_CRM_NewProspectCreation {
 
 	public void inviteBut() {
 		TestUtils.sleep(3000);
-		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("window.scrollTo(0, 0);");
 		TestUtils.sleep(2000);
-
-		if (isElementPresent(inviteButton)) {
-			Assert.assertTrue(inviteButton.isDisplayed(), "inviteButton is not present");
-		}
+		Assert.assertTrue(isElementPresent(inviteButton), "Invite Button is not present");
 	}
 
 	public void invite() {
-		if (isElementPresent(inviteButton)) {
-			inviteButton.click();
-			TestUtils.sleep(3000);
-			Actions actions = new Actions(driver);
-			actions.sendKeys(Keys.ENTER).perform();
-			TestUtils.sleep(2000);
-			TestUtils.explicit_locate(confirmationInvite);
-			Assert.assertTrue(isElementPresent(confirmationInvite), "confirmationInvite is not present");
-			TestUtils.sleep(2000);
-			invitedClose.click();
-			TestUtils.sleep(2000);
-			driver.navigate().refresh();
-			TestUtils.sleep(2000);
-		}
+		Assert.assertTrue(isElementPresent(inviteButton), "Invite Button is not present");
+		inviteButton.click();
+		TestUtils.explicit_locate(yesButtonHeader);
+		Assert.assertTrue(isElementPresent(yesButtonHeader), "Button Yes on Invite is not present");
+		act.sendKeys(Keys.ENTER).perform();
+		TestUtils.sleep(2000);
+		TestUtils.explicit_locate(confirmationInvite);
+		Assert.assertTrue(isElementPresent(confirmationInvite), "confirmationInvite is not present");
+		invitedClose.click();
+		TestUtils.sleep(2000);
+		driver.navigate().refresh();
+		TestUtils.sleep(2000);
 	}
 
 	public void confirmation() {
 		TestUtils.sleep(2000);
-
-		if (isElementPresent(confirmToaster)) {
-			Assert.assertTrue(confirmToaster.isDisplayed(), "confirmButt is not present");
-		}
+		Assert.assertTrue(isElementPresent(confirmToaster), "Confirmation Toaster is not present");
+		Assert.assertTrue(confirmToaster.isDisplayed(), "Confirmation Toaster is not displayed");
 	}
 
 	public void close() {
 		TestUtils.explicit_locate(close);
-		if (isElementPresent(close)) {
-			close.click();
-		}
+		Assert.assertTrue(isElementPresent(close), "Close button is not present");
+		close.click();
 	}
 
 	public void DeleteProspect() {
 		TestUtils.sleep(3000);
-		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("window.scrollTo(0, 0);");
 		TestUtils.sleep(1000);
 
@@ -647,7 +638,6 @@ public class EO_CRM_NewProspectCreation {
 			if (isElementPresent(searchSelect) && isElementPresent(downClick) && isElementPresent(delBut)
 					&& isElementPresent(deleteFinal) && isElementPresent(finaToast) && isElementPresent(LogIm)
 					&& isElementPresent(logout)) {
-				Actions act = new Actions(driver);
 				act.sendKeys(searchBar, "Deat").perform();
 				TestUtils.sleep(2000);
 
@@ -672,7 +662,6 @@ public class EO_CRM_NewProspectCreation {
 	}
 
 	public void contactTab() throws AWTException {
-		Actions act = new Actions(driver);
 		act.contextClick(contact).perform();
 		TestUtils.sleep(2000);
 
@@ -697,11 +686,13 @@ public class EO_CRM_NewProspectCreation {
 
 	public void contactEdit() {
 		TestUtils.sleep(5000);
-		WebElement element = scrollContact;
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("arguments[0].scrollIntoView();", element);
-		Actions act = new Actions(driver);
-		act.doubleClick(editContact).perform();
+		js.executeScript("arguments[0].scrollIntoView({block: 'center'});", wealthManagementTap);
+		act.doubleClick(wealthManagementTap).perform();
+		TestUtils.explicit_locate(wealthDropdown);
+		Assert.assertTrue(wealthDropdown.isDisplayed(), "Wealth dropdown is not present");
+		wealthDropdown.click();
+		dropOsaic.click();
+		js.executeScript("arguments[0].scrollIntoView({block: 'center'});", editContact);
 		TestUtils.sleep(1000);
 		contactSearch.click();
 		TestUtils.sleep(1000);
@@ -711,7 +702,6 @@ public class EO_CRM_NewProspectCreation {
 	public void channel() {
 		TestUtils.sleep(2000);
 		WebElement element = scrDis;
-		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("arguments[0].scrollIntoView();", element);
 		channeldrop.click();
 		TestUtils.sleep(1000);
@@ -723,7 +713,6 @@ public class EO_CRM_NewProspectCreation {
 
 	public void homeSelect() {
 		WebElement element1 = ScrolThome;
-		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("arguments[0].scrollIntoView();", element1);
 		TestUtils.sleep(1000);
 		if (isElementPresent(dsDrop) && isElementPresent(NFS) && isElementPresent(push)
@@ -746,10 +735,9 @@ public class EO_CRM_NewProspectCreation {
 			BusinessSelect.click();
 			BusiSearch.sendKeys("cases");
 			TestUtils.sleep(1000);
-			Actions actions = new Actions(driver);
-			actions.sendKeys(Keys.ENTER).perform();
+			act.sendKeys(Keys.ENTER).perform();
 			TestUtils.sleep(1000);
-			actions.sendKeys(Keys.ESCAPE).perform();
+			act.sendKeys(Keys.ESCAPE).perform();
 			TestUtils.sleep(1000);
 			deatCase.click();
 			TestUtils.sleep(3000);
@@ -764,7 +752,7 @@ public class EO_CRM_NewProspectCreation {
 	public static String generateRandomMobileNumber() {
 		Random random = new Random();
 
-		StringBuilder mobileNumber = new StringBuilder("3");
+		StringBuilder mobileNumber = new StringBuilder("4");
 		for (int i = 0; i < 9; i++) {
 			mobileNumber.append(random.nextInt(10));
 		}
@@ -774,7 +762,7 @@ public class EO_CRM_NewProspectCreation {
 	public static String generateRandomEmailAddress() {
 		Random random = new Random();
 
-		String username = "testing" + random.nextInt(1000);
+		String username = "Autmatest" + random.nextInt(1000);
 		String domain = "@test.com";
 		return username + domain;
 	}
@@ -782,7 +770,6 @@ public class EO_CRM_NewProspectCreation {
 	public void ext() {
 		TestUtils.sleep(6000);
 		TestUtils.explicit_locate(scrExt);
-		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("window.scrollBy(0, 650);");
 		TestUtils.sleep(1500);
 		if (extID.isDisplayed()) {
