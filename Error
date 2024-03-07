@@ -1,8 +1,23 @@
-for (int i = 0; i < 5; i++) {
+List<WebElement> yesButtons = driver.findElements(By.xpath("//your_xpath_for_yes_button"));
+List<WebElement> textBoxes = driver.findElements(By.xpath("//your_xpath_for_text_boxes"));
 
-			WebElement noButton = backConsentnoBtn.get(i);
+// Click Yes and enter values for each question
+for (int i = 0; i < 24; i++) {
+    // Click Yes button
+    WebElement yesButton = yesButtons.get(i);
+    ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", yesButton);
+    yesButton.click();
 
-			((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", noButton);
+    // Wait for the text box to be visible, you might need to adjust the expected conditions based on your application
+    WebDriverWait wait = new WebDriverWait(driver, 10);
+    wait.until(ExpectedConditions.visibilityOf(textBoxes.get(i)));
 
-			noButton.click();
-		}
+    // Enter values in the text box
+    textBoxes.get(i).sendKeys("Your value for question " + (i + 1));
+
+    // Add any additional logic or waits as needed
+    // ...
+
+    // Perform any actions after entering values, if needed
+    // ...
+}
