@@ -48,67 +48,16 @@ public class SD_CRMNewProspectCreation {
 		crm.NewHead();
 	}
 
-	@Given("^user enters \"([^\"]*)\" value in FirstName field and \"([^\"]*)\" value in LastName field$")
-	public void user_enters_value_in_FirstName_field_and_value_in_LastName_field(String First, String Last)
-			throws Throwable {
-		crm.Negative();
+	@Given("user enters {string}, {string}, {string}, {string}, {string}")
+	public void user_enters(String First, String Last, String finra, String nam, String bran) {
 		crm.firstLast(First, Last);
-	}
-
-	@Given("^user enters the \"([^\"]*)\" values in FINRACD$")
-	public void user_enters_the_values_in_FINRACD(String finra) throws Throwable {
-		crm.finra(finra);
-	}
-
-	@Given("^user enters the \"([^\"]*)\" values in DOB Field$")
-	public void user_enters_the_values_in_DOB_Field(String dob) throws Throwable {
-		crm.dob(dob);
-	}
-
-	@Given("^User Validate the BusinessProfile is present$")
-	public void user_Validate_the_BusinessProfile_is_present() throws Throwable {
-//		crm.BusinessProfile();
-	}
-
-	@Given("^user enters \"([^\"]*)\" value in Business Name\\(DBA\\) field and \"([^\"]*)\" value in Branch Name field$")
-	public void user_enters_value_in_Business_Name_DBA_field_and_value_in_Branch_Name_field(String nam, String bran)
-			throws Throwable {
-		crm.BusiNB(nam, bran);
-	}
-
-	@Given("^User validate \"([^\"]*)\" is present$")
-	public void user_validate_is_present(String arg1) throws Throwable {
-//		crm.Assigne();
-	}
-
-	@Given("^user assign External Recruiter Name$")
-	public void user_assign_External_Recruiter_Name() throws Throwable {
-		crm.External();
-	}
-
-	@Given("^user assign Internal Recruiter Name$")
-	public void user_assign_Internal_Recruiter_Name() throws Throwable {
-		crm.Internal();
-	}
-
-	@Given("^User assign wealth management firm$")
-	public void user_assign_wealth_management_firm() throws Throwable {
-		crm.wealth();
-	}
-
-	@Given("User enters value in personal mobile Number field and value in personal email field")
-	public void user_enters_value_in_personal_mobile_Number_field_and_value_in_personal_email_field() {
 		crm.mobEmail();
-	}
-
-	@Given("^User selcts the recruiting lead source$")
-	public void user_selcts_the_recruiting_lead_source() throws Throwable {
 		crm.recLead();
-	}
-
-	@Given("^user selects Solo from the Current Type of Practice dropdown from Contacting section$")
-	public void user_selects_Solo_from_the_Current_Type_of_Practice_dropdown_from_Contacting_section()
-			throws Throwable {
+		crm.finra(finra);
+		crm.businessNameDBA(nam);
+		crm.businessBranchName(bran);
+		crm.External();
+		crm.Internal();
 		crm.curPrac();
 	}
 
@@ -119,12 +68,7 @@ public class SD_CRMNewProspectCreation {
 
 	@Given("^User Validate the Success message Toaster$")
 	public void user_Validate_the_Success_message_Toaster() throws Throwable {
-//		crm.toaster();
-	}
-
-	@Given("^User validate the Header Name$")
-	public void user_validate_the_Header_Name() throws Throwable {
-//		crm.leadPageHead();
+		crm.toaster();
 	}
 
 	@Given("^User click on convert lead button$")
@@ -142,11 +86,12 @@ public class SD_CRMNewProspectCreation {
 	public void user_validate_the_PopupMessage_popup_message() throws Throwable {
 
 		crm.oppTab();
-
+		crm.leadToaster();
 	}
 
 	@Given("^user fill the form in opportunites page with \"([^\"]*)\"$")
 	public void user_fill_the_form_in_opportunites_page_with(String value) throws Throwable {
+//		crm.wealth();
 		crm.contactEdit();
 		crm.channel();
 		crm.values(value);
@@ -208,10 +153,11 @@ public class SD_CRMNewProspectCreation {
 		cac.learnComplete();
 	}
 
-	@Given("^User enter the Personal Information \"([^\"]*)\" and \"([^\"]*)\" and \"([^\"]*)\" and \"([^\"]*)\"$")
-	public void user_enter_the_Personal_Information_and_and_and(String ssn, String Address, String city, String zip)
-			throws Throwable {
-		cac.personalInformation(ssn, Address, city, zip);
+	@Given("^User enter the Personal Information \"([^\"]*)\" and \"([^\"]*)\" and \"([^\"]*)\" and \"([^\"]*)\" and \"([^\"]*)\"$")
+	public void user_enter_the_Personal_Information_and_and_and_and(String DOB, String ssn, String Address, String city,
+			String zip) throws Throwable {
+
+		cac.personalInformation(DOB, ssn, Address, city, zip);
 
 	}
 
@@ -236,18 +182,32 @@ public class SD_CRMNewProspectCreation {
 
 	}
 
-	@Given("^user closed the cases and comment as \"([^\"]*)\"$")
-	public void user_closed_the_cases_and_comment_as(String value) throws Throwable {
+	@Given("^user complete the learn module with name \"([^\"]*)\"$")
+	public void user_complete_the_learn_module_with_name(String value) throws Throwable {
 		cac.processing(value);
 		driver.switchTo().window((String) driver.getWindowHandles().toArray()[1]);
-		driver.navigate().refresh();
+//		driver.navigate().refresh();
 		cac.preliminary();
-		cac.uploadGDCDoc();
+		cac.uploadGDCDoc(value);
 		TestUtils.sleep(2000);
-		cac.clickNobutton();
+		cac.clickNobutton(value);
+		cac.faircreditCheck();
+		cac.backConsent(value);
+		cac.outsideBusiness();
+		TestUtils.sleep(1000);
+		driver.switchTo().window((String) driver.getWindowHandles().toArray()[1]);
+		TestUtils.sleep(2000);
+		cac.markTaskCompleted.click();
+		cac.backgroungContinue.click();
+	}
+
+	@Given("user closes the cases and comment as {string}")
+	public void user_closes_the_cases_and_comment_as(String value) {
+
 //		driver.switchTo().window((String) driver.getWindowHandles().toArray()[0]);
 //		TestUtils.sleep(2000);
 //		cac.scheduleFind();
 //		cac.reviewCases();
+
 	}
 }
