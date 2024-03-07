@@ -1,15 +1,10 @@
-int totalQuestions = backConsentyesBtn.size();
-
-		System.out.println("Yes Buttons Size: " + totalQuestions);
-
-		System.out.println("Entering the loop...");
-		for (int i = 5; i < 24; i++) {
+for (int i = 5; i < 24; i++) {
 			WebElement yesButton = backConsentyesBtn.get(i);
 			((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", yesButton);
 			yesButton.click();
 
 			WebDriverWait wait = new WebDriverWait(driver, 10);
-			WebElement textBox = backConsentTextbox.get(i);
+			WebElement textBox = backConsentTextbox.get(i -5);
 
 			
 			wait.until(ExpectedConditions.visibilityOf(textBox));
@@ -23,3 +18,4 @@ int totalQuestions = backConsentyesBtn.size();
 			
 			System.out.println("Entered value for question " + (i + 1));
 		}
+		System.out.println("Exiting the loop...");
