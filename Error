@@ -1,5 +1,8 @@
-Good morning! I hope this message finds you well. I wanted to bring your attention to my pull request (PR) under https://pw1appdvop01.ibddomain.net/AdvisorGroup/Applications/_git/web/pullrequest/4311.
+for (int i = 0; i < 5; i++) {
 
-I've noticed comments related to the "New_configuration (1).launch" filenames. That these filenames aren't part of my changes; they belong to another framework in the repository. My modifications strictly adhere to the project's naming conventions.
+			WebElement noButton = backConsentnoBtn.get(i);
 
-Considering this clarification, I kindly request the closure of the comment for the PR merge.
+			((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", noButton);
+
+			noButton.click();
+		}
