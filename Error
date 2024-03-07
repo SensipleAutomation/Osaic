@@ -1,11 +1,22 @@
 int totalQuestions = Math.min(backConsentyesBtn.size(), backConsentTextbox.size());
-		for (int i = 6; i < totalQuestions; i++) {
 
-			WebElement yesButton = backConsentyesBtn.get(i);
-			((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", yesButton);
-			yesButton.click();
-			WebDriverWait wait = new WebDriverWait(driver, 10);
-			wait.until(ExpectedConditions.visibilityOf(backConsentTextbox.get(i)));
+for (int i = 6; i < totalQuestions; i++) {
+    WebElement yesButton = backConsentyesBtn.get(i);
+    ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", yesButton);
+    yesButton.click();
 
-			backConsentyesBtn.get(i).sendKeys(Value + (i + 1));
-		}
+    WebDriverWait wait = new WebDriverWait(driver, 10);
+    WebElement textBox = backConsentTextbox.get(i);
+
+    // Wait for the textbox to be visible
+    wait.until(ExpectedConditions.visibilityOf(textBox));
+
+    // Log information for debugging
+    System.out.println("Clicked Yes for question " + (i + 1));
+
+    // Enter values in the textbox
+    textBox.sendKeys(Value + (i + 1));
+
+    // Log information for debugging
+    System.out.println("Entered value for question " + (i + 1));
+}
