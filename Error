@@ -1,8 +1,6 @@
-List<WebElement> yesButtons = driver.findElements(By.xpath("//your_xpath_for_yes_button"));
-List<WebElement> textBoxes = driver.findElements(By.xpath("//your_xpath_for_text_boxes"));
+int totalQuestions = Math.min(yesButtons.size(), textBoxes.size());
 
-// Click Yes and enter values for each question
-for (int i = 0; i < 24; i++) {
+for (int i = 6; i < totalQuestions; i++) {
     // Click Yes button
     WebElement yesButton = yesButtons.get(i);
     ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", yesButton);
@@ -14,10 +12,3 @@ for (int i = 0; i < 24; i++) {
 
     // Enter values in the text box
     textBoxes.get(i).sendKeys("Your value for question " + (i + 1));
-
-    // Add any additional logic or waits as needed
-    // ...
-
-    // Perform any actions after entering values, if needed
-    // ...
-}
