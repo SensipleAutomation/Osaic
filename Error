@@ -1,7 +1,4 @@
-System.out.println("Yes Buttons Size: " + backConsentyesBtn.size());
-System.out.println("Textbox Size: " + backConsentTextbox.size());
-
-int totalQuestions = Math.min(backConsentyesBtn.size(), backConsentTextbox.size());
-System.out.println("Total Questions: " + totalQuestions);
-
-System.out.println("Entering the loop...");
+Yes Buttons Size: 24
+Textbox Size: 0
+Entering the loop...
+Exiting the loop...
