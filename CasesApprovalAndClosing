@@ -1,54 +1,1411 @@
-public synchronized EO_CRM_NewProspectCreation loginToCRM(String username, String password) {
+package webpages;
 
-		Assert.assertTrue(isElementPresent(Mail), "Mail field is not present");
-		Assert.assertTrue(isElementPresent(Password), "Password field is not present");
-		Assert.assertTrue(isElementPresent(LogButton), "Login button is not present");
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.util.List;
 
-		Mail.sendKeys(username);
-		Password.sendKeys(password);
-		LogButton.click();
+import org.openqa.selenium.By;
+import org.openqa.selenium.ElementNotInteractableException;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
+import com.codoid.products.exception.FilloException;
+
+import gherkin.lexer.Th;
+import utility.TestUtils;
+
+public class CasesApprovalAndClosing {
+	WebDriver driver;
+	WebDriverWait wait;
+	JavascriptExecutor js;
+	Actions act;
+
+	public CasesApprovalAndClosing(WebDriver driver) {
+		this.driver = driver;
+		this.wait = new WebDriverWait(driver, 10);
+		PageFactory.initElements(driver, this);
+
+		js = (JavascriptExecutor) driver;
+		act = new Actions(driver);
+
+	}
+
+	loginpage lpage = new loginpage(null);
+
+	@FindBy(xpath = "(//input[contains(@class,'web-input')])[1]")
+	private WebElement Mail;
+
+	@FindBy(xpath = "(//input[contains(@class,'web-input')])[2]")
+	private WebElement Password;
+
+	@FindBy(xpath = "//web-button[@type='submit']")
+	private WebElement LogButton;
+
+	@FindBy(xpath = "//a[text()='OVERVIEW']")
+	private WebElement OVButton;
+
+	@FindBy(xpath = "//h1[text()='Welcome Portal']")
+	private WebElement welcomeHeader;
+
+	@FindBy(xpath = "(//span[text()='Get Started'])[1]")
+	private WebElement learnCompletebutton;
+
+	@FindBy(xpath = "(//p[contains(@class, 'slds-truncate')])[12]")
+	private WebElement mailInvited;
+
+	@FindBy(xpath = "//label[text()='Date of Birth']//following::input[1]")
+	private WebElement dobInput;
+
+	@FindBy(xpath = "//input[@class='p-inputtext p-component p-element web-input-text ng-untouched ng-pristine ng-invalid']")
+	private WebElement ssnNumber;
+
+	@FindBy(xpath = "//label[text()='Home Address']/following::input[1]")
+	private WebElement homAddress;
+
+	@FindBy(xpath = "//label[text()='City']/following::input[1]")
+	private WebElement cityText;
+
+	@FindBy(xpath = "//label[text()='Zip Code']/following::input[1]")
+	private WebElement zip;
+
+	@FindBy(xpath = "(//span[text()='Select'])[1]")
+	private WebElement stateDrop;
+
+	@FindBy(xpath = "//span[text()='Arizona']")
+	private WebElement selectState;
+
+	@FindBy(xpath = "//label[text()='Personal Email']")
+	private WebElement saveScroll;
+
+	@FindBy(xpath = "(//span[text()='SAVE'])[1]")
+	private WebElement perSaveButton;
+
+	@FindBy(xpath = "//span[text()='Business Information ']")
+	private WebElement scrBusi;
+
+	@FindBy(xpath = "//label[text()='Current B/D']/following::input[1]")
+	private WebElement curBD;
+
+	@FindBy(xpath = "//label[text()='Business Street Address']/following::input[1]")
+	private WebElement busiAddress;
+
+	@FindBy(xpath = "//h4[text()='Primary Business Location']/following::input[5]")
+	private WebElement busiCity;
+
+	@FindBy(xpath = "//h4[text()='Primary Business Location']/following::span[7]")
+	private WebElement busiStateDrop;
+
+	@FindBy(xpath = "//span[text()='Colorado']")
+	private WebElement busSelectState;
+
+	@FindBy(xpath = "(//web-business-information//input)[6]")
+	private WebElement busZip;
+
+	@FindBy(xpath = "(//web-business-information//input)[7]")
+	private WebElement busPhone;
+
+	@FindBy(xpath = "(//span[text()='SAVE'])[2]")
+	private WebElement busSaveButton;
+
+	@FindBy(xpath = "//span[text()='Affiliation Questions ']")
+	private WebElement scrAffi;
+
+	@FindBy(xpath = "//label[text()='How are you affiliated today?']//following::span[text()='Select'][1]")
+	private WebElement affTodayques;
+
+	@FindBy(xpath = "//span[text()='Employee of Bank or Credit Union']")
+	private WebElement affTodquesSelect;
+
+	@FindBy(xpath = "//label[text()='Are you joining as individual or with a team?']//following::span[text()='Select'][1]")
+	private WebElement joiningQues;
+
+	@FindBy(xpath = "//span[text()='Individual']")
+	private WebElement joiningQuesSelect;
+
+	@FindBy(xpath = "//label[text()='Registered and Producing Representative']")
+	private WebElement registered;
+
+	@FindBy(xpath = "//label[text()='When would you like to be affiliated?']//following::input[1]")
+	private WebElement dateBox;
+
+	@FindBy(xpath = "//span[text()='Today']")
+	private WebElement datToday;
+
+	@FindBy(xpath = "//label[text()='How would you like to be affiliated?']//following::span[3]")
+	private WebElement affiQues;
+
+	@FindBy(xpath = "//span[text()='Commission Only']")
+	private WebElement affiQueSel;
+
+	@FindBy(xpath = "//label[text()='Will you join directly, or through an existing Branch/Enterprise?']//following::span[3]")
+	private WebElement branchQue;
+
+	@FindBy(xpath = "//span[text()='Direct']")
+	private WebElement branchQueSel;
+
+	@FindBy(xpath = "(//span[text()='SAVE'])[3]")
+	private WebElement affSave;
+
+	@FindBy(xpath = "//span[text()='CONTINUE']")
+	private WebElement proInfCont;
+
+	@FindBy(xpath = "//span[text()='Revenue ']")
+	private WebElement scrRevenue;
+
+	@FindBy(xpath = "//span[text()='Revenue ']//following::input[1]")
+	private WebElement totTrail;
+
+	@FindBy(xpath = "//span[text()='Revenue ']//following::input[2]")
+	private WebElement platform;
+
+	@FindBy(xpath = "//span[text()='Revenue ']//following::input[3]")
+	private WebElement money;
+
+	@FindBy(xpath = "//span[text()='Revenue ']//following::input[4]")
+	private WebElement trail;
+
+	@FindBy(xpath = "//span[text()='Revenue ']//following::input[5]")
+	private WebElement Schwab;
+
+	@FindBy(xpath = "//span[text()='Revenue ']//following::input[6]")
+	private WebElement Annuities;
+
+	@FindBy(xpath = "//span[text()='Revenue ']//following::input[7]")
+	private WebElement Insurance;
+
+	@FindBy(xpath = "//span[text()='Revenue ']//following::input[8]")
+	private WebElement Mutual;
+
+	@FindBy(xpath = "//span[text()='Revenue ']//following::input[9]")
+	private WebElement General;
+
+	@FindBy(xpath = "//span[text()='Revenue ']//following::input[10]")
+	private WebElement Alternatives;
+
+	@FindBy(xpath = "//label[text()='Alternatives ']")
+	private WebElement countClick;
+
+	@FindBy(xpath = "//span[text()='Assets And Accounts ']")
+	private WebElement scrAssests;
+
+	@FindBy(xpath = "//span[text()='Assets And Accounts ']//following::input[1]")
+	private WebElement AUA;
+
+	@FindBy(xpath = "//span[text()='Assets And Accounts ']//following::input[2]")
+	private WebElement platform2;
+
+	@FindBy(xpath = "//span[text()='Assets And Accounts ']//following::input[3]")
+	private WebElement Money2;
+
+	@FindBy(xpath = "//span[text()='Assets And Accounts ']//following::input[4]")
+	private WebElement Fidelity;
+
+	@FindBy(xpath = "//span[text()='Assets And Accounts ']//following::input[5]")
+	private WebElement Variable;
+
+	@FindBy(xpath = "//span[text()='Assets And Accounts ']//following::input[6]")
+	private WebElement Brokerage;
+
+	@FindBy(xpath = "//span[text()='Assets And Accounts ']//following::input[7]")
+	private WebElement Direct;
+
+	@FindBy(xpath = "//label[text()='Brokerage (All Products)']")
+	private WebElement clickBrok;
+
+	@FindBy(xpath = "//label[text()='Total Number Of Accounts (on platform and brokerage)*']//following::input[1]")
+	private WebElement noOfAcc;
+
+	@FindBy(xpath = "//span[text()='Top Products ']")
+	private WebElement scrProd;
+
+	@FindBy(xpath = "(//label[text()=' Not Applicable'])[1]")
+	private WebElement notApp1;
+
+	@FindBy(xpath = "(//label[text()=' Not Applicable'])[2]")
+	private WebElement notApp2;
+
+	@FindBy(xpath = "(//label[text()=' Not Applicable'])[3]")
+	private WebElement notApp3;
+
+	@FindBy(xpath = "//a[text()='Related']")
+	private WebElement relatedClick;
+
+	@FindBy(xpath = "(//span[text()='Supervision Review Date'])[last()-1]")
+	private WebElement relat;
+
+	@FindBy(xpath = "(//span[@title='Cases'])[last()]")
+	private WebElement viewAll;
+
+	@FindBy(xpath = "//slot[text()='Create RegEd Credentials']//preceding::*[@data-label='Case Number'][last()]")
+	private WebElement createNum;
+
+	@FindBy(xpath = "//a[text()='Processing']")
+	private WebElement process;
+
+	@FindBy(xpath = "(//a[text()='Processing'])[last()]")
+	private WebElement prelimCaseProcess;
+
+	@FindBy(xpath = "//b[contains(text(),'preliminary ')]")
+	private WebElement scrPril;
+
+	@FindBy(xpath = "//b[contains(text(),'RegEd ')]")
+	private WebElement scrApr;
+
+	@FindBy(xpath = "(//a[@title='Create RegEd Credentials'])[last()]")
+	private WebElement case2;
+
+	@FindBy(xpath = "//button[@name='refreshButton']")
+	private WebElement refresh;
+
+	@FindBy(xpath = "//h1[@title='Cases']")
+	private WebElement refresClick;
+
+	@FindBy(xpath = "(//span[text()='New'])[last()]")
+	private WebElement statusDrop;
+
+	@FindBy(xpath = "(//span[text()='Closed'])[last()]")
+	private WebElement clsClick;
+
+	@FindBy(xpath = "//div[@class='slds-rich-text-area__content slds-grow slds-text-color-weak standin']")
+	private WebElement comment;
+
+	@FindBy(xpath = "(//span[text()='--None--'])[last()]")
+	private WebElement forApp;
+
+	@FindBy(xpath = "(//span[text()='Approved'])[last()]")
+	private WebElement forAppSelect;
+
+	@FindBy(xpath = "//button[text()='Save']")
+	private WebElement apSave;
+
+	@FindBy(xpath = "(//li[@role='presentation']//following::span[@title='Cases'])[1]")
+	private WebElement backTOcases;
+
+	@FindBy(xpath = "//label[text()='Status']")
+	private WebElement nonClick;
+
+	@FindBy(xpath = "(//a[@title='Create preliminary review and transition assistance summary'])[last()]")
+	private WebElement case3;
+
+	@FindBy(xpath = "(//div[@class='slds-rich-text-area__content slds-grow slds-text-color-weak standin'])[last()]")
+	private WebElement preText;
+
+	@FindBy(xpath = "(//div[@aria-label='Preliminary Transitions Summary']//following-sibling::div[contains(@class, 'slds-rich-text-editor')])[last()]")
+	private WebElement pretext1;
+
+	@FindBy(xpath = "//div[@aria-label='Preliminary Transitions Summary']//following::div[@role='textbox']")
+	private WebElement pretext1Send;
+
+	@FindBy(xpath = "(//button[@name='Status'])[last()]")
+	private WebElement case3status;
+
+	@FindBy(xpath = "(//button[@name='EO_Approval_Status__c'])[last()]")
+	private WebElement case3drop;
+
+	@FindBy(xpath = "(//button[text()='Save'])[last()]")
+	private WebElement case3Save;
+
+	@FindBy(xpath = "//tr[position()=2]/td[position()=5]")
+	private WebElement approvedCheck;
+
+	@FindBy(xpath = "(//web-icon[@aria-label='Action'])[1]")
+	private WebElement step3Edit;
+
+	@FindBy(xpath = "//span[text()='Ok']")
+	private WebElement okConfirm;
+
+	@FindBy(xpath = "//span[text()='Product Names and AUM Report']")
+	public WebElement scrConBut;
+
+	@FindBy(xpath = "(//a[text()='Upload File'])[1]")
+	public WebElement uploadPriorYearGdcLink;
+	@FindBy(xpath = "(//a[text()='Upload File'])[1]")
+	public WebElement uploadYearToDateGdcLink;
+	@FindBy(xpath = "(//a[text()='Upload File'])[1]")
+	public WebElement businesMixByPercentageLink;
+	@FindBy(xpath = "(//a[text()='Upload File'])[1]")
+	public WebElement assetsUnderManagementTotalsLink;
+	@FindBy(xpath = "(//a[text()='Upload File'])[1]")
+	public WebElement advisoryDirectBusinessLink;
+	@FindBy(xpath = "(//a[text()='Upload File'])[1]")
+	public WebElement productNamesAndAumReportLink;
+	@FindBy(xpath = "(//a[text()='Upload File'])[1]")
+	public WebElement productSponsorReportLink;
+	@FindBy(xpath = "(//a[text()='Upload File'])[1]")
+	public WebElement currentBroker;
+
+	@FindBy(xpath = "(//a[text()='Upload File'])[1]")
+	public WebElement supportingDocumentsUpload;
+
+	@FindBy(xpath = "(//div[@class='p-checkbox-box'])[1]")
+	public WebElement uploadChectoConfirm;
+
+	@FindBy(xpath = "(//span[text()='SAVE'])[2]")
+	public WebElement uploadedsave;
+
+	@FindBy(xpath = "(//web-button[@label='SAVE'])[last()-1]")
+	public WebElement afterSave;
+
+	@FindBy(xpath = "(//label[text()=' Confirm'])[2]")
+	public WebElement curentBrokerCheck;
+
+	@FindBy(xpath = "(//span[text()='SAVE'])[2]")
+	public WebElement curBroSAVE;
+
+	@FindBy(xpath = "(//*[@role='presentation'])[5]")
+	public WebElement uploadDocumentTab;
+
+	@FindBy(xpath = "//label[text()=' Confirm']")
+	public WebElement upconfirmButton;
+
+	@FindBy(xpath = "(//span[text()='Yes'])[1]")
+	public WebElement firstQestion;
+
+	@FindBy(xpath = "//textarea[@placeholder='Please provide additional details']")
+	public WebElement firstQestionAns;
+
+	@FindBy(xpath = "(//textarea[@placeholder='Please provide additional details'])[last()]")
+	public WebElement secQuesAns;
+
+	@FindBy(xpath = "(//div/span[text()='Yes'])[2]")
+	public WebElement secondQuestion;
+
+	@FindBy(xpath = "//p-checkbox//span")
+	public WebElement piiCheckbox;
+
+	@FindBy(xpath = "//web-button[@label='SAVE']//button")
+	public WebElement saveBtn;
+
+	@FindBy(xpath = "//span[text()='Current Broker-Dealer Contract']")
+	public WebElement currentBrokerHeader;
+
+	@FindBy(xpath = "(//span[text()='Save'])[last()]")
+	public WebElement saveBtn2;
+
+//	add Contract Review
+
+	@FindBy(xpath = "//button/span[text()='CONTINUE']")
+	public WebElement continueBtn;
+
+	@FindBy(xpath = "(//a[@title='Schedule HOV Presentation and/or Demo with Prospect'])[last()]")
+	public WebElement scheduleCase;
+
+	@FindBy(xpath = "(//a[text()='Processing'])[last()]")
+	public WebElement schProcess;
+
+	@FindBy(xpath = "(//label[text()='Status']//following::button[@name='Status'])[last()]")
+	public WebElement schStatus;
+
+	@FindBy(xpath = "(//span[@title='Closed'])[last()]")
+	public WebElement schClosed;
+
+	@FindBy(xpath = "//button[@aria-label='EO Approval Status - Current Selection: --None--']")
+	public WebElement scEoStatus;
+
+	@FindBy(xpath = "(//span[@title='Approved'])[last()]")
+	public WebElement scEoApproved;
+
+	@FindBy(xpath = "(//button[@title='Save'])[last()]")
+	public WebElement schSave;
+
+	@FindBy(xpath = "(//a[@title='Schedule HOV Presentation Parent Case'])[last()]")
+	public WebElement sch2Case;
+
+	@FindBy(xpath = "(//a[@title='Review Book of Business Documents'])[last()]")
+	public WebElement bookCase;
+
+	@FindBy(xpath = "(//a[@title='Book of Business Review Parent Case'])[last()]")
+	public WebElement boBusCase;
+
+	@FindBy(xpath = "(//a[@title='Assessment of Book of Business'])[last()]")
+	public WebElement assesmentCase;
+
+	@FindBy(xpath = "(//a[@title='Validate Financial Information'])[last()]")
+	public WebElement validateCase;
+
+	@FindBy(xpath = "(//a[@title='Contract Review / Consultation'])[last()]")
+	public WebElement contractCase;
+
+	@FindBy(xpath = "(//a[@title='Review Contract'])[last()]")
+	public WebElement reviewCase;
+
+	@FindBy(xpath = "(//a[@title='FRM Preparation'])[last()]")
+	public WebElement frmCase;
+
+	@FindBy(xpath = "(//a[@title='Rate Setup Process'])[last()]")
+	public WebElement rateCase;
+
+	@FindBy(xpath = "(//a[@title='Set Meeting with prospect'])[last()]")
+	public WebElement setmeetCase;
+
+	@FindBy(xpath = "(//a[@title='Set Internal Product Review Meeting'])[last()]")
+	public WebElement setIntCase;
+
+	@FindBy(xpath = "(//a[@title='External recruiter FRM Approval'])[last()]")
+	public WebElement extrecCase;
+
+	@FindBy(xpath = "(//a[@title='Recruiting Finance FRM Validation'])[last()]")
+	public WebElement recfinCase;
+
+	@FindBy(xpath = "//web-selection-button//span[text()='No']")
+	public List<WebElement> backConsentnoBtn;
+
+	@FindBy(xpath = "//web-selection-button//span[text()='Yes']")
+	public List<WebElement> backConsentyesBtn;
+
+	@FindBy(xpath = "//web-input-text//input[@placeholder='Please provide additional details']")
+	private List<WebElement> backConsentTextbox;
+
+	@FindBy(xpath = "//web-selection-button//span[text()='No']")
+	public WebElement noButtonBC;
+
+	@FindBy(xpath = "(//web-label[contains(text(),'military court to any felony?')]//following::span[text()='Yes'])[1]")
+	public WebElement questionNo6YesButton;
+
+	@FindBy(xpath = "//input[@placeholder='Please provide additional details']")
+	public WebElement questionValue;
+
+	@FindBy(xpath = "(//web-button[@label='SAVE']//button)[1]")
+	public WebElement quesSaveBut;
+
+	@FindBy(xpath = "//*[@class='mob_fix' and text()='Fair Credit Reporting Act ']")
+	public WebElement fairCreditReportingActAccordionTab;
+
+	@FindBy(xpath = "(//*[contains(@class,'p-checkbox-box')])[2]")
+	public WebElement fairCreditReportingAcknowledgeCheckbox;
+
+	@FindBy(xpath = "//span[text()='Investigative Consumer Report and State Disclosures ']")
+	public WebElement investigationTab;
+
+	@FindBy(xpath = "(//*[contains(@class,'p-checkbox-box')])[4]")
+	public WebElement investigativeConsumerReportAcknowledgeCheckbox;
+
+	@FindBy(xpath = "//span[text()='Background Screening Authorization for Affiliation Purposes ']")
+	public WebElement backgroundTab;
+
+	@FindBy(xpath = "(//label[text()=' Name: ']//following::input[@type='text'])[1]")
+	public WebElement name;
+
+	@FindBy(xpath = "//label[text()=' Signature: ']//following::img")
+	public WebElement signaTure;
+
+	@FindBy(xpath = "(//web-input-text//div//input)[last()]")
+	public WebElement signatureField;
+
+	@FindBy(xpath = "//div[@class='signature-dialog-button']")
+	public WebElement signatureSubmit;
+
+	@FindBy(xpath = "(//web-button[@label='SAVE']//button)[3]")
+	public WebElement sigSave;
+
+	@FindBy(xpath = "//span[text()='A Summary of Your Rights Under the Fair Credit Reporting Act ']")
+	public WebElement summaryTab;
+
+	@FindBy(xpath = "(//*[contains(@class,'p-checkbox-box')])[5]")
+	public WebElement summaryCheck;
+
+	@FindBy(xpath = "//span[text()='CONTINUE']")
+	public WebElement backgroungContinue;
+
+	@FindBy(xpath = "//span[text()='Access RegEd to Complete Your OBA ']")
+	public WebElement accessTab;
+
+	@FindBy(xpath = "//span[text()='LAUNCH REGED']")
+	public WebElement launchReged;
+
+	@FindBy(xpath = "//span[text()='MARK TASK COMPLETED']")
+	public WebElement markTaskCompleted;
+
+	@FindBy(id = "1")
+	public WebElement colorValidate;
+
+	public synchronized CasesApprovalAndClosing loginToEO(String password) {
+		if (isElementPresent(Password) && isElementPresent(LogButton)) {
+			Password.sendKeys(password);
+			LogButton.click();
+		} else {
+			System.out.println("Password or LogButton element is not present.");
+		}
 		return this;
 	}
 
-	public synchronized EO_CRM_NewProspectCreation firstLast(String Firstnam, String lastname) {
+	public void overview() {
+		TestUtils.sleep(2000);
+		if (isElementPresent(OVButton)) {
+			OVButton.click();
+		}
+		Assert.assertTrue(welcomeHeader.isDisplayed(), "Dashboard Welcome Header Not Present");
+	}
 
-		Assert.assertTrue(isElementPresent(Firstname), "First name field is not present");
-		Assert.assertTrue(isElementPresent(Lastname), "Last name field is not present");
+	public void learnComplete() {
+		Assert.assertTrue(learnCompletebutton.isDisplayed(), "Learn Complete Button not present");
+		learnCompletebutton.click();
+	}
 
-		Firstname.sendKeys(Firstnam);
-		Lastname.sendKeys(lastname);
+	public void copymail() {
 
+		js.executeScript("window.scrollTo(0, 0);");
+		TestUtils.sleep(1000);
+		WebElement element = mailInvited;
+		String text = element.getText();
+		System.out.println("Mail:" + text);
+		TestUtils.sleep(1000);
+
+		StringSelection stringSelection = new StringSelection(text);
+		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+		clipboard.setContents(stringSelection, null);
+	}
+
+	public void logmail() throws FilloException, InterruptedException, IOException {
+		WebElement targetElement = Mail;
+		targetElement.click();
+		act.keyDown(Keys.CONTROL).sendKeys("v").keyUp(Keys.CONTROL);
+		act.build().perform();
+
+	}
+
+	public synchronized CasesApprovalAndClosing personalInformation(String DOB, String ssn, String Address, String city,
+			String zipco) {
+		TestUtils.sleep(1000);
+		js.executeScript("arguments[0].scrollIntoView({block: 'center'});", dobInput);
+		dobInput.sendKeys(DOB);
+
+		TestUtils.sleep(1000);
+
+		Assert.assertTrue(isElementPresent(ssnNumber), "SSN Number field is not present");
+		ssnNumber.sendKeys(ssn);
+
+		TestUtils.sleep(1000);
+
+		Assert.assertTrue(isElementPresent(homAddress), "Home Address field is not present");
+		homAddress.click();
+		homAddress.sendKeys(Address);
+
+		Assert.assertTrue(isElementPresent(cityText), "City field is not present");
+		cityText.sendKeys(city);
+
+		TestUtils.sleep(1000);
+
+		Assert.assertTrue(isElementPresent(stateDrop), "State Drop-down is not present");
+		stateDrop.click();
+		TestUtils.sleep(1000);
+		Assert.assertTrue(isElementPresent(selectState), "Select State option is not present");
+		selectState.click();
+
+		Assert.assertTrue(isElementPresent(zip), "Zip Code field is not present");
+		zip.sendKeys(zipco);
+
+		js.executeScript("arguments[0].scrollIntoView();", saveScroll);
+		TestUtils.sleep(1000);
+
+		Assert.assertTrue(isElementPresent(perSaveButton), "Save Button is not present");
+		perSaveButton.click();
+
+		TestUtils.sleep(2000);
 		return this;
 	}
 
-	public synchronized EO_CRM_NewProspectCreation finra(String Finra) {
+	public synchronized CasesApprovalAndClosing BusinessInformation(String current, String address, String city,
+			String zipc, String phone) {
+		WebElement element = scrBusi;
+		js.executeScript("arguments[0].scrollIntoView();", element);
+		TestUtils.sleep(1000);
 
-		Assert.assertTrue(isElementPresent(FINRACRD), "Finra field is not present");
+		Assert.assertTrue(isElementPresent(curBD), "Current Business Description field is not present");
+		curBD.sendKeys(current);
 
-		FINRACRD.sendKeys(Finra);
+		TestUtils.sleep(1000);
 
+		Assert.assertTrue(isElementPresent(busiAddress), "Business Address field is not present");
+		busiAddress.click();
+		busiAddress.sendKeys(address);
+
+		Assert.assertTrue(isElementPresent(busiCity), "Business City field is not present");
+		busiCity.sendKeys(city);
+
+		TestUtils.sleep(1000);
+
+		Assert.assertTrue(isElementPresent(busiStateDrop), "Business State Drop-down is not present");
+		busiStateDrop.click();
+		TestUtils.sleep(1000);
+		Assert.assertTrue(isElementPresent(busSelectState), "Business Select State option is not present");
+		busSelectState.click();
+
+		Assert.assertTrue(isElementPresent(busZip), "Business Zip Code field is not present");
+		busZip.sendKeys(zipc);
+
+		Assert.assertTrue(isElementPresent(busPhone), "Business Phone field is not present");
+		busPhone.sendKeys(phone);
+
+		js.executeScript("arguments[0].scrollIntoView();", busiCity);
+		TestUtils.sleep(1000);
+
+		Assert.assertTrue(isElementPresent(busSaveButton), "Business Save Button is not present");
+		busSaveButton.click();
+
+		TestUtils.sleep(2000);
+		return this;
+
+	}
+
+	public void affiliationQuestion() {
+		WebElement element = scrAffi;
+		js.executeScript("arguments[0].scrollIntoView();", element);
+		TestUtils.sleep(1000);
+
+		Assert.assertTrue(isElementPresent(affTodayques), "Affiliation Today's Questions field is not present");
+		affTodayques.click();
+
+		TestUtils.sleep(1000);
+
+		Assert.assertTrue(isElementPresent(affTodquesSelect),
+				"Affiliation Today's Questions Select field is not present");
+		affTodquesSelect.click();
+
+		TestUtils.sleep(1000);
+
+		Assert.assertTrue(isElementPresent(joiningQues), "Joining Questions field is not present");
+		joiningQues.click();
+
+		TestUtils.sleep(1000);
+
+		Assert.assertTrue(isElementPresent(joiningQuesSelect), "Joining Questions Select field is not present");
+		joiningQuesSelect.click();
+
+		TestUtils.sleep(2000);
+
+		Assert.assertTrue(isElementPresent(registered), "Registered field is not present");
+		registered.click();
+
+		TestUtils.sleep(1000);
+
+		Assert.assertTrue(isElementPresent(dateBox), "Date Box field is not present");
+		dateBox.click();
+
+		TestUtils.sleep(1000);
+
+		Assert.assertTrue(isElementPresent(datToday), "Today's Date field is not present");
+		datToday.click();
+
+		TestUtils.sleep(1000);
+
+		Assert.assertTrue(isElementPresent(affiQues), "Affiliation Questions field is not present");
+		affiQues.click();
+
+		TestUtils.sleep(1000);
+
+		Assert.assertTrue(isElementPresent(affiQueSel), "Affiliation Questions Select field is not present");
+		affiQueSel.click();
+
+		TestUtils.sleep(1000);
+
+		Assert.assertTrue(isElementPresent(branchQue), "Branch Questions field is not present");
+		branchQue.click();
+
+		TestUtils.sleep(1000);
+
+		Assert.assertTrue(isElementPresent(branchQueSel), "Branch Questions Select field is not present");
+		branchQueSel.click();
+
+		TestUtils.sleep(1000);
+
+		Assert.assertTrue(isElementPresent(affSave), "Affiliation Save Button is not present");
+		affSave.click();
+
+		js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
+		TestUtils.sleep(1000);
+
+		Assert.assertTrue(isElementPresent(proInfCont), "Professional Information Continue Button is not present");
+		proInfCont.click();
+		TestUtils.sleep(1000);
+		js.executeScript("window.scrollTo(0, 0);");
+		TestUtils.sleep(2000);
+
+	}
+
+	public synchronized CasesApprovalAndClosing revenue(String Total, String Split) {
+		WebElement element = scrRevenue;
+		js.executeScript("arguments[0].scrollIntoView();", element);
+
+		Assert.assertTrue(isElementPresent(totTrail), "Total Trail field is not present");
+		totTrail.sendKeys(Total);
+
+		Assert.assertTrue(isElementPresent(platform), "Platform field is not present");
+		platform.sendKeys(Split);
+
+		Assert.assertTrue(isElementPresent(money), "Money field is not present");
+		money.sendKeys(Split);
+
+		Assert.assertTrue(isElementPresent(trail), "Trail field is not present");
+		trail.sendKeys(Split);
+
+		Assert.assertTrue(isElementPresent(Schwab), "Schwab field is not present");
+		Schwab.sendKeys(Split);
+
+		Assert.assertTrue(isElementPresent(Annuities), "Annuities field is not present");
+		Annuities.sendKeys(Split);
+
+		Assert.assertTrue(isElementPresent(Insurance), "Insurance field is not present");
+		Insurance.sendKeys(Split);
+
+		Assert.assertTrue(isElementPresent(Mutual), "Mutual field is not present");
+		Mutual.sendKeys(Split);
+
+		Assert.assertTrue(isElementPresent(General), "General field is not present");
+		General.sendKeys(Split);
+
+		Assert.assertTrue(isElementPresent(Alternatives), "Alternatives field is not present");
+		Alternatives.sendKeys(Split);
+
+		Assert.assertTrue(isElementPresent(countClick), "Count Click field is not present");
+		countClick.click();
+
+		TestUtils.sleep(1000);
+
+		Assert.assertTrue(isElementPresent(perSaveButton), "Save Button is not present");
+		perSaveButton.click();
+		TestUtils.sleep(2000);
+		return this;
+
+	}
+
+	public synchronized CasesApprovalAndClosing AssestsAccounts(String Tot, String Spl) {
+		js.executeScript("arguments[0].scrollIntoView({block: 'center'});", scrAssests);
+		Assert.assertTrue(isElementPresent(scrAssests), "Asserts Header field is not present");
+		js.executeScript("arguments[0].scrollIntoView({block: 'center'});", AUA);
+		Assert.assertTrue(isElementPresent(AUA), "AUA field is not present");
+		AUA.sendKeys(Tot);
+
+		Assert.assertTrue(isElementPresent(platform2), "Platform field is not present");
+		platform2.sendKeys(Spl);
+
+		Assert.assertTrue(isElementPresent(Money2), "Money field is not present");
+		Money2.sendKeys(Spl);
+
+		Assert.assertTrue(isElementPresent(Fidelity), "Fidelity field is not present");
+		Fidelity.sendKeys(Spl);
+
+		Assert.assertTrue(isElementPresent(Variable), "Variable field is not present");
+		Variable.sendKeys(Spl);
+
+		Assert.assertTrue(isElementPresent(Brokerage), "Brokerage field is not present");
+		Brokerage.sendKeys(Spl);
+
+		Assert.assertTrue(isElementPresent(Direct), "Direct field is not present");
+		Direct.sendKeys(Spl);
+
+		Assert.assertTrue(isElementPresent(clickBrok), "Click Brokerage field is not present");
+		clickBrok.click();
+
+		TestUtils.sleep(1000);
+
+		Assert.assertTrue(isElementPresent(noOfAcc), "Number of Accounts field is not present");
+		noOfAcc.sendKeys(Spl);
+
+		TestUtils.sleep(1000);
+		js.executeScript("arguments[0].scrollIntoView({block: 'center'});", busSaveButton);
+		Assert.assertTrue(isElementPresent(busSaveButton), "Save Button is not present");
+		busSaveButton.click();
+		TestUtils.sleep(1000);
+		return this;
+
+	}
+
+	public void topProducts() {
+		WebElement element = scrAssests;
+		js.executeScript("arguments[0].scrollIntoView();", element);
+		TestUtils.sleep(1000);
+		Assert.assertTrue(isElementPresent(notApp1), "Not App 1 field is not present");
+		notApp1.click();
+
+		Assert.assertTrue(isElementPresent(notApp2), "Not App 2 field is not present");
+		notApp2.click();
+
+		Assert.assertTrue(isElementPresent(notApp3), "Not App 3 field is not present");
+		notApp3.click();
+
+		TestUtils.sleep(1000);
+
+		Assert.assertTrue(isElementPresent(affSave), "Affiliation Save Button is not present");
+		affSave.click();
+
+		TestUtils.sleep(2000);
+
+		Assert.assertTrue(isElementPresent(proInfCont), "Professional Information Continue Button is not present");
+		proInfCont.click();
+
+		TestUtils.sleep(2000);
+
+		Assert.assertTrue(isElementPresent(okConfirm), "OK Confirm Button is not present");
+		okConfirm.click();
+		TestUtils.sleep(1000);
+		js.executeScript("window.scrollTo(0, 0);");
+		TestUtils.sleep(2000);
+
+	}
+
+	public void crmApprovals() {
+		WebElement element = relat;
+		js.executeScript("arguments[0].scrollIntoView();", element);
+		TestUtils.sleep(1000);
+		relatedClick.click();
+		TestUtils.sleep(3000);
+		Assert.assertTrue(isElementPresent(viewAll), "View All Button is not present");
+		viewAll.click();
+		TestUtils.sleep(2000);
+//		driver.navigate().refresh();
+//		TestUtils.sleep(6000);
+//		refresh.click();
+//		TestUtils.sleep(2000);
+//		refresClick.click();
+//		TestUtils.sleep(4000);
+//		refresh.click();
+//		refresClick.click();
+//		TestUtils.sleep(4000);
+//		refresh.click();
+//		case2.click();
+//		TestUtils.sleep(2000);
+
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+
+		while (true) {
+			try {
+				System.out.println("Clicking on the first element");
+				WebElement firstElement = wait.until(ExpectedConditions.elementToBeClickable(refresh));
+				firstElement.click();
+
+				Thread.sleep(1000);
+
+				System.out.println("Clicking on the second element");
+				WebElement secondElement = wait.until(ExpectedConditions.elementToBeClickable(refresClick));
+				secondElement.click();
+
+				System.out.println("Checking if the third element is displayed and enabled");
+				WebElement thirdElement = case2;
+
+				if (thirdElement.isDisplayed() && thirdElement.isEnabled()) {
+					TestUtils.sleep(2000);
+					thirdElement.click();
+					System.out.println("Third element found. Exiting the loop.");
+					break;
+				}
+			} catch (org.openqa.selenium.NoSuchElementException e) {
+
+				System.out.println("Second element not found. Retrying...");
+			} catch (Exception e) {
+
+				System.out.println("Exception occurred: " + e.getMessage());
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+	public synchronized CasesApprovalAndClosing processing(String value) {
+		Assert.assertTrue(isElementPresent(process), "Process Button is not present");
+		process.click();
+		TestUtils.sleep(2000);
+		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", statusDrop);
+		TestUtils.sleep(1000);
+
+		Assert.assertTrue(isElementPresent(statusDrop), "Status Drop Button is not present");
+		statusDrop.click();
+
+		Assert.assertTrue(isElementPresent(clsClick), "CLS Click Button is not present");
+		clsClick.click();
+
+		TestUtils.sleep(1000);
+		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", forApp);
+		Assert.assertTrue(isElementPresent(forApp), "For App Button is not present");
+		forApp.click();
+
+		Assert.assertTrue(isElementPresent(forAppSelect), "For App Select Button is not present");
+		forAppSelect.click();
+
+		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", apSave);
+		TestUtils.sleep(1000);
+
+		Assert.assertTrue(isElementPresent(apSave), "AP Save Button is not present");
+		apSave.click();
+		TestUtils.sleep(2000);
+
+		Assert.assertTrue(isElementPresent(backTOcases), "Back to Cases Button is not present");
+		backTOcases.click();
+		TestUtils.sleep(2000);
+
+		Assert.assertTrue(isElementPresent(case3), "Case 3 Button is not present");
+		case3.click();
+		TestUtils.sleep(2000);
+
+		Assert.assertTrue(isElementPresent(prelimCaseProcess), "Prelim Case Process Button is not present");
+		prelimCaseProcess.click();
+		js.executeScript("arguments[0].scrollIntoView();", scrPril);
+		TestUtils.sleep(1000);
+
+		Assert.assertTrue(isElementPresent(pretext1), "Pretext 1 Button is not present");
+		pretext1.click();
+		TestUtils.sleep(1000);
+
+		Assert.assertTrue(isElementPresent(pretext1Send), "Pretext 1 Send Field is not present");
+		pretext1Send.sendKeys(value);
+		TestUtils.sleep(1000);
+
+		Assert.assertTrue(isElementPresent(case3status), "Case 3 Status Button is not present");
+		case3status.click();
+		clsClick.click();
+		case3drop.click();
+		forAppSelect.click();
+
+		js.executeScript("arguments[0].scrollIntoView();", case3status);
+
+		Assert.assertTrue(isElementPresent(case3Save), "Case 3 Save Button is not present");
+		case3Save.click();
+		TestUtils.sleep(1000);
+
+		Assert.assertTrue(isElementPresent(backTOcases), "Back to Cases Button is not present");
+		backTOcases.click();
+		TestUtils.sleep(1000);
+
+		if (approvedCheck.isDisplayed()) {
+			String actualText = approvedCheck.getText();
+			String expectedText = "Approved";
+
+			if (actualText.equals(expectedText)) {
+				System.out.println("Learn Step 3 cases Approved");
+			} else {
+				throw new RuntimeException(
+						"Cases Not Approved. Actual text: " + actualText + ". Stopping automation testing.");
+			}
+		} else {
+			throw new RuntimeException("Cases Not Approved. Element not displayed. Stopping automation testing.");
+		}
 		return this;
 	}
 
-	public synchronized EO_CRM_NewProspectCreation BusiNB(String Name, String Branch) {
+	public void preliminary() {
+		TestUtils.sleep(3000);
+		Assert.assertTrue(isElementPresent(step3Edit), "Step 3 Edit Button is not present");
+		step3Edit.click();
 
-		Assert.assertTrue(isElementPresent(BusinessName), "Business name field is not present");
-		Assert.assertTrue(isElementPresent(BranchName), "Branch name field is not present");
+		TestUtils.sleep(3000);
 
-		BusinessName.sendKeys(Name);
-		BranchName.sendKeys(Branch);
+		Assert.assertTrue(isElementPresent(proInfCont), "Professional Information Continue Button is not present");
 
+		for (int i = 0; i < 3; i++) {
+			js.executeScript("arguments[0].scrollIntoView();", proInfCont);
+			TestUtils.sleep(1000);
+
+			Assert.assertTrue(isElementPresent(proInfCont), "Professional Information Continue Button is not present");
+			proInfCont.click();
+			TestUtils.sleep(2000);
+		}
+
+		TestUtils.sleep(2000);
+
+	}
+
+	public synchronized CasesApprovalAndClosing uploadGDCDoc(String value) {
+		TestUtils.sleep(2000);
+		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});",
+				uploadPriorYearGdcLink);
+		Assert.assertTrue(uploadPriorYearGdcLink.isEnabled(), "Upload Prior Year GDC Link is not enabled");
+		uploadPriorYearGdcLink.click();
+//		String upl = "\\\\resources\\\\Uploads\\\\Prior Year GDC.pdf";
+
+		TestUtils.uploadFile("\\resources\\Uploads\\Prior Year GDC.pdf");
+		TestUtils.sleep(1000);
+
+		Assert.assertTrue(uploadYearToDateGdcLink.isDisplayed(), "Upload Year-to-date GDC Link is not displayed");
+		uploadYearToDateGdcLink.click();
+		TestUtils.uploadFile("\\resources\\Uploads\\Year-to-date GDC.pdf");
+		TestUtils.sleep(1000);
+
+		Assert.assertTrue(businesMixByPercentageLink.isDisplayed(), "Business Mix by Percentage Link is not displayed");
+		businesMixByPercentageLink.click();
+		TestUtils.sleep(1000);
+		TestUtils.uploadFile("\\resources\\Uploads\\Business Mix by Percentage.pdf");
+		TestUtils.sleep(1000);
+
+		Assert.assertTrue(assetsUnderManagementTotalsLink.isDisplayed(),
+				"assetsUnderManagementTotalsLink is not displayed");
+		assetsUnderManagementTotalsLink.click();
+		TestUtils.sleep(1000);
+		TestUtils.uploadFile("\\resources\\Uploads\\Assets Under Management Totals.pdf");
+		TestUtils.sleep(1000);
+		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});",
+				productNamesAndAumReportLink);
+		Assert.assertTrue(productNamesAndAumReportLink.isDisplayed(), "productNamesAndAumReportLink is not displayed");
+		productNamesAndAumReportLink.click();
+		TestUtils.sleep(1000);
+		TestUtils.uploadFile("\\resources\\Uploads\\Product Names and AUM Report.pdf");
+		TestUtils.sleep(1000);
+
+		Assert.assertTrue(productSponsorReportLink.isDisplayed(), "productSponsorReportLink is not displayed");
+		productSponsorReportLink.click();
+		TestUtils.sleep(1000);
+		TestUtils.uploadFile("\\resources\\Uploads\\Product Sponsor Reports.pdf");
+		TestUtils.sleep(1000);
+
+		js.executeScript("arguments[0].scrollIntoView();", scrConBut);
+		TestUtils.sleep(1000);
+		Assert.assertTrue(isElementPresent(upconfirmButton), "Upconfirm Button is not present");
+		upconfirmButton.click();
+		TestUtils.sleep(2000);
+
+		Assert.assertTrue(isElementPresent(saveBtn), "Save Button is not present");
+		saveBtn.click();
+		TestUtils.sleep(2500);
+
+		js.executeScript("arguments[0].scrollIntoView();", saveBtn);
+
+		Assert.assertTrue(isElementPresent(firstQestion), "First Question is not present");
+		firstQestion.click();
+		TestUtils.sleep(2000);
+		firstQestionAns.sendKeys(value);
+
+		Assert.assertTrue(isElementPresent(secondQuestion), "Second Question is not present");
+		secondQuestion.click();
+		TestUtils.sleep(2000);
+		secQuesAns.sendKeys(value);
+		Assert.assertTrue(isElementPresent(saveBtn2), "Save Button 2 is not present");
+		TestUtils.sleep(2000);
+		saveBtn2.click();
+		TestUtils.sleep(3000);
+		js.executeScript("arguments[0].scrollIntoView({block: 'center'});", currentBrokerHeader);
+		TestUtils.sleep(1000);
+		if (currentBrokerHeader.isDisplayed()) {
+			Assert.assertTrue(isElementPresent(currentBroker), "currentBroker upload is not present");
+			currentBroker.click();
+			TestUtils.sleep(1000);
+			TestUtils.uploadFile("\\resources\\Uploads\\Product Names and AUM Report.pdf");
+			TestUtils.sleep(1000);
+			Assert.assertTrue(isElementPresent(curentBrokerCheck), "Current Broker check is not present");
+			curentBrokerCheck.click();
+			Assert.assertTrue(isElementPresent(curBroSAVE), "Current Broker check is not present");
+			curBroSAVE.click();
+		}
+
+		Assert.assertTrue(isElementPresent(continueBtn), "Continue Button is not present");
+		continueBtn.click();
+		TestUtils.sleep(2000);
+		js.executeScript("window.scrollTo(0, 0);");
+		return this;
+
+	}
+
+	public void scheduleFind() throws InterruptedException {
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+
+		while (true) {
+			try {
+				System.out.println("Clicking on the first element");
+				WebElement firstElement = wait.until(ExpectedConditions.elementToBeClickable(refresh));
+				firstElement.click();
+
+				Thread.sleep(1000);
+
+				System.out.println("Clicking on the second element");
+				WebElement secondElement = wait.until(ExpectedConditions.elementToBeClickable(refresClick));
+				secondElement.click();
+
+				System.out.println("Checking if the fourth element is displayed and enabled");
+				WebElement thirdElement = scheduleCase;
+
+				if (thirdElement.isDisplayed() && thirdElement.isEnabled()) {
+					TestUtils.sleep(2000);
+					thirdElement.click();
+					System.out.println("Third element found. Exiting the loop.");
+					break;
+				}
+			} catch (org.openqa.selenium.NoSuchElementException e) {
+
+				System.out.println("Second element not found. Retrying...");
+			} catch (Exception e) {
+
+				System.out.println("Exception occurred: " + e.getMessage());
+				e.printStackTrace();
+			}
+		}
+		reactions();
+
+		Assert.assertTrue(isElementPresent(backTOcases), "Back to Cases button is not present");
+		backTOcases.click();
+		Thread.sleep(1000);
+
+		Assert.assertTrue(isElementPresent(sch2Case), "Sch2 Case button is not present");
+		sch2Case.click();
+		reactions();
+
+		Assert.assertTrue(isElementPresent(backTOcases), "Back to Cases button is not present");
+		backTOcases.click();
+		Thread.sleep(1000);
+
+		Assert.assertTrue(isElementPresent(bookCase), "Book Case button is not present");
+		bookCase.click();
+		reactions();
+
+		Assert.assertTrue(isElementPresent(backTOcases), "Back to Cases button is not present");
+		backTOcases.click();
+		Thread.sleep(1000);
+
+		Assert.assertTrue(isElementPresent(boBusCase), "Bo Bus Case button is not present");
+		boBusCase.click();
+		reactions();
+
+		Assert.assertTrue(isElementPresent(backTOcases), "Back to Cases button is not present");
+		backTOcases.click();
+		Thread.sleep(2000);
+
+		Assert.assertTrue(isElementPresent(refresh), "Refresh button is not present");
+		refresh.click();
+		Thread.sleep(2000);
+
+		Assert.assertTrue(isElementPresent(refresClick), "Refres Click button is not present");
+		refresClick.click();
+		Thread.sleep(1000);
+
+		Assert.assertTrue(isElementPresent(refresh), "Refresh button is not present");
+		refresh.click();
+		Thread.sleep(1000);
+
+		Assert.assertTrue(isElementPresent(assesmentCase), "Assessment Case button is not present");
+		assesmentCase.click();
+		reactions();
+
+		Assert.assertTrue(isElementPresent(backTOcases), "Back to Cases button is not present");
+		backTOcases.click();
+		Thread.sleep(1000);
+
+		Assert.assertTrue(isElementPresent(validateCase), "Validate Case button is not present");
+		validateCase.click();
+		reactions();
+
+		Assert.assertTrue(isElementPresent(backTOcases), "Back to Cases button is not present");
+		backTOcases.click();
+		Thread.sleep(1000);
+
+		Assert.assertTrue(isElementPresent(contractCase), "Contract Case button is not present");
+		contractCase.click();
+		reactions();
+
+		Assert.assertTrue(isElementPresent(backTOcases), "Back to Cases button is not present");
+		backTOcases.click();
+		Thread.sleep(1000);
+
+		refreshCase();
+	}
+
+	public void reactions() throws InterruptedException {
+		Thread.sleep(2000);
+		schProcess.click();
+		Thread.sleep(1000);
+		js.executeScript("arguments[0].scrollIntoView({block: 'center'});", schStatus);
+		Thread.sleep(1000);
+		schStatus.click();
+		Thread.sleep(1000);
+		schClosed.click();
+		Thread.sleep(1000);
+		js.executeScript("arguments[0].scrollIntoView({block: 'center'});", scEoStatus);
+		Thread.sleep(1000);
+		scEoStatus.click();
+		Thread.sleep(1000);
+		scEoApproved.click();
+		Thread.sleep(1000);
+		js.executeScript("arguments[0].scrollIntoView({block: 'center'});", schSave);
+		Thread.sleep(1000);
+		schSave.click();
+		Thread.sleep(2000);
+	}
+
+	public void refreshCase() throws InterruptedException {
+		Thread.sleep(1000);
+		refresh.click();
+		Thread.sleep(2000);
+		refresClick.click();
+		Thread.sleep(1000);
+		refresh.click();
+	}
+
+	public void reviewCases() throws InterruptedException {
+		Assert.assertTrue(isElementPresent(reviewCase), "reviewCase is not present");
+		reviewCase.click();
+		reactions();
+		backTOcases.click();
+		Thread.sleep(1000);
+
+		Assert.assertTrue(isElementPresent(frmCase), "frmCase is not present");
+		frmCase.click();
+		reactions();
+		backTOcases.click();
+		Thread.sleep(1000);
+
+		Assert.assertTrue(isElementPresent(rateCase), "rateCase is not present");
+		rateCase.click();
+		reactions();
+		backTOcases.click();
+		Thread.sleep(1000);
+
+		Assert.assertTrue(isElementPresent(setmeetCase), "setmeetCase is not present");
+		setmeetCase.click();
+		reactions();
+		backTOcases.click();
+		Thread.sleep(1000);
+
+		Assert.assertTrue(isElementPresent(setIntCase), "setIntCase is not present");
+		setIntCase.click();
+		reactions();
+		Thread.sleep(2000);
+		backTOcases.click();
+		refreshCase();
+
+		Assert.assertTrue(isElementPresent(extrecCase), "extrecCase is not present");
+		extrecCase.click();
+		reactions();
+		Thread.sleep(2000);
+		backTOcases.click();
+		refreshCase();
+
+		Assert.assertTrue(isElementPresent(recfinCase), "recfinCase is not present");
+		recfinCase.click();
+		reactions();
+		Thread.sleep(2000);
+		backTOcases.click();
+		Thread.sleep(1000);
+
+	}
+
+	public synchronized CasesApprovalAndClosing clickNobutton(String Value) {
+		for (int i = 0; i < 5; i++) {
+
+			WebElement noButton = backConsentnoBtn.get(i);
+
+			((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", noButton);
+
+			noButton.click();
+		}
+		TestUtils.sleep(1000);
+//		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});",
+//				questionNo6YesButton);
+//		questionNo6YesButton.click();
+//		TestUtils.explicit_locate(questionValue);
+//		Assert.assertTrue(isElementPresent(questionValue), "Value Field is not present");
+//		questionValue.sendKeys(Value);
+//		TestUtils.sleep(2000);
+		int totalQuestions = backConsentyesBtn.size();
+
+		System.out.println("Yes Buttons Size: " + totalQuestions);
+
+		System.out.println("Entering the loop...");
+		for (int i = 5; i < totalQuestions; i++) {
+			WebElement yesButton = backConsentyesBtn.get(i);
+			((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", yesButton);
+			yesButton.click();
+
+			List<WebElement> textBoxLocator = backConsentTextbox;
+			WebDriverWait wait = new WebDriverWait(driver, 10);
+			WebElement textBox = backConsentTextbox.get(i);
+
+			// Wait for the textbox to be visible
+			wait.until(ExpectedConditions.visibilityOf(textBox));
+
+			// Log information for debugging
+			System.out.println("Clicked Yes for question " + (i + 1));
+
+			// Enter values in the textbox
+			textBox.sendKeys(Value + (i + 1));
+
+			// Log information for debugging
+			System.out.println("Entered value for question " + (i + 1));
+		}
+		System.out.println("Exiting the loop...");
+
+		TestUtils.sleep(2000);
+		quesSaveBut.click();
+		TestUtils.sleep(1000);
+		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});",
+				supportingDocumentsUpload);
+		Assert.assertTrue(supportingDocumentsUpload.isDisplayed(), "SupportingDocuments upload is not displayed");
+		supportingDocumentsUpload.click();
+		TestUtils.sleep(1000);
+		TestUtils.uploadFile("\\resources\\Uploads\\Business Mix by Percentage.pdf");
+		TestUtils.sleep(1000);
+		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});",
+				uploadChectoConfirm);
+		uploadChectoConfirm.click();
+		Assert.assertTrue(isElementPresent(uploadedsave), "Save Button is not present");
+		uploadedsave.click();
+		TestUtils.sleep(2000);
 		return this;
 	}
 
-	public synchronized EO_CRM_NewProspectCreation dob(String dob) {
+	public void faircreditCheck() {
+		if (fairCreditReportingActAccordionTab.isDisplayed()) {
+			((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});",
+					fairCreditReportingAcknowledgeCheckbox);
+			Assert.assertTrue(isElementPresent(fairCreditReportingAcknowledgeCheckbox),
+					"Fair credit checkbox is not present");
+			fairCreditReportingAcknowledgeCheckbox.click();
+			TestUtils.sleep(1000);
 
-		Assert.assertTrue(isElementPresent(DOBInput), "DOB field is not present");
+		}
+		if (investigationTab.isDisplayed()) {
+			((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});",
+					investigativeConsumerReportAcknowledgeCheckbox);
+			investigativeConsumerReportAcknowledgeCheckbox.click();
+			TestUtils.sleep(1000);
+		}
 
-		DOBInput.sendKeys(dob);
+	}
 
+	public synchronized CasesApprovalAndClosing backConsent(String value) {
+
+		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", backgroundTab);
+		Assert.assertTrue(isElementPresent(backgroundTab), "Background Header is not present");
+		TestUtils.sleep(1000);
+		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", name);
+		Assert.assertTrue(isElementPresent(name), "Name field is not present");
+		name.sendKeys(value);
+		signaTure.click();
+		wait.until(ExpectedConditions.visibilityOf(signatureField));
+		signatureField.sendKeys(value);
+		signatureSubmit.click();
+		sigSave.click();
+		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", summaryTab);
+		Assert.assertTrue(isElementPresent(summaryTab), "summaryTab Header is not present");
+		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", summaryCheck);
+		Assert.assertTrue(isElementPresent(summaryCheck), "Summary Checkbox is not present");
+//		summaryCheck.click();
+//		TestUtils.sleep(2000);
+//		wait.until(ExpectedConditions.visibilityOf(backgroungContinue));
+//		Assert.assertTrue(isElementPresent(backgroungContinue), "Background Header is not present");
+//		TestUtils.sleep(1000);
+//		backgroungContinue.click();
+//		driver.navigate().refresh();
+//		TestUtils.explicit_locate(backgroungContinue);
+//		backgroungContinue.click();
 		return this;
+	}
+
+	public void outsideBusiness() {
+		wait.until(ExpectedConditions.elementToBeClickable(accessTab));
+		Assert.assertTrue(isElementPresent(accessTab), "Access Header is not present");
+		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", launchReged);
+		launchReged.click();
 	}
 
 	private boolean isElementPresent(WebElement element) {
@@ -58,405 +1415,4 @@ public synchronized EO_CRM_NewProspectCreation loginToCRM(String username, Strin
 			return false;
 		}
 	}
-
-	public synchronized EO_CRM_NewProspectCreation mobEmail() {
-		TestUtils.sleep(1000);
-
-		Assert.assertTrue(isElementPresent(PerMobNum), "Personal Mobile Number field is not present");
-		Assert.assertTrue(isElementPresent(PerEmail), "Personal Email field is not present");
-
-		WebElement mobileNumberInput = PerMobNum;
-		mobileNumberInput.sendKeys(generateRandomMobileNumber());
-
-		WebElement emailInput = PerEmail;
-		emailInput.sendKeys(generateRandomEmailAddress());
-
-		return this;
-	}
-
-	public synchronized EO_CRM_NewProspectCreation last(String lastname) {
-		TestUtils.sleep(1000);
-
-		Assert.assertTrue(isElementPresent(searchBar), "Search bar field is not present");
-
-		searchBar.sendKeys(lastname);
-
-		return this;
-	}
-
-	public synchronized EO_CRM_NewProspectCreation values(String value) {
-		TestUtils.sleep(1000);
-
-		Assert.assertTrue(isElementPresent(NBO), "NBO field is not present");
-		Assert.assertTrue(isElementPresent(NPS), "NPS field is not present");
-		Assert.assertTrue(isElementPresent(NNP), "NNP field is not present");
-
-		NBO.sendKeys(value);
-		TestUtils.sleep(1000);
-		NPS.sendKeys(value);
-		TestUtils.sleep(1000);
-		NNP.sendKeys(value);
-
-		return this;
-	}
-
-	public void dashboard() {
-		TestUtils.sleep(1000);
-		if (DashboradElement.isDisplayed()) {
-			System.out.println("User is on CRM HomePage");
-		} else {
-			System.out.println("Unable to login to server");
-		}
-
-	}
-
-	public void BusinessDevolpment() {
-		WebElement BusiHead = BusinessHeader;
-
-		String BusiHeadText = BusiHead.getText();
-
-		String expectedText = "Business Development";
-
-		if (BusiHeadText.equals(expectedText)) {
-
-			System.out.println("Element text is as expected: " + BusiHeadText);
-		} else {
-
-			TestUtils.sleep(3000);
-			BusinessSelect.click();
-			BusiSearch.sendKeys("Business");
-			act.sendKeys(Keys.ENTER).perform();
-			System.out.println("Element text Selected : Business Development");
-			TestUtils.sleep(2000);
-		}
-	}
-
-	public void Lead() {
-		WebElement LeadHead = LeadsHead;
-
-		String expectedLead = LeadHead.getText();
-
-		String expectedHead = "Leads";
-
-		if (expectedLead.equals(expectedHead)) {
-			LeadHead.click();
-			System.out.println("Element text is as expected: " + expectedLead);
-		} else {
-			TestUtils.sleep(1000);
-			LeadArrow.click();
-			TestUtils.sleep(1000);
-			LeadSelect.click();
-			System.out.println("Element text Selected : Leads");
-
-		}
-	}
-
-	public void newButton() {
-		TestUtils.sleep(2000);
-		Assert.assertTrue(isElementPresent(NewButton), "New button is not present");
-		NewButton.click();
-	}
-
-	public void NewHead() {
-		TestUtils.sleep(1000);
-		Assert.assertTrue(isElementPresent(NewLeadHeader), "New Header is not present");
-	}
-
-	public void BusinessProfile() {
-		WebElement element = ScrollBusiness;
-		js.executeScript("arguments[0].scrollIntoView();", element);
-		Assert.assertTrue(isElementPresent(ScrollBusiness), "Business Profile Header is not present");
-	}
-
-	public void Assigne() {
-		WebElement element = scrollAssign;
-		js.executeScript("arguments[0].scrollIntoView();", element);
-		Assert.assertTrue(isElementPresent(scrollAssign), "Assign is not present");
-	}
-
-	public void External() {
-		WebElement element = scrollAssign;
-		js.executeScript("arguments[0].scrollIntoView();", element);
-		ExtRecNam.click();
-		ExtRecNamSel.click();
-		TestUtils.sleep(1000);
-	}
-
-	public void Internal() {
-		Assert.assertTrue(isElementPresent(IntRecNam), "Internal Receiver Name is not present");
-		IntRecNam.click();
-		IntRecNamSel.click();
-		TestUtils.sleep(1000);
-	}
-
-	public void wealth() {
-		AWMFirmDrop.click();
-		dropOsaic.click();
-		TestUtils.sleep(1000);
-	}
-
-	public void recLead() {
-		WebElement element = RecleSource;
-		js.executeScript("arguments[0].scrollIntoView();", element);
-		RecleSource.click();
-		LeadMarket.click();
-		TestUtils.sleep(1000);
-	}
-
-	public void curPrac() {
-		WebElement element = CurPraDrop;
-		js.executeScript("arguments[0].scrollIntoView();", element);
-		CurPraDrop.click();
-		SoloSel.click();
-		TestUtils.sleep(1000);
-	}
-
-	public void finSave() {
-		saveButton.click();
-	}
-
-	public void toaster() {
-		wait.until(ExpectedConditions.visibilityOf(NewLeadToast));
-		Assert.assertTrue(isElementPresent(NewLeadToast), "Toaster is not present");
-	}
-
-	public void leadToaster() {
-		wait.until(ExpectedConditions.visibilityOf(leadConvertToast));
-		Assert.assertTrue(isElementPresent(leadConvertToast), "Toaster is not present");
-	}
-
-	public void ClickLead() {
-		wait.until(ExpectedConditions.visibilityOf(ConveLeButton));
-		TestUtils.sleep(1000);
-		Assert.assertTrue(isElementPresent(ConveLeButton), "ConveLeButton is not present");
-		ConveLeButton.click();
-	}
-
-	public void convertHead() {
-		wait.until(ExpectedConditions.visibilityOf(convertHeader));
-		Assert.assertTrue(isElementPresent(convertHeader), "Convert Header is not present");
-	}
-
-	public void finaConvert() {
-		wait.until(ExpectedConditions.visibilityOf(beforeConvert));
-		Assert.assertTrue(isElementPresent(beforeConvert), "beforeConvert is not present");
-		TestUtils.sleep(1000);
-		Assert.assertTrue(isElementPresent(finalConvert), "ConveLeButton is not present");
-		finalConvert.click();
-	}
-
-	public void FinalHeader() {
-		TestUtils.explicit_locate(ConvertMessage);
-		TestUtils.sleep(2000);
-		Assert.assertTrue(isElementPresent(ConvertMessage), "Convert Message is not present");
-		TestUtils.sleep(2000);
-	}
-
-//	public void openacc() {
-//		accOpen.click();
-//	}
-
-	public void inviteBut() {
-		TestUtils.sleep(3000);
-		js.executeScript("window.scrollTo(0, 0);");
-		TestUtils.sleep(2000);
-		Assert.assertTrue(isElementPresent(inviteButton), "Invite Button is not present");
-	}
-
-	public void invite() {
-		Assert.assertTrue(isElementPresent(inviteButton), "Invite Button is not present");
-		inviteButton.click();
-		TestUtils.sleep(3000);
-		act.sendKeys(Keys.ENTER).perform();
-		TestUtils.sleep(2000);
-		TestUtils.explicit_locate(confirmationInvite);
-		Assert.assertTrue(isElementPresent(confirmationInvite), "confirmationInvite is not present");
-		invitedClose.click();
-		TestUtils.sleep(2000);
-		driver.navigate().refresh();
-		TestUtils.sleep(2000);
-	}
-
-	public void confirmation() {
-		TestUtils.sleep(2000);
-		Assert.assertTrue(isElementPresent(confirmToaster), "Confirmation Toaster is not present");
-		Assert.assertTrue(confirmToaster.isDisplayed(), "Confirmation Toaster is not displayed");
-	}
-
-	public void close() {
-		TestUtils.explicit_locate(close);
-		Assert.assertTrue(isElementPresent(close), "Close button is not present");
-		close.click();
-	}
-
-	public void DeleteProspect() {
-		TestUtils.sleep(3000);
-		js.executeScript("window.scrollTo(0, 0);");
-		TestUtils.sleep(1000);
-
-		if (isElementPresent(DeleteButton) && isElementPresent(deleteConfirmHeader)) {
-			DeleteButton.click();
-			TestUtils.sleep(2000);
-			Assert.assertTrue(deleteConfirmHeader.isDisplayed(), "Delete Confirmation is not present");
-			TestUtils.sleep(2000);
-			deletFin.click();
-			TestUtils.sleep(2000);
-		}
-	}
-
-	public void Select() {
-		TestUtils.sleep(4000);
-
-		if (isElementPresent(searchBar)) {
-			searchBar.click();
-			TestUtils.sleep(2000);
-
-			if (isElementPresent(searchSelect) && isElementPresent(downClick) && isElementPresent(delBut)
-					&& isElementPresent(deleteFinal) && isElementPresent(finaToast) && isElementPresent(LogIm)
-					&& isElementPresent(logout)) {
-				act.sendKeys(searchBar, "Deat").perform();
-				TestUtils.sleep(2000);
-
-				searchSelect.click();
-				TestUtils.sleep(3000);
-				downClick.click();
-				TestUtils.sleep(1000);
-				delBut.click();
-				TestUtils.sleep(2000);
-				deleteFinal.click();
-				TestUtils.sleep(2000);
-
-				if (isElementPresent(finaToast)) {
-					Assert.assertTrue(finaToast.isDisplayed(), "Delete Toaster is not present");
-					TestUtils.sleep(2000);
-					LogIm.click();
-					TestUtils.sleep(2000);
-					logout.click();
-				}
-			}
-		}
-	}
-
-	public void contactTab() throws AWTException {
-		act.contextClick(contact).perform();
-		TestUtils.sleep(2000);
-
-		Robot r = new Robot();
-		r.keyPress(KeyEvent.VK_DOWN);
-		r.keyRelease(KeyEvent.VK_DOWN);
-		TestUtils.sleep(1000);
-		r.keyPress(KeyEvent.VK_ENTER);
-		r.keyRelease(KeyEvent.VK_ENTER);
-		TestUtils.sleep(2000);
-
-	}
-
-	public void oppTab() {
-		TestUtils.explicit_locate(oppourtunity);
-
-		if (isElementPresent(oppourtunity)) {
-			TestUtils.sleep(2000);
-			oppourtunity.click();
-		}
-	}
-
-	public void contactEdit() {
-		TestUtils.sleep(5000);
-		WebElement element = scrollContact;
-		js.executeScript("arguments[0].scrollIntoView();", element);
-		act.doubleClick(editContact).perform();
-		TestUtils.sleep(1000);
-		contactSearch.click();
-		TestUtils.sleep(1000);
-		selectContact.click();
-	}
-
-	public void channel() {
-		TestUtils.sleep(2000);
-		WebElement element = scrDis;
-		js.executeScript("arguments[0].scrollIntoView();", element);
-		channeldrop.click();
-		TestUtils.sleep(1000);
-		if (isElementPresent(chaSel)) {
-			chaSel.click();
-		}
-
-	}
-
-	public void homeSelect() {
-		WebElement element1 = ScrolThome;
-		js.executeScript("arguments[0].scrollIntoView();", element1);
-		TestUtils.sleep(1000);
-		if (isElementPresent(dsDrop) && isElementPresent(NFS) && isElementPresent(push)
-				&& isElementPresent(saveforInvite)) {
-			dsDrop.click();
-			dsSelect.click();
-			TestUtils.sleep(1000);
-			NFS.click();
-			push.click();
-			saveforInvite.click();
-			TestUtils.sleep(2000);
-		}
-	}
-
-	public void cases() {
-		TestUtils.sleep(3000);
-
-		if (isElementPresent(BusinessSelect) && isElementPresent(BusiSearch) && isElementPresent(deatCase)
-				&& isElementPresent(delDown) && isElementPresent(caseDelete) && isElementPresent(deleteFinal)) {
-			BusinessSelect.click();
-			BusiSearch.sendKeys("cases");
-			TestUtils.sleep(1000);
-			act.sendKeys(Keys.ENTER).perform();
-			TestUtils.sleep(1000);
-			act.sendKeys(Keys.ESCAPE).perform();
-			TestUtils.sleep(1000);
-			deatCase.click();
-			TestUtils.sleep(3000);
-			delDown.click();
-			caseDelete.click();
-			TestUtils.sleep(2000);
-			deleteFinal.click();
-			TestUtils.sleep(3000);
-		}
-	}
-
-	public static String generateRandomMobileNumber() {
-		Random random = new Random();
-
-		StringBuilder mobileNumber = new StringBuilder("3");
-		for (int i = 0; i < 9; i++) {
-			mobileNumber.append(random.nextInt(10));
-		}
-		return mobileNumber.toString();
-	}
-
-	public static String generateRandomEmailAddress() {
-		Random random = new Random();
-
-		String username = "Automatest" + random.nextInt(1000);
-		String domain = "@test.com";
-		return username + domain;
-	}
-
-	public void ext() {
-		TestUtils.sleep(6000);
-		TestUtils.explicit_locate(scrExt);
-		js.executeScript("window.scrollBy(0, 650);");
-		TestUtils.sleep(1500);
-		if (extID.isDisplayed()) {
-			String text = extID.getText();
-			System.out.println("External Id:" + text);
-		} else {
-
-			driver.navigate().refresh();
-			js.executeScript("window.scrollBy(0, 650);");
-
-			if (extID.isDisplayed()) {
-				String text = extID.getText();
-				System.out.println("External Id:" + text);
-			} else {
-
-				throw new RuntimeException("External ID is not generated. Stopping automation testing.");
-			}
-		}
+}
