@@ -1,15 +1,58 @@
-for (int i = 0; i < 5; i++) {
-            // Scroll down using JavaScript
-            scrollDown(driver);
+Assert.assertTrue(isElementPresent(backTOcases), "Back to Cases button is not present");
+		backTOcases.click();
+		Thread.sleep(1000);
 
-            // Wait for a short time to allow the page to load
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+		Assert.assertTrue(isElementPresent(sch2Case), "Sch2 Case button is not present");
+		sch2Case.click();
+		reactions();
 
-            // Find the element and click on it
-            WebElement element = driver.findElement(elementLocator);
-            element.click();
-        }
+		Assert.assertTrue(isElementPresent(backTOcases), "Back to Cases button is not present");
+		backTOcases.click();
+		Thread.sleep(1000);
+		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", bookCase);
+		Assert.assertTrue(isElementPresent(bookCase), "Book Case button is not present");
+		bookCase.click();
+		reactions();
+
+		Assert.assertTrue(isElementPresent(backTOcases), "Back to Cases button is not present");
+		backTOcases.click();
+		Thread.sleep(1000);
+
+		Assert.assertTrue(isElementPresent(boBusCase), "Bo Bus Case button is not present");
+		boBusCase.click();
+		reactions();
+
+		Assert.assertTrue(isElementPresent(backTOcases), "Back to Cases button is not present");
+		backTOcases.click();
+		Thread.sleep(2000);
+
+//		allocation started here
+
+		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", loadICACase);
+		Assert.assertTrue(isElementPresent(reviewcontractResponse), "reviewcontractResponse is not present");
+		reviewcontractResponse.click();
+		reactions();
+
+		Assert.assertTrue(isElementPresent(backTOcases), "Back to Cases button is not present");
+		backTOcases.click();
+		Thread.sleep(1000);
+
+		Assert.assertTrue(isElementPresent(backgroundcheckParentCase), "backgroundcheckParentCase is not present");
+		backgroundcheckParentCase.click();
+		reactions();
+
+		Assert.assertTrue(isElementPresent(backTOcases), "Back to Cases button is not present");
+		backTOcases.click();
+		Thread.sleep(1000);
+
+		Assert.assertTrue(isElementPresent(pullbackgroundDocuments), "pullbackgroundDocuments is not present");
+		pullbackgroundDocuments.click();
+		reactions();
+
+		Assert.assertTrue(isElementPresent(backTOcases), "Back to Cases button is not present");
+		backTOcases.click();
+		Thread.sleep(1000);
+
+		Assert.assertTrue(isElementPresent(loadICACase), "loadICACase is not present");
+		loadICACase.click();
+		reactions();
