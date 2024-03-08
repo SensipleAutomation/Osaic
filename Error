@@ -1,7 +1,15 @@
-WebElement textBox;
+for (int i = 0; i < 5; i++) {
+            // Scroll down using JavaScript
+            scrollDown(driver);
 
-    if (i == 9) { // Check if it's the 10th question
-        textBox = TestUtils.explicit_locate(quesTenText).get(0);
-    } else {
-        textBox = TestUtils.explicit_locate(backConsentTextbox).get(i - 5);
-    }
+            // Wait for a short time to allow the page to load
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            // Find the element and click on it
+            WebElement element = driver.findElement(elementLocator);
+            element.click();
+        }
