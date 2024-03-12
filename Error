@@ -1,1 +1,1 @@
-//div[@aria-label='Preliminary Transitions Summary']//following::div[contains(@class, 'slds-rich-text-area__content slds-grow slds-text-color-weak standin']
+//div[@aria-label='Preliminary Transitions Summary']//following::div[contains(@class, 'slds-rich-text-area__content') ]
