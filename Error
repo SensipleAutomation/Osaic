@@ -1,1 +1,1 @@
-js.executeScript("window.scrollTo(0, 0);");
+actions.moveToElement(driver.findElement(By.tagName("body"))).click().sendKeys(Keys.HOME).perform();
