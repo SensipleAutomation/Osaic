@@ -1,16 +1,10 @@
-while (!targetFound) {
+for (int i = 0; i < 6; i++) {
             try {
-                // Find and click the element to be clicked continuously
-                WebElement elementToClick = driver.findElement(By.cssSelector("your_element_selector"));
                 elementToClick.click();
-                
-                // Check if the target element is now present
-                WebElement targetElement = driver.findElement(By.cssSelector("your_target_element_selector"));
-                if (targetElement.isDisplayed()) {
-                    targetFound = true;
-                }
+                System.out.println("Clicked " + (i+1) + " times");
+                // Add a delay if needed
+                Thread.sleep(1000); // Wait for 1 second (1000 milliseconds) between clicks
             } catch (Exception e) {
-                // Handle any exceptions, such as element not found
                 e.printStackTrace();
             }
         }
