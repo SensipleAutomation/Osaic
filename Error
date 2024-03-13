@@ -1,1 +1,16 @@
-((JavascriptExecutor) driver).executeScript("arguments[0].click();", checkbox);
+while (!targetFound) {
+            try {
+                // Find and click the element to be clicked continuously
+                WebElement elementToClick = driver.findElement(By.cssSelector("your_element_selector"));
+                elementToClick.click();
+                
+                // Check if the target element is now present
+                WebElement targetElement = driver.findElement(By.cssSelector("your_target_element_selector"));
+                if (targetElement.isDisplayed()) {
+                    targetFound = true;
+                }
+            } catch (Exception e) {
+                // Handle any exceptions, such as element not found
+                e.printStackTrace();
+            }
+        }
