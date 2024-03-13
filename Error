@@ -1,1 +1,1 @@
-//div[@aria-label='Preliminary Transitions Summary']//following::div[contains(@class, 'slds-rich-text-area__content') ]
+((JavascriptExecutor) driver).executeScript("arguments[0].click();", checkbox);
