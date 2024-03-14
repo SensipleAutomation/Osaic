@@ -1,24 +1,8 @@
-private static final String FIRST_NAME = "AutoRegression";
-    private static final String LAST_NAME_PREFIX = "Test";
+ Assert.assertTrue(isElementPresent(Firstname), "First name field is not present");
 
-    public static String generateRandomLastName() {
-        Random random = new Random();
-        int randomNumber = random.nextInt(1000); // Generate random number between 0 and 999
-        return LAST_NAME_PREFIX + randomNumber;
-    }
+    // Generate random last name
+    String lastname = generateRandomLastName();
+    Assert.assertTrue(isElementPresent(Lastname), "Last name field is not present");
 
-    public static String generateFixedFirstName() {
-        return FIRST_NAME;
-    }
-
-
-public synchronized EO_CRM_NewProspectCreation firstLast(String Firstnam, String lastname) {
-
-		Assert.assertTrue(isElementPresent(Firstname), "First name field is not present");
-		Assert.assertTrue(isElementPresent(Lastname), "Last name field is not present");
-
-		Firstname.sendKeys(Firstnam);
-		Lastname.sendKeys(lastname);
-
-		return this;
-	}
+    Firstname.sendKeys(Firstnam);
+    Lastname.sendKeys(lastname);
