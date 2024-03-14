@@ -1,1 +1,1 @@
-(//span[text()='Or drop files']//preceding::div[@part='file-selector'])[last()-1]
+//*[@id="file-selector-label-5513"]/span[1]
