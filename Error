@@ -1,17 +1,1 @@
-Bug Title: Application not proceeding to 3rd step after approval in Salesforce
-
-Description:
-After submitting the first two steps of the Learn Module, the process locks with the message "In Review, Result expected in 5 days, Review Submission". The expectation is that upon approval in Salesforce, the application should proceed to the 3rd step. However, even after approval in Salesforce, the functionality does not work as expected, and the application remains stuck in the "In Review" stage.
-
-Steps to Reproduce:
-
-Submit the first two steps of the application.
-Wait for the application to reach the "In Review" stage.
-Approve the Create reged credentials and create preliminary cases in Salesforce.
-Verify if the application proceeds to the 3rd step after refresh the page on EO.
-
-Expected Result:
-Upon approval in Salesforce, the application should proceed to the 3rd step after refresh.
-
-Actual Result:
-The application stuck in the "In Review" stage even after approval in Salesforce.
+(//div[@class='bodyConvertedItem'])[3]//following::a
