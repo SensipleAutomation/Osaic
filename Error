@@ -1,1 +1,1 @@
-//*[@id="file-selector-label-5513"]/span[1]
+//span[contains(@id, 'file-selector-label')]/span[1]
