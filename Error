@@ -1,8 +1,1 @@
- Assert.assertTrue(isElementPresent(Firstname), "First name field is not present");
-
-    // Generate random last name
-    String lastname = generateRandomLastName();
-    Assert.assertTrue(isElementPresent(Lastname), "Last name field is not present");
-
-    Firstname.sendKeys(Firstnam);
-    Lastname.sendKeys(lastname);
+(//span[text()='Or drop files']//preceding::div[@part='file-selector'])[last()-1]
