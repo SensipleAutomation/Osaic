@@ -1,5 +1,15 @@
-Actions actions = new Actions(driver);
-        actions.sendKeys(Keys.ARROW_DOWN).perform();
+public class RandomNameGenerator {
 
-        // Simulate pressing Enter to select the first option
-        actions.sendKeys(Keys.ENTER).perform();
+    private static final String FIRST_NAME = "AutoRegression";
+    private static final String LAST_NAME_PREFIX = "Test";
+
+    public static String generateRandomLastName() {
+        Random random = new Random();
+        int randomNumber = random.nextInt(1000); // Generate random number between 0 and 999
+        return LAST_NAME_PREFIX + randomNumber;
+    }
+
+    public static void main(String[] args) {
+        System.out.println("Fixed First Name: " + FIRST_NAME);
+        System.out.println("Random Last Name: " + generateRandomLastName());
+    }
