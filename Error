@@ -1,1 +1,7 @@
-(//div[@class='bodyConvertedItem'])[3]//following::a
+WebElement dropdown = driver.findElement(By.id("dropdown_id"));
+
+        // Create a Select object
+        Select select = new Select(dropdown);
+
+        // Select the first option using index (index starts from 0)
+        select.selectByIndex(0);
