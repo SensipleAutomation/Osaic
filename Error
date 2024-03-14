@@ -1,6 +1,4 @@
-public class RandomNameGenerator {
-
-    private static final String FIRST_NAME = "AutoRegression";
+private static final String FIRST_NAME = "AutoRegression";
     private static final String LAST_NAME_PREFIX = "Test";
 
     public static String generateRandomLastName() {
@@ -9,7 +7,6 @@ public class RandomNameGenerator {
         return LAST_NAME_PREFIX + randomNumber;
     }
 
-    public static void main(String[] args) {
-        System.out.println("Fixed First Name: " + FIRST_NAME);
-        System.out.println("Random Last Name: " + generateRandomLastName());
+    public static String generateFixedFirstName() {
+        return FIRST_NAME;
     }
