@@ -1,7 +1,5 @@
-WebElement dropdown = driver.findElement(By.id("dropdown_id"));
+Actions actions = new Actions(driver);
+        actions.sendKeys(Keys.ARROW_DOWN).perform();
 
-        // Create a Select object
-        Select select = new Select(dropdown);
-
-        // Select the first option using index (index starts from 0)
-        select.selectByIndex(0);
+        // Simulate pressing Enter to select the first option
+        actions.sendKeys(Keys.ENTER).perform();
