@@ -10,3 +10,15 @@ private static final String FIRST_NAME = "AutoRegression";
     public static String generateFixedFirstName() {
         return FIRST_NAME;
     }
+
+
+public synchronized EO_CRM_NewProspectCreation firstLast(String Firstnam, String lastname) {
+
+		Assert.assertTrue(isElementPresent(Firstname), "First name field is not present");
+		Assert.assertTrue(isElementPresent(Lastname), "Last name field is not present");
+
+		Firstname.sendKeys(Firstnam);
+		Lastname.sendKeys(lastname);
+
+		return this;
+	}
