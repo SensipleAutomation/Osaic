@@ -1,1 +1,6 @@
-//span[contains(@id, 'file-selector-label')]/span[1]
+TestUtils.explicit_locate(approvedToaster);
+		if (approvedToaster.isDisplayed()) {
+			System.out.println("Case Approved");
+		} else {
+
+		}
