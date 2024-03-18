@@ -1,14 +1,35 @@
-public void elementWriteInExcel(List <WebElement> element,String filelocation, String sheet, int row, int cell)throws IOException {
-			//for (WebElement rows : element) {
-			    List<WebElement> cells = element;  
-			    for (WebElement cell1 : cells) {         
-			String text = cell1.getText();		
-			File file=new File(filelocation);
-			FileInputStream fin=new FileInputStream(file);
-			Workbook workbook=new XSSFWorkbook(fin);
-			Sheet createsheet = workbook.createSheet(sheet);
-			Row createRow = createsheet.createRow(row);
-			Cell createCell = createRow.createCell(cell);
-			createCell.setCellValue(text);
-			FileOutputStream fout=new FileOutputStream(file);
-			workbook.write(fout);
+WebElement table = driver.findElement(By.id("countries"));
+
+		
+		List<String> secondRowData = new ArrayList<>();
+		WebElement secondRow = table.findElement(By.xpath("//tr[2]")); // Selecting the second row
+		List<WebElement> cellsInSecondRow = secondRow.findElements(By.tagName("td"));
+		for (WebElement cell : cellsInSecondRow) {
+			secondRowData.add(cell.getText());
+		}
+
+		
+		String filePath = "C:\\Users\\rajasekar.p\\eclipse-workspace\\DataDriven\\Test-Data\\Test_Data.xlsx";
+
+		
+		writeDataToExcel(secondRowData, filePath);
+	}
+
+	public static void writeDataToExcel(List<String> data, String filePath) {
+		try (XSSFWorkbook workbook = new XSSFWorkbook()) {
+			Sheet sheet = workbook.createSheet("Data");
+			Row row = sheet.createRow(0);
+			int cellCount = 0;
+			for (String item : data) {
+				Cell cell = row.createCell(cellCount++);
+				cell.setCellValue(item);
+			}
+			try (FileOutputStream fileOut = new FileOutputStream(filePath)) {
+				workbook.write(fileOut);
+			}
+			System.out.println("Data has been written to Excel successfully.");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
