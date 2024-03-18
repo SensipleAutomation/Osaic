@@ -1,42 +1,28 @@
-public void elementWriteInExcel(List<WebElement> elements, String fileLocation, String sheetName, int startingRow, int startingCell) throws IOException {
-        File file = new File(fileLocation);
-        Workbook workbook;
-        Sheet sheet;
+WebElement table = driver.findElement(By.id("table-id"));
 
-        // Check if file exists
-        if (file.exists()) {
-            // If file exists, open existing workbook
-            FileInputStream fin = new FileInputStream(file);
-            workbook = new XSSFWorkbook(fin);
-            sheet = workbook.getSheet(sheetName);
-            if (sheet == null) {
-                sheet = workbook.createSheet(sheetName);
+        // Initialize a new workbook
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Table Data");
+
+        // Get all rows of the table
+        List<WebElement> rows = table.findElements(By.tagName("tr"));
+
+        // Iterate over each row
+        int rowIndex = 0;
+        for (WebElement row : rows) {
+            Row excelRow = sheet.createRow(rowIndex++);
+
+            // Get all cells of the current row
+            List<WebElement> cells = row.findElements(By.tagName("td"));
+            int cellIndex = 0;
+            for (WebElement cell : cells) {
+                excelRow.createCell(cellIndex++).setCellValue(cell.getText());
             }
-        } else {
-            // If file doesn't exist, create new workbook
-            workbook = new XSSFWorkbook();
-            sheet = workbook.createSheet(sheetName);
         }
 
-        // Write data to the sheet
-        int rowNum = startingRow;
-        for (WebElement element : elements) {
-            String text = element.getText();
-            Row row = sheet.createRow(rowNum++);
-            Cell cell = row.createCell(startingCell);
-            cell.setCellValue(text);
+        // Write the workbook content to a file
+        try (FileOutputStream outputStream = new FileOutputStream("table_data.xlsx")) {
+            workbook.write(outputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-        // Write workbook content to file
-        try (FileOutputStream fout = new FileOutputStream(file)) {
-            workbook.write(fout);
-        }
-    }
-
-    // Example usage:
-    public static void main(String[] args) throws IOException {
-        ExcelWriter writer = new ExcelWriter();
-        // Usage example
-        // writer.elementWriteInExcel(elements, "file_location.xlsx", "Sheet1", 0, 0);
-    }
-}
