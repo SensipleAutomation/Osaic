@@ -1,28 +1,14 @@
-WebElement table = driver.findElement(By.id("table-id"));
-
-        // Initialize a new workbook
-        Workbook workbook = new XSSFWorkbook();
-        Sheet sheet = workbook.createSheet("Table Data");
-
-        // Get all rows of the table
-        List<WebElement> rows = table.findElements(By.tagName("tr"));
-
-        // Iterate over each row
-        int rowIndex = 0;
-        for (WebElement row : rows) {
-            Row excelRow = sheet.createRow(rowIndex++);
-
-            // Get all cells of the current row
-            List<WebElement> cells = row.findElements(By.tagName("td"));
-            int cellIndex = 0;
-            for (WebElement cell : cells) {
-                excelRow.createCell(cellIndex++).setCellValue(cell.getText());
-            }
-        }
-
-        // Write the workbook content to a file
-        try (FileOutputStream outputStream = new FileOutputStream("table_data.xlsx")) {
-            workbook.write(outputStream);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+public void elementWriteInExcel(List <WebElement> element,String filelocation, String sheet, int row, int cell)throws IOException {
+			//for (WebElement rows : element) {
+			    List<WebElement> cells = element;  
+			    for (WebElement cell1 : cells) {         
+			String text = cell1.getText();		
+			File file=new File(filelocation);
+			FileInputStream fin=new FileInputStream(file);
+			Workbook workbook=new XSSFWorkbook(fin);
+			Sheet createsheet = workbook.createSheet(sheet);
+			Row createRow = createsheet.createRow(row);
+			Cell createCell = createRow.createCell(cell);
+			createCell.setCellValue(text);
+			FileOutputStream fout=new FileOutputStream(file);
+			workbook.write(fout);
