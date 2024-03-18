@@ -1,2 +1,28 @@
-startingCell++; // Move to the next cell
-            rowNum++; 
+public void elementWriteInExcel(List<WebElement> elements, String fileLocation, String sheetName, int startingRow, int startingCell) throws IOException {
+        File file = new File(fileLocation);
+        FileInputStream fin = new FileInputStream(file);
+        Workbook workbook = new XSSFWorkbook(fin);
+        Sheet sheet = workbook.getSheet(sheetName);
+        if (sheet == null) {
+            sheet = workbook.createSheet(sheetName);
+        }
+
+        int rowNum = startingRow;
+        for (WebElement element : elements) {
+            Row row = sheet.getRow(rowNum);
+            if (row == null) {
+                row = sheet.createRow(rowNum);
+            }
+
+            Cell cell = row.createCell(startingCell);
+            cell.setCellValue(element.getText());
+
+            startingCell++; // Move to the next cell
+            rowNum++; // Move to the next row
+        }
+
+        FileOutputStream fout = new FileOutputStream(file);
+        workbook.write(fout);
+        workbook.close();
+        fout.close();
+    }
