@@ -1,10 +1,26 @@
-Row row = sheet.getRow(startingRow);
-        if (row == null) {
-            row = sheet.createRow(startingRow);
+public void elementWriteInExcel(List<WebElement> elements, String fileLocation, String sheetName, int startingRow, int startingCell) throws IOException {
+        File file = new File(fileLocation);
+        FileInputStream fin = new FileInputStream(file);
+        Workbook workbook = new XSSFWorkbook(fin);
+        Sheet sheet = workbook.getSheet(sheetName);
+        if (sheet == null) {
+            sheet = workbook.createSheet(sheetName);
         }
-
-        int cellIndex = startingCell;
-        for (WebElement element : elements) {
-            Cell cell = row.createCell(cellIndex++);
+ 
+        int rowNum = startingRow;
+        Row row = sheet.getRow(rowNum);
+        if (row == null) {
+            row = sheet.createRow(rowNum);
+        }
+ 
+        for (int i = 0; i < elements.size(); i++) {
+            WebElement element = elements.get(i);
+            Cell cell = row.createCell(startingCell + i);
             cell.setCellValue(element.getText());
         }
+ 
+        FileOutputStream fout = new FileOutputStream(file);
+        workbook.write(fout);
+        workbook.close();
+        fout.close();
+    }
