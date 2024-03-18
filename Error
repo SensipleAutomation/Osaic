@@ -1,6 +1,14 @@
-TestUtils.explicit_locate(approvedToaster);
-		if (approvedToaster.isDisplayed()) {
-			System.out.println("Case Approved");
-		} else {
-
-		}
+public void elementWriteInExcel(List <WebElement> element,String filelocation, String sheet, int row, int cell)throws IOException {
+			//for (WebElement rows : element) {
+			    List<WebElement> cells = element;  
+			    for (WebElement cell1 : cells) {         
+			String text = cell1.getText();		
+			File file=new File(filelocation);
+			FileInputStream fin=new FileInputStream(file);
+			Workbook workbook=new XSSFWorkbook(fin);
+			Sheet createsheet = workbook.createSheet(sheet);
+			Row createRow = createsheet.createRow(row);
+			Cell createCell = createRow.createCell(cell);
+			createCell.setCellValue(text);
+			FileOutputStream fout=new FileOutputStream(file);
+			workbook.write(fout);
