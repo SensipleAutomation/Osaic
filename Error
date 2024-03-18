@@ -1,3 +1,1 @@
- ExcelWriter writer = new ExcelWriter();
-        // Usage example
-        // writer.elementWriteInExcel(elements, "file_location.xlsx", "Sheet1", 0, 0);
+Moved the creation of workbook and sheet outside the loop to avoid creating new sheets for each cell.
