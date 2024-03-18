@@ -1,4 +1,4 @@
-public void elementWriteInExcel(List<WebElement> elements, String fileLocation, String sheetName, int startingRow, int startingCell) throws IOException {
+ public void elementWriteInExcel(List<WebElement> elements, String fileLocation, String sheetName, int startingRow, int startingCell) throws IOException {
         File file = new File(fileLocation);
         FileInputStream fin = new FileInputStream(file);
         Workbook workbook = new XSSFWorkbook(fin);
@@ -8,17 +8,15 @@ public void elementWriteInExcel(List<WebElement> elements, String fileLocation, 
         }
 
         int rowNum = startingRow;
-        for (WebElement element : elements) {
-            Row row = sheet.getRow(rowNum);
-            if (row == null) {
-                row = sheet.createRow(rowNum);
-            }
+        Row row = sheet.getRow(rowNum);
+        if (row == null) {
+            row = sheet.createRow(rowNum);
+        }
 
-            Cell cell = row.createCell(startingCell);
+        for (int i = 0; i < elements.size(); i++) {
+            WebElement element = elements.get(i);
+            Cell cell = row.createCell(startingCell + i);
             cell.setCellValue(element.getText());
-
-            startingCell++; // Move to the next cell
-            rowNum++; // Move to the next row
         }
 
         FileOutputStream fout = new FileOutputStream(file);
