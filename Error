@@ -1,14 +1,42 @@
-public void elementWriteInExcel(List <WebElement> element,String filelocation, String sheet, int row, int cell)throws IOException {
-			//for (WebElement rows : element) {
-			    List<WebElement> cells = element;  
-			    for (WebElement cell1 : cells) {         
-			String text = cell1.getText();		
-			File file=new File(filelocation);
-			FileInputStream fin=new FileInputStream(file);
-			Workbook workbook=new XSSFWorkbook(fin);
-			Sheet createsheet = workbook.createSheet(sheet);
-			Row createRow = createsheet.createRow(row);
-			Cell createCell = createRow.createCell(cell);
-			createCell.setCellValue(text);
-			FileOutputStream fout=new FileOutputStream(file);
-			workbook.write(fout);
+public void elementWriteInExcel(List<WebElement> elements, String fileLocation, String sheetName, int startingRow, int startingCell) throws IOException {
+        File file = new File(fileLocation);
+        Workbook workbook;
+        Sheet sheet;
+
+        // Check if file exists
+        if (file.exists()) {
+            // If file exists, open existing workbook
+            FileInputStream fin = new FileInputStream(file);
+            workbook = new XSSFWorkbook(fin);
+            sheet = workbook.getSheet(sheetName);
+            if (sheet == null) {
+                sheet = workbook.createSheet(sheetName);
+            }
+        } else {
+            // If file doesn't exist, create new workbook
+            workbook = new XSSFWorkbook();
+            sheet = workbook.createSheet(sheetName);
+        }
+
+        // Write data to the sheet
+        int rowNum = startingRow;
+        for (WebElement element : elements) {
+            String text = element.getText();
+            Row row = sheet.createRow(rowNum++);
+            Cell cell = row.createCell(startingCell);
+            cell.setCellValue(text);
+        }
+
+        // Write workbook content to file
+        try (FileOutputStream fout = new FileOutputStream(file)) {
+            workbook.write(fout);
+        }
+    }
+
+    // Example usage:
+    public static void main(String[] args) throws IOException {
+        ExcelWriter writer = new ExcelWriter();
+        // Usage example
+        // writer.elementWriteInExcel(elements, "file_location.xlsx", "Sheet1", 0, 0);
+    }
+}
