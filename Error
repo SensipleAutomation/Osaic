@@ -1,14 +1,27 @@
-public void elementWriteInExcel(List <WebElement> element,String filelocation, String sheet, int row, int cell)throws IOException {
-			//for (WebElement rows : element) {
-			    List<WebElement> cells = element;  
-			    for (WebElement cell1 : cells) {         
-			String text = cell1.getText();		
-			File file=new File(filelocation);
-			FileInputStream fin=new FileInputStream(file);
-			Workbook workbook=new XSSFWorkbook(fin);
-			Sheet createsheet = workbook.createSheet(sheet);
-			Row createRow = createsheet.createRow(row);
-			Cell createCell = createRow.createCell(cell);
-			createCell.setCellValue(text);
-			FileOutputStream fout=new FileOutputStream(file);
-			workbook.write(fout);
+public void elementWriteInExcel(List<WebElement> elements, String fileLocation, String sheetName, int startingRow, int startingCell) throws IOException {
+        File file = new File(fileLocation);
+        FileInputStream fin = new FileInputStream(file);
+        Workbook workbook = new XSSFWorkbook(fin);
+        Sheet sheet = workbook.getSheet(sheetName);
+        if (sheet == null) {
+            sheet = workbook.createSheet(sheetName);
+        }
+
+        int rowNum = startingRow;
+        for (WebElement element : elements) {
+            Row row = sheet.getRow(rowNum);
+            if (row == null) {
+                row = sheet.createRow(rowNum);
+            }
+
+            Cell cell = row.createCell(startingCell);
+            cell.setCellValue(element.getText());
+
+            rowNum++;
+        }
+
+        FileOutputStream fout = new FileOutputStream(file);
+        workbook.write(fout);
+        workbook.close();
+        fout.close();
+    }
