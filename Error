@@ -1,1 +1,3 @@
-Close 10653407 | Case
+//button[contains(@title, 'Close') and contains(@title, 'Case')]
+
+//button[preceding-sibling::text()[contains(., 'Close Case')]]
