@@ -1,3 +1,1 @@
-//button[contains(@title, 'Close') and contains(@title, 'Case')]
-
-//button[preceding-sibling::text()[contains(., 'Close Case')]]
+//label[text()='Status of BOB Review']/div/input
