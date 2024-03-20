@@ -1,2 +1,13 @@
-//label[text()='Status of BOB Review']/following-sibling::div/input
+WebElement inputElement = driver.findElement(By.xpath("//div[label[text()='Status of BOB Review']]/input"));
 
+        // Get the text of the input element
+        String inputText = inputElement.getAttribute("value");
+
+        // Compare the text
+        if (inputText.equals("Approved")) {
+            // Proceed to the next step
+            System.out.println("Next step: Proceeding...");
+        } else {
+            // Do something else if "Approved" is not displayed
+            System.out.println("Input not approved. Taking appropriate action...");
+        }
