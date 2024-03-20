@@ -1,1 +1,2 @@
-//label[text()='Status of BOB Review']/div/input
+//label[text()='Status of BOB Review']/following-sibling::div/input
+
