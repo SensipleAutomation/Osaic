@@ -18,3 +18,19 @@ frmCase
 
 
 //label[text()='Status of BOB Review']//following::input[@name='Status_of_BOB_Review__c']
+
+// Find the element
+WebElement statusElement = driver.findElement(By.xpath("//label[text()='Status of BOB Review']//following::input[@name='Status_of_BOB_Review__c']"));
+
+// Get the text of the element
+String statusText = statusElement.getAttribute("value");
+
+// Check if the text is "Approved"
+if(statusText.equals("Approved")) {
+    // Proceed to next steps
+    // Your code for next steps here
+    System.out.println("Status is Approved. Proceeding to next steps...");
+} else {
+    // Handle the case where the status is not approved
+    System.out.println("Status is not Approved. Cannot proceed.");
+}
