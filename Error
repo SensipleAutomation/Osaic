@@ -1,134 +1,17 @@
-while (true) {
-			try {
-				System.out.println("Clicking on the first element");
-				WebElement firstElement = wait.until(ExpectedConditions.elementToBeClickable(refresh));
-				firstElement.click();
-
-				Thread.sleep(1000);
-
-				System.out.println("Clicking on the second element");
-				WebElement secondElement = wait.until(ExpectedConditions.elementToBeClickable(refresClick));
-				secondElement.click();
-
-				System.out.println("Checking if the fourth element is displayed and enabled");
-				WebElement thirdElement = scheduleCase;
-
-				if (thirdElement.isDisplayed() && thirdElement.isEnabled()) {
-					TestUtils.sleep(2000);
-					thirdElement.click();
-					System.out.println("Third element found. Exiting the loop.");
-					break;
-				}
-			} catch (org.openqa.selenium.NoSuchElementException e) {
-
-				System.out.println("Second element not found. Retrying...");
-			} catch (Exception e) {
-
-				System.out.println("Exception occurred: " + e.getMessage());
-				e.printStackTrace();
-			}
-		}
-		reactions();
-
-		Assert.assertTrue(isElementPresent(backTOcases), "Back to Cases button is not present");
-		backTOcases.click();
-		Thread.sleep(1000);
-
-		Assert.assertTrue(isElementPresent(sch2Case), "Sch2 Case button is not present");
-		sch2Case.click();
-		reactions();
-
-		Assert.assertTrue(isElementPresent(backTOcases), "Back to Cases button is not present");
-		backTOcases.click();
-		Thread.sleep(1000);
-		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", bookCase);
-		Assert.assertTrue(isElementPresent(bookCase), "Book Case button is not present");
-		bookCase.click();
-		reactions();
-
-		Assert.assertTrue(isElementPresent(backTOcases), "Back to Cases button is not present");
-		backTOcases.click();
-		Thread.sleep(1000);
-
-		Assert.assertTrue(isElementPresent(boBusCase), "Bo Bus Case button is not present");
-		boBusCase.click();
-		reactions();
-
-		Assert.assertTrue(isElementPresent(backTOcases), "Back to Cases button is not present");
-		backTOcases.click();
-		Thread.sleep(2000);
-
-//		allocation started here
-
-		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", loadICACase);
-		Assert.assertTrue(isElementPresent(reviewcontractResponse), "reviewcontractResponse is not present");
-		reviewcontractResponse.click();
-		reactions();
-
-		Assert.assertTrue(isElementPresent(backTOcases), "Back to Cases button is not present");
-		backTOcases.click();
-		Thread.sleep(1000);
-
-		Assert.assertTrue(isElementPresent(backgroundcheckParentCase), "backgroundcheckParentCase is not present");
-		backgroundcheckParentCase.click();
-		reactions();
-
-		pullUpload.click();
-		TestUtils.sleep(1000);
-		TestUtils.uploadFile("\\resources\\Uploads\\Product Names and AUM Report.pdf");
-		TestUtils.explicit_locate(uploadDone);
-		Assert.assertTrue(isElementPresent(uploadDone), "File not Uploaded");
-		uploadDone.click();
-
-		Assert.assertTrue(isElementPresent(backTOcases), "Back to Cases button is not present");
-		backTOcases.click();
-		Thread.sleep(1000);
-
-		Assert.assertTrue(isElementPresent(loadICACase), "loadICACase is not present");
-		loadICACase.click();
-		reactions();
-
-		Assert.assertTrue(isElementPresent(backTOcases), "Back to Cases button is not present");
-		backTOcases.click();
-		Thread.sleep(1000);
-
-		refreshCase();
-
-		Assert.assertTrue(isElementPresent(validatefinancialInformationCase),
-				"validatefinancialInformationCase is not present");
-		validatefinancialInformationCase.click();
-		reactions();
-
-		Assert.assertTrue(isElementPresent(backTOcases), "Back to Cases button is not present");
-		backTOcases.click();
-		Thread.sleep(1000);
-
-		Assert.assertTrue(isElementPresent(pullbackgroundDocuments), "pullbackgroundDocuments is not present");
-		pullbackgroundDocuments.click();
-		pullback();
-		Thread.sleep(2000);
-
-		Assert.assertTrue(isElementPresent(backTOcases), "Back to Cases button is not present");
-		backTOcases.click();
-		Thread.sleep(1000);
-
-		Assert.assertTrue(isElementPresent(contractCase), "contractCase is not present");
-		contractCase.click();
-		reactions();
-
-		Assert.assertTrue(isElementPresent(backTOcases), "Back to Cases button is not present");
-		backTOcases.click();
-		Thread.sleep(1000);
-
-		Assert.assertTrue(isElementPresent(assesmentCase), "contractCase is not present");
-		assesmentCase.click();
-		reactions();
-
-		Assert.assertTrue(isElementPresent(backTOcases), "Back to Cases button is not present");
-		backTOcases.click();
-		Thread.sleep(1000);
-		refreshCase();
-		Thread.sleep(1000);
-		Assert.assertTrue(isElementPresent(frmCase), "contractCase is not present");
-		frmCase.click();
-		reactions();
+refresh
+refreshClick
+scheduleCase
+backTOcases (multiple times)
+sch2Case
+bookCase
+boBusCase
+loadICACase (multiple times)
+reviewcontractResponse
+backgroundcheckParentCase
+pullUpload
+uploadDone
+validatefinancialInformationCase
+pullbackgroundDocuments
+contractCase
+assessmentCase
+frmCase
