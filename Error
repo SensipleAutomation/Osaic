@@ -1,1 +1,14 @@
-System.out.println("Status of BOB Review: " + statusText);
+WebElement statusElement = reviewbookofBusiness;
+
+		String statusText = statusElement.getText();
+
+		System.out.println("Status of BOB Review: " + statusText);
+
+		if (statusText.equals("Approved")) {
+
+			System.out.println("Status is Approved. Proceeding to next steps...");
+		} else {
+
+			System.out.println("Case not approved");
+			System.exit(1);
+		}
