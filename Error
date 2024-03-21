@@ -15,3 +15,6 @@ pullbackgroundDocuments
 contractCase
 assessmentCase
 frmCase
+
+
+//label[text()='Status of BOB Review']//following::input[@name='Status_of_BOB_Review__c']
