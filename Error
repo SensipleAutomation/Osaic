@@ -1,14 +1,1 @@
-WebElement statusElement = reviewbookofBusiness;
-
-		String statusText = statusElement.getText();
-
-		System.out.println("Status of BOB Review: " + statusText);
-
-		if (statusText.equals("Approved")) {
-
-			System.out.println("Status is Approved. Proceeding to next steps...");
-		} else {
-
-			System.out.println("Case not approved");
-			System.exit(1);
-		}
+During the morning's deployment, OBA case generation flow encountered failures. Collaborating with Prathi and Rana, we discussed the issues and I'm now modifying the automation flow to ensure successful OBA case generation, advancing towards completing the learn module.
