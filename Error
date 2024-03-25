@@ -1,18 +1,1 @@
-Bug Report: Background Consent Checkbox Not Enabling Continue Button in QA Environment
-
-Description:
-In the QA environment for new prospects, after checking the final checkbox in the Background Consent section on the Learn module, the continue button to jump to section 6 (OBA) remains disabled and unclickable.
-
-Steps to Reproduce:
-
-Log in to the QA environment.
-Navigate to the Learn module.
-Proceed to the Background Consent section.
-Complete all required fields and checkboxes.
-Check the final checkbox.
-Attempt to click on the continue button to proceed to section 6 (OBA).
-Expected Result:
-After checking the final checkbox in the Background Consent section, the continue button should become enabled and clickable, allowing users to proceed to section 6 (OBA).
-
-Actual Result:
-The continue button remains disabled and unclickable even after checking the final checkbox in the Background Consent section.
+In qa environent after clicking the signin Button, user unable to login to homepage, instead it shows like in user account but remains in login page
