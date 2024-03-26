@@ -1,1 +1,1 @@
-(//span[contains, text()='File has been successfully Uploaded. Kindly Refresh the Page.'])[last()]
+(//span[contains(text(), 'File has been successfully Uploaded. Kindly Refresh the Page.')])[last()]
