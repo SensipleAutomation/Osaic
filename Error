@@ -1,7 +1,1 @@
-WebElement dropdownElement = driver.findElement(By.id("dropdown"));
-
-        // Wrap the dropdown element with Select class
-        Select dropdown = new Select(dropdownElement);
-
-        // Select by visible text
-        dropdown.selectByVisibleText("Option 1");
+(//span[contains, text()='File has been successfully Uploaded. Kindly Refresh the Page.'])[last()]
