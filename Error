@@ -1,1 +1,7 @@
-Regarding the automation progress, we've successfully completed regression testing for the learn module up until the offer approval stage in Salesforce. Currently, we're in the process of adding additional validations before proceeding with the join module. Starting from tomorrow, our plan is to begin automation testing for the join module
+WebElement dropdownElement = driver.findElement(By.id("dropdown"));
+
+        // Wrap the dropdown element with Select class
+        Select dropdown = new Select(dropdownElement);
+
+        // Select by visible text
+        dropdown.selectByVisibleText("Option 1");
