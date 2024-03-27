@@ -1,3 +1,6 @@
-$ git add .
-warning: in the working copy of 'apps/eo-bdd/reports/cucumber.json', LF will be 
-replaced by CRLF the next time Git touches it
+rpuliendran@vdioma1quas028a MINGW64 ~/git/web/apps/eo-bdd (CRM-Prospect)        
+$ git push origin master
+To ssh://pw1appdvop01.ibddomain.net:22/AdvisorGroup/Applications/_git/web
+ ! [rejected]              master -> master (fetch first)
+error: failed to push some refs to 'ssh://pw1appdvop01.ibddomain.net:22/AdvisorG
+roup/Applications/_git/web'
