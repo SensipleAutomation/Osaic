@@ -1,1 +1,3 @@
-(//span[contains(text(), 'File has been successfully Uploaded. Kindly Refresh the Page.')])[last()]
+$ git add .
+warning: in the working copy of 'apps/eo-bdd/reports/cucumber.json', LF will be 
+replaced by CRLF the next time Git touches it
