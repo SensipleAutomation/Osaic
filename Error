@@ -1,2 +1,1 @@
-Assert.assertTrue(viewYourOfferHeader.isDisplayed(), "productNamesAndAumReportLink is not displayed");
-		Assert.assertTrue(documentFormat.isDisplayed(), "documentFormat is not displayed");
+Assert.assertTrue(viewYourOfferHeader.isDisplayed() && documentFormat.isDisplayed(), "At least one of the elements is not displayed");
