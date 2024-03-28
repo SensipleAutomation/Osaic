@@ -1,1 +1,18 @@
-Assert.assertTrue(viewYourOfferHeader.isDisplayed() && documentFormat.isDisplayed(), "At least one of the elements is not displayed");
+public static void main(String[] args) {
+        // Initialize Selenium WebDriver and perform your automation steps here
+
+        // Wait for user input to continue
+        waitForUserInput();
+
+        // Continue with automation script
+        System.out.println("Resuming automation script...");
+        // Add your further automation steps here
+    }
+
+    private static void waitForUserInput() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Press Enter to continue...");
+        scanner.nextLine();
+        scanner.close();
+    }
+}
