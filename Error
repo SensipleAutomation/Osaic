@@ -1,6 +1,2 @@
-View Your offer
-Compensation
-Add Members
-RegEd Tasks
-Marketing Materials
-VA Appoinments
+Assert.assertTrue(viewYourOfferHeader.isDisplayed(), "productNamesAndAumReportLink is not displayed");
+		Assert.assertTrue(documentFormat.isDisplayed(), "documentFormat is not displayed");
